@@ -1,9 +1,9 @@
 // ==UserScript==
 
 	// @name		Google i&Search Dark + Enhancements
-	// @description		Make Google Search & iGoogle Hompage Dark, plus Enhancements
-	// @version		1.7.6
-	// @date		2008-03-19
+	// @description		Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements
+	// @version		1.7.7
+	// @date		2008-03-20
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 
@@ -18,57 +18,58 @@
 var SCRIPT = {
 	name:		"Google i&Search Dark + Enhancements",
 	namespace:	"http://userscripts.org/people/24894",
-	description:	"Make Google Search & iGoogle Hompage Dark, plus Enhancements",
+	description:	"Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements",
 	source:		"http://userscripts.org/scripts/show/12917",
 	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.7.6",
-	date: (new Date( 2008,03,19 )).valueOf()
+	version:	"1.7.7",
+	date: (new Date( 2008,03,20 )).valueOf()
 };
 
 
 // Change Log:
-	// Version 1.0.0	Initial Release
-	// Version 1.0.1	Added Enhancements for Gm-Script Google Search Sidebar
-	// Version 1.1.0	Fixed Google News Search Results
-	// Version 1.1.1	Logo fixes for Google News; iGoogle module header enhancements
-	// Version 1.1.2	Added support for Gm-Script User Script Updates
-	// Version 1.1.3	Fixed color scheme on Google News Homepage; Rearranged functions
-	// Version 1.1.4	Added Removal Of Right Side Ads; Fixed Search Results no match response
-	// Version 1.1.5	Removed Search Results sponsored linx; Fixed refine results txt
-	// Version 1.2.0	Added Video Results Enhancements; Rounded News left headline; Fixed nav bar
-	// Version 1.2.1	Updated iGoogle I'm Feeling Lucky & Cancel buttons, Module Settings updates
-	// Version 1.2.2	Fixed Google Home & Images logos; Fixed Video bg, time txt; Fixed News logo
-	// Version 1.2.3	Fixed iGoogle Home logo; Setup block; Search linx position, Settings txt
-	// Version 1.2.4	Fixed iGoogle skins box; News spacing, Headers, Show morefewer linx, Alerts txt
-	// Version 1.2.5	Fixed Google Search & Image Home non-search logos; Fixed Preferences
-	// Version 1.2.6	Fixed Search more pop layer; Fixed iGoogle module inner detail txt
-	// Version 1.2.7	Fixed iGoogle Dialogs; Module selection page & delete confirmation box
-	// Version 1.3.0	Major Code Optimization & a few minor txt fixes
-	// Version 1.4.0	Added Maps Enhancements
-	// Version 1.4.1	Fixed iGoogle txt & skin box; Video filter txt; News Image Version & AFP.google
-	// Version 1.4.2	Changed visited link color to be grey-blue; Fixed iGoogle module bg
-	// Version 1.4.3	Moved black Google logo into script-code (only 3.8k)
-	// Version 1.5.0	Major Code Optimization & a few minor bg fixes
-	// Version 1.5.1	Refixed iGoogle Add Stuff (old disabled); Fixed more linx; Images size alert
-	// Version 1.5.2	Fixed iGoogle Make your own gadget pages, Add Stuff search results
-	// Version 1.6.0	Added Code Enhancements; Fixed Maps popup txt & removed Sponsored Linx
-	// Version 1.6.1	Refixed AP/AFP.google News
-	// Version 1.6.2	Changed Maps results color to be visible if also selected, My Maps fixes
-	// Version 1.6.3	Removed Google Search Sponsored Linx!
-	// Version 1.7.0	Added Support Enhancements; Toolbar Enhancements; Firefox Tools Enhancements +
-	// Version 1.7.1	Updated txt-field color; Updated Maps highlight colors & Print-page layout
-	// Version 1.7.2	Fixed iGoogle modules: Gmail linx & txt, YouTube bg; Excluded /custom
-	// Version 1.7.3	Fixed iGoogle add tab dialog & new tab txt, Add Stuff menu headers & added msg
-	// Version 1.7.4	Fixed Google Search Result desc-txt, Image Labeler bg, News Results txt
-	// Version 1.7.5	Fixed iGoogle header bar bg
-	// Version 1.7.6	Fixed Google Result txt, Advanced Search & Footer Tools; Experimental Enhancements
+	// v1.0.0	Initial Release
+	// v1.0.1	Added Enhancements for Gm-Script Google Search Sidebar
+	// v1.1.0	Fixed Google News Search Results
+	// v1.1.1	Logo fixes for Google News; iGoogle module header enhancements
+	// v1.1.2	Added support for Gm-Script User Script Updates
+	// v1.1.3	Fixed color scheme on Google News Homepage; Rearranged functions
+	// v1.1.4	Added Removal Of Right Side Ads; Fixed Search Results no match response
+	// v1.1.5	Removed Search Results sponsored linx; Fixed refine results txt
+	// v1.2.0	Added Video Results Enhancements; Rounded News left headline; Fixed nav bar
+	// v1.2.1	Updated iGoogle I'm Feeling Lucky & Cancel buttons, Module Settings updates
+	// v1.2.2	Fixed Google Home & Images logos; Fixed Video bg, time txt; Fixed News logo
+	// v1.2.3	Fixed iGoogle Home logo; Setup block; Search linx position, Settings txt
+	// v1.2.4	Fixed iGoogle skins box; News spacing, Headers, Show morefewer linx, Alerts txt
+	// v1.2.5	Fixed Google Search & Image Home non-search logos; Fixed Preferences
+	// v1.2.6	Fixed Search more pop layer; Fixed iGoogle module inner detail txt
+	// v1.2.7	Fixed iGoogle Dialogs; Module selection page & delete confirmation box
+	// v1.3.0	Major Code Optimization & a few minor txt fixes
+	// v1.4.0	Added Maps Enhancements
+	// v1.4.1	Fixed iGoogle txt & skin box; Video filter txt; News Image v& AFP.google
+	// v1.4.2	Changed visited link color to be grey-blue; Fixed iGoogle module bg
+	// v1.4.3	Moved black Google logo into script-code (only 3.8k)
+	// v1.5.0	Major Code Optimization & a few minor bg fixes
+	// v1.5.1	Refixed iGoogle Add Stuff (old disabled); Fixed more linx; Images size alert
+	// v1.5.2	Fixed iGoogle Make your own gadget pages, Add Stuff search results
+	// v1.6.0	Added Code Enhancements; Fixed Maps popup txt & removed Sponsored Linx
+	// v1.6.1	Refixed AP/AFP.google News
+	// v1.6.2	Changed Maps results color to be visible if also selected, My Maps fixes
+	// v1.6.3	Removed Google Search Sponsored Linx!
+	// v1.7.0	Added Support Enhancements; Toolbar Enhancements; Firefox Tools Enhancements +
+	// v1.7.1	Updated txt-field color; Updated Maps highlight colors & Print-page layout
+	// v1.7.2	Fixed iGoogle modules: Gmail linx & txt, YouTube bg; Excluded /custom
+	// v1.7.3	Fixed iGoogle add tab dialog & new tab txt, Add Stuff menu headers & added msg
+	// v1.7.4	Fixed Google Search Result desc-txt, Image Labeler bg, News Results txt
+	// v1.7.5	Fixed iGoogle header bar bg
+	// v1.7.6	Fixed Google Result txt, Advanced Search & Footer Tools; Experimental Enhancements
+	// v1.7.7	Added Firefox Start Enhancements
 
 
 // To Do:
 	// !!! Add Groups support
 	// !! Add Trends support
 	// ! Add Labs support
-	// Add Products/Froogle support
+	// Add Shopping/Products/Froogle support
 	// Add to Support Enhancements
 	// Add to Help Central Enhancements
 	// Add to Code Enhancements
@@ -92,13 +93,13 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // General Google Page Enhancements
-	/* page bg */			"BODY   {background-color:#000 !important; color:#fff;}" +
+	/* page bg */			"BODY   {background:#000 none !important; color:#fff;}" +
 	/* link color */		"A, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#36f !important;}" +
 	/* visited link color */	"A:visited   {color:#369 !important;}" +
 	/* inner txt color */		"DIV, TD   {color:#000 !important;}" +
 	/* bold txt color */		"B   {color:#fff !important;}" +
 	/* google bar txt */		"DIV#gbar SPAN   {color:#999;}" +
-	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, #wrapper #header, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top'], #gc-header #logo, #header #logo, TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;'], TABLE[align='center'] TBODY TR TD[width='155'][rowspan='2'], TABLE[align='center'] TBODY TR[valign='middle'] TD[width='135'], BODY[bgcolor='#ffffff'][topmargin='3'] CENTER TABLE[width='725'] TBODY TR TD TABLE[cellspacing='1'] TBODY TR TD[height='1'][bgcolor='#666666'], BODY > TABLE[width='100%'][style='direction: ltr;'] > TBODY > TR > TD, BODY > TABLE[width='100%'] > TBODY > TR > TD[width='100%'][style='padding-left: 15px;'], BODY.siteowners > TABLE[width='96%'] > TBODY > TR > TD[width='1%'], BODY > CENTER > DIV > TABLE[width='739'] > TBODY > TR > TD[width='100%'], BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD[width='1%'], TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='1%'][valign='top'], BODY.search > TABLE[width='95%'] > TBODY > tr[valign='top'] > TD[width='1%'], BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'], BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='2'] > TBODY > TR > TD[width='1%']   {width:150px; height:55px; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important;}" +
+	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, #wrapper #header, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top'], #gc-header #logo, #header #logo, TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;'], TABLE[align='center'] TBODY TR TD[width='155'][rowspan='2'], TABLE[align='center'] TBODY TR[valign='middle'] TD[width='135'], BODY[bgcolor='#ffffff'][topmargin='3'] CENTER TABLE[width='725'] TBODY TR TD TABLE[cellspacing='1'] TBODY TR TD[height='1'][bgcolor='#666666'], BODY > TABLE[width='100%'][style='direction: ltr;'] > TBODY > TR > TD, BODY > TABLE[width='100%'] > TBODY > TR > TD[width='100%'][style='padding-left: 15px;'], BODY.siteowners > TABLE[width='96%'] > TBODY > TR > TD[width='1%'], BODY > CENTER > DIV > TABLE[width='739'] > TBODY > TR > TD[width='100%'], BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD[width='1%'], TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='1%'][valign='top'], BODY.search > TABLE[width='95%'] > TBODY > tr[valign='top'] > TD[width='1%'], BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'], BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='2'] > TBODY > TR > TD[width='1%'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD > DIV[style='margin: 5px 0pt 4px 4px; background: transparent url(/images/firefox/sprite.png) no-repeat scroll 0pt -95px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 23px; width: 80px;']   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important;}" +
 	/* search input */		"INPUT[type='text'], INPUT[name='q']   {background:#333 none !important; color:#fff; padding:2px; border:solid 1px #ccc; font-weight:bold; color:#ff0 !important;}" +
 	/* submit btns */		"INPUT[type='submit'], INPUT[value='Cancel'], INPUT[value='Save'], BUTTON, INPUT#stxemailsend, INPUT[value='Discard'], BUTTON[type='submit'], INPUT[value='Download']   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff !important; cursor:pointer;}" +
 	/* submit btn hover */		"INPUT[type='submit']:hover, BUTTON[type='submit']:hover   {background-color:#36f; color:#fff;}" +
@@ -376,6 +377,15 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 // Trends Enhancements
 	/*  */			"   {}" +
+
+
+// Firefox Start Enhancements
+	/* top search box corner */	"BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE > TBODY > TR > TD > DIV[title='Firefox Start']   {height: 45px !important; margin-bottom:50px;}" +
+	/* 2nd search box block */	"BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE > TBODY > TR > TD > DIV[style='background: transparent url(/images/firefox/gradsprite.png) repeat-x scroll 0pt 0px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 95px; margin-top: 21px; width: 100%;']   {height: 44px !important; margin-bottom:51px;}" +
+	/* end search box block */	"BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE > TBODY > TR > TD > DIV[style='background: transparent url(/images/firefox/sprite.png) no-repeat scroll -440px 0pt; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 116px; width: 105px;']   {height: 110px !important; margin-bottom:6px;}" +
+	/* mid search box sides */	"BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD[bgcolor='#dddddd'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD[bgcolor='#b0b0b0']   {display:none;}" +
+	/* btm search box row */	"BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE > TBODY > TR > TD DIV[style='background: transparent url(/images/firefox/sprite.png) no-repeat scroll 0pt -118px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 34px; width: 48px;'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE > TBODY > TR > TD DIV[style='background: rgb(176, 176, 176) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 1px; width: 100%;'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE > TBODY > TR > TD DIV[style='background: rgb(176, 176, 176) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 1px; width: 100%;'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE > TBODY > TR > TD DIV[style='background: transparent url(/images/firefox/sprite.png) no-repeat scroll -48px -118px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 34px; width: 497px;']   {display:none;}" +
+	/* bottom tables */		"BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD > TABLE[width='100%'][cellpadding='4']   {display:none;}" +
 
 
 // Gm-Script Google Search Sidebar Enhancements - http://userscripts.org/scripts/show/11888

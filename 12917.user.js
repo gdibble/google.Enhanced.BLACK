@@ -2,8 +2,8 @@
 
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements
-	// @version		1.8.2
-	// @date		2008-08-28
+	// @version		1.8.3
+	// @date		2008-09-06
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 
@@ -21,8 +21,8 @@ var SCRIPT = {
 	description:	"Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements",
 	source:		"http://userscripts.org/scripts/show/12917",
 	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.8.2",
-	date: (new Date( 2008,08,28 )).valueOf()
+	version:	"1.8.3",
+	date: (new Date( 2008,09,06 )).valueOf()
 };
 
 
@@ -66,9 +66,11 @@ var SCRIPT = {
 	// v1.8.0	Quick update for Google Updates; Added Products; Minor fixes for Experimental/Maps
 	// v1.8.1	Removed Google Search, Maps & Shopping Sponsored Links; fixed Shopping logo
 	// v1.8.2	ReEnhanced Firefox Start, fixed Google Search & Intnl logo, Widened search results
+	// v1.8.3	Enhanced top menu, results link colors & changed font to Trebuchet MS; MonkeyBarrel moved
 
 
 // To Do:
+	// !!!! Add Translate support
 	// !!! Add Groups support
 	// !! Add Trends support
 	// ! Add Labs support
@@ -80,11 +82,13 @@ var SCRIPT = {
 	// Add to Experimental Enhancements
 	// Add Blogs support
 	// Add Books support
-	// Add Translation support
 	// Add Patents support
 	// Add Scholar support
 	// Add Earth support
-	// Add User Script Command to turn On/Off 3.14 Hack
+	// Add User Script Command to launch Options panel
+	// Add Option: Turn On/Off 3.14 Hack
+	// Add Option: Font Choice dropdown
+	// Add Option: Link color selections
 
 
 	// Feel free to leave suggestions/criticism on the UserScript Page or via email (see above); THANX!
@@ -96,12 +100,15 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // General Google Page Enhancements
+	/* Global font override */	"*   {font-family:Trebuchet MS, Verdna;}" +
 	/* page bg */			"BODY   {background:#000 none !important; color:#fff;}" +
-	/* link color */		"A, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#36f !important;}" +
-	/* visited link color */	"A:visited   {color:#369 !important;}" +
+	/* link color */		"A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}" +
 	/* inner txt color */		"DIV, TD   {color:#000 !important;}" +
 	/* bold txt color */		"B   {color:#fff !important;}" +
-	/* google bar txt */		"DIV#gbar SPAN   {color:#999;}" +
+	/* google bar txt */		"#gbar SPAN   {color:#999;}" +
+	/* google bar txt */		"#gbar DIV.gb1   {background-color:#c9d7f1 !important;}" +
+	/* google bar txt */		"#gbar DIV.gb2   {padding-top:0; padding-bottom:0; background-color:#c9d7f1 !important;}" +
+	/* google bar linx */		"#gbar A.gb1, #gbar B.gb1, #gbar A.gb3   {position:relative; bottom:0.2em; font-weight:bold; font-size:1.15em;}" +
 	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, #wrapper #header, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top'], #gc-header #logo, #header #logo, TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;'], TABLE[align='center'] TBODY TR TD[width='155'][rowspan='2'], TABLE[align='center'] TBODY TR[valign='middle'] TD[width='135'], BODY[bgcolor='#ffffff'][topmargin='3'] CENTER TABLE[width='725'] TBODY TR TD TABLE[cellspacing='1'] TBODY TR TD[height='1'][bgcolor='#666666'], BODY > TABLE[width='100%'][style='direction: ltr;'] > TBODY > TR > TD, BODY > TABLE[width='100%'] > TBODY > TR > TD[width='100%'][style='padding-left: 15px;'], BODY.siteowners > TABLE[width='96%'] > TBODY > TR > TD[width='1%'], BODY > CENTER > DIV > TABLE[width='739'] > TBODY > TR > TD[width='100%'], BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD[width='1%'], TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='1%'][valign='top'], BODY.search > TABLE[width='95%'] > TBODY > tr[valign='top'] > TD[width='1%'], BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'], BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='2'] > TBODY > TR > TD[width='1%'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD > DIV[style='margin: 5px 0pt 4px 4px; background: transparent url(/images/firefox/sprite.png) no-repeat scroll 0pt -95px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 23px; width: 80px;'], A#logo, A#glogo   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}" +
 	/* search input */		"INPUT[type='text'], INPUT[name='q']   {background:#333 none !important; color:#fff; padding:2px; border:solid 1px #ccc; font-weight:bold; color:#ff0 !important;}" +
 	/* submit btns */		"INPUT[type='submit'], INPUT[value='Cancel'], INPUT[value='Save'], BUTTON, INPUT#stxemailsend, INPUT[value='Discard'], BUTTON[type='submit'], INPUT[value='Download']   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff !important; cursor:pointer;}" +
@@ -111,6 +118,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* more pop layer */		"SPAN#more, #gbar .gb2   {background-color:#333 !important; border-right:solid 1px #a2bae7; border-bottom:solid 1px #a2bae7; color:#333 !important;}" +
 	/* google alerts txt */		"P[style='margin-left: 9px;'], SPAN[style='font-size: medium;']   {color:#999;}" +
 	/* mainbody txt */		"DIV.mainbody, TD.j, DIV.empty, DIV.empty DIV, BODY#gsr DIV, BODY#gsr TD   {color:#999 !important;}" +
+	/* results visited linx */	"DIV#res A:visited   {font-size:0.8em !important; color:#406b80 !important;}" +
 	/* remove footers */		"#footer, #footer_promos, #footerwrap, P FONT[size='-2'], TABLE[class='t n bt'][width='100%'][cellpadding='2'], DIV[align='center'][style='white-space: nowrap;'], FONT[class='p'][size='-1'], FONT[size='-1'][color='#6f6f6f'], DIV.div-copyright, SPAN.copyr, DIV.content DIV.footer, DIV#footarea, TABLE[width='99%'][cellpadding='3'][bgcolor='#c3d9ff'][align='center'][style='margin-bottom: 5px;'], CENTER > DIV[style='padding: 2px;'] > FONT[size='-1'], CENTER > CENTER > P > FONT[size='-1'], BODY.search > DIV[align='center'] > SMALL > FONT[size='-1'][face='Arial, sans-serif'], BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > CENTER > FONT[size='-1'], BODY > CENTER > TABLE[width='100%'][cellspacing='0'][cellpadding='2'][border='0'] *   {display:none;}" +
 
 	// Preferences
@@ -387,6 +395,10 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* right col block */		"BODY > CENTER > DIV > TABLE[width='100%'] > TBODY > TR > TD DIV.rightcol   {background-color:#333 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* install extension */		"BODY > CENTER > DIV[style='margin: 20px 30px; text-align: left; width: 740px;'] DIV.extension  {background-color:#333 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* extension whitelist */	"BODY > CENTER > DIV[style='margin: 20px 30px; text-align: left; width: 740px;'] DIV.whitelist  {border:2px solid #fff; background-color:#000; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
+
+
+// MonkeyBarrel Google Enhancements
+	/* shift down slightly */	"DIV[style='position: fixed; top: 10px; left: 10px; margin-bottom: 10px; background-color: transparent; z-index: 99999;']   {top:28px !important; left:2px !important;}" +
 
 
 // Notebooks Enhancements

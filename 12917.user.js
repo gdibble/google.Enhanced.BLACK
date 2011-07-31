@@ -637,7 +637,7 @@ enhanceGoogle();
 
 
 // Checks for script updates
-if (Date.now() - scriptLastCheck >= 1) {   // 86400000 == 1 day
+if (Date.now() - scriptLastCheck >= 86400000) {   // 86400000 == 1 day
 	// At least a day has passed since the last check. Sends a request to check for a new script version
 	GM_setValue("scriptLastCheck", Date.now().toString());
 	scriptCheckVersion();

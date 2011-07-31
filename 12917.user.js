@@ -2,8 +2,8 @@
 
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements
-	// @version		1.8.8
-	// @date		2008-09-25
+	// @version		1.8.9
+	// @date		2008-11-20
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 
@@ -21,8 +21,8 @@ var SCRIPT = {
 	description:	"Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements",
 	source:		"http://userscripts.org/scripts/show/12917",
 	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.8.8",
-	date: (new Date( 2008,09,25 )).valueOf()
+	version:	"1.8.9",
+	date: (new Date( 2008,11,20 )).valueOf()
 };
 
 
@@ -72,6 +72,7 @@ var SCRIPT = {
 	// v1.8.6	Added iGoogle & Sign in link to header-bar; Fixed News & Shopping logos; Updated sidebar
 	// v1.8.7	Improved added iGoogle & Sign in linx with conditional logic
 	// v1.8.8	Resolved iGoogle & Sign in linx layout between FF2 & FF3
+	// v1.8.9	Fixed iGoogle page layout & color scheme
 
 
 // To Do:
@@ -140,7 +141,19 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* go btns hover */		"INPUT#btnI:hover, INPUT[name='btnI']:hover, INPUT[value='Save']:hover, SPAN#button_0 BUTTON:hover, INPUT#stxemailsend:hover, INPUT[value='Submit Issue']:hover, INPUT[value='Download']:hover, INPUT[value='Add it now']:hover, INPUT[value='Add it now'], INPUT[value='Save Preferences']:hover, INPUT[value='Save Preferences ']:hover   {background-color:#090; color:#fff;}" +
 	/* setup block */		"DIV.setup_div   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
 	/* setup title txt */		"DIV.setup_title_welcome, DIV.setup_promo, DIV.setup_promo_subtext   {color:#999 !important;}" +
-	/* tabs */			"#tabs UL LI   {-moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
+	/* nav top gradient 1 */	"#nhdrwrapinner > .gradient > B   {background-color:#171717;}" +
+	/* nav top gradient 2 */	"#nhdrwrapinner > .gradient > B > B   {background-color:#252525;}" +
+	/* nav top gradient 3 */	"#nhdrwrapinner > .gradient > B > B > B   {background-color:#333;}" +
+//	/* tabs */			"#tabs UL LI   {-moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
+	/* nav container */		"TABLE > TBODY > TR > TD#col1   {width:134px; background-color:#333; border-color:#333;}" +
+	/* nav bg */			"#full_nav   {background-color:#333;}" +
+	/* nav tab color */		"#full_nav H2   {color:#6495ed;}" +
+	/* nav separators */		"#full_nav .topline, #full_nav .bottomline   {visibility:hidden;}" +
+	/* nav first tab */		"#full_nav #section0_contents.selected_section_contents   {margin-top:20px;}" +
+	/* nav selected tab */		"#full_nav .leftselectedtab   {background-color:#000; -moz-border-radius-topleft:14px; -moz-border-radius-bottomleft:14px;}" +
+	/* nav non selected tab */	"#full_nav .leftunselectedtab   {background-color:#333;}" +
+	/* nav non selected tab */	"#full_nav .leftselectedtab, #full_nav .leftunselectedtab, #full_nav .bottom_nav   {border:0 none;}" +
+	/* remove nav selection rnds */	"#full_nav B[class='rnd_tab left_rounded_only']   {visibility:hidden;}" +
 	/* module delete conf.box */	"DIV#undel_box   {background-color:#333; border:1px solid #ff0; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#ff0 !important;}" +
 	/* skins box title */		"H2.modtitle_s   {background-color:#feffc5; border:0; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
 	/* skins box title txt */	"H2.modtitle_s B   {color:#000 !important;}" +
@@ -154,9 +167,14 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* module border */		".modbox, .modbox_e   {background-color:#000; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* module bg */			".modboxin, .modboxin IFRAME HTML BODY   {background-color:#fff !important;}" +
 	/* module border */		".modboxin, .modboxin_s, .modtitle   {border:0px none !important;}" +
-	/* module area bg */		"#modules   {background-color:#000;}" +
-	/* module title bg */		".modtitle   {-moz-border-radius-topleft:14px; -moz-border-radius-topright:14px; background-color:#333;}" +
-	/* module title txt */		".modtitle_text,.mtlink   {color:#999 !important;}" +
+	/* module area container */	"TABLE > TBODY > TR > TD#col2   {background-color:#333; border:0 none;}" +
+	/* module area header rndng */	"TABLE > TBODY > TR > TD#col2 > #rcbg   {display:none;}" +
+	/* module area bg */		"#modules   {background-color:#000; -moz-border-radius-topleft:20px;}" +
+	/* module area btm spacing */	"#modules > .yui-b   {margin-bottom:-0.3em; padding-top:0.2em;}" +
+	/* module title rndng */	"B.rnd_modtitle   {display:none;}" +
+	/* module title bg */		".modtitle   {-moz-border-radius-topleft:14px; -moz-border-radius-topright:14px; background-color:#333 !important;}" +
+	/* module title txt */		".modtitle_text,.mtlink   {position:relative; top:1px; left:1px; color:#999 !important;}" +
+	/* module options buttons */	".modtitle .v2enlargebox, .modtitle .v2ddbox   {position:relative; top:2px; right:3px;}" +
 	/* module settings line */	"DIV.meditbox   {margin-top:0; border:0;}" +
 	/* module settings txt */	"DIV.meditbox DIV, DIV.meditbox TD, DIV.meditbox SPAN, DIV.meditbox NOBR   {color:#999 !important;}" +
 	/* module inner detail txt */	".modboxin FONT   {color:#000 !important;}" +

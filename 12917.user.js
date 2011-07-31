@@ -2,7 +2,7 @@
 
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Dark, plus Enhancements
-	// @version		1.6.0
+	// @version		1.6.1
 	// @date		2007-11-02
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
@@ -19,7 +19,7 @@ var SCRIPT = {
 	description:	"Make Google Search & iGoogle Hompage Dark, plus Enhancements",
 	source:		"http://userscripts.org/scripts/show/12917",
 	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.6.0",
+	version:	"1.6.1",
 	date: (new Date( 2007,11,02 )).valueOf()
 };
 
@@ -50,6 +50,7 @@ var SCRIPT = {
 	// Version 1.5.1	Refixed iGoogle Add Stuff (old disabled); Fixed more linx; Images size alert
 	// Version 1.5.2	Fixed iGoogle Make your own gadget pages, Add Stuff search results
 	// Version 1.6.0	Added Code Enhancements; Fixed Maps popup txt & removed Sponsored Linx
+	// Version 1.6.1	Refixed AP/AFP.google News
 
 
 // To Do:
@@ -208,9 +209,10 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/* rightBar */		"DIV#RightBarContent DIV   {background-color:#000 !important;}" +
 
 
-// AFP.google News Enhancements
-	/* body txt */			"BODY#body.rich DIV#container TABLE TBODY TR TD   {color:#999 !important;}" +
-	/* article title */		"BODY#body.rich DIV#container TABLE#article TBODY TR TD H1   {color:#fff;}" +
+// AP/AFP.google News Enhancements
+	/* body txt */			"DIV DIV#hn-content DIV   {color:#999 !important;}" +
+	/* article title */		"DIV DIV#hn-content DIV H1   {color:#fff;}" +
+	/* footer */			"DIV DIV#hn-footer   {display:none;}" +
 
 
 // Maps Enhancements

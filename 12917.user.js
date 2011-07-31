@@ -2,8 +2,8 @@
 
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Dark, plus Enhancements
-	// @version		1.5.2
-	// @date		2007-10-31
+	// @version		1.6.0
+	// @date		2007-11-02
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 
@@ -19,8 +19,8 @@ var SCRIPT = {
 	description:	"Make Google Search & iGoogle Hompage Dark, plus Enhancements",
 	source:		"http://userscripts.org/scripts/show/12917",
 	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.5.2",
-	date: (new Date( 2007,10,31 )).valueOf()
+	version:	"1.6.0",
+	date: (new Date( 2007,11,02 )).valueOf()
 };
 
 
@@ -49,17 +49,18 @@ var SCRIPT = {
 	// Version 1.5.0	Major Code Optimization & a few minor bg fixes
 	// Version 1.5.1	Refixed iGoogle Add Stuff (old disabled); Fixed more linx; Images size alert
 	// Version 1.5.2	Fixed iGoogle Make your own gadget pages, Add Stuff search results
+	// Version 1.6.0	Added Code Enhancements; Fixed Maps popup txt & removed Sponsored Linx
 
 
 // To Do:
 	// !!! Add Groups support
 	// !! Add Products/Froogle support
-	// ! Add Code support
-	// Add Blogs support
+	// ! Add Blogs support
 	// Add Books support
 	// Add Translation support
 	// Add Patents support
 	// Add Scholar support
+	// Add Earth support
 	// Add User Script Command to turn On/Off 3.14 Hack
 
 
@@ -73,20 +74,20 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 // General Google Page Enhancements
 	/* page bg */			"BODY   {background-color:#000 !important; color:#fff;}" +
-	/* link color */		"A, SPAN.i, .linkon   {color:#36f !important;}" +
+	/* link color */		"A, SPAN.i, .linkon, #codesiteContent A   {color:#36f !important;}" +
 	/* visited link color */	"A:visited   {color:#369 !important;}" +
 	/* inner txt color */		"DIV, TD   {color:#000 !important;}" +
 	/* bold txt color */		"B   {color:#fff !important;}" +
 	/* google bar txt */		"DIV#gbar SPAN   {color:#999;}" +
-	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, #wrapper #header, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top']   {width:150px; height:55px; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important;}" +
-	/* search input */		"INPUT[type=text], INPUT[name='q']   {background-color:#333; color:#fff; padding:2px; border:solid 1px #ccc; font-weight:bold; color:#ff0;}" +
-	/* submit btns */		"INPUT[type=submit], INPUT[value='Cancel'], INPUT[value='Save'], BUTTON, INPUT#stxemailsend   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff; cursor:pointer;}" +
-	/* submit btn hover */		"INPUT[type=submit]:hover   {background-color:#36f; color:#fff;}" +
+	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, #wrapper #header, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top'], #gc-header #logo, #header #logo, TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;']   {width:150px; height:55px; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important;}" +
+	/* search input */		"INPUT[type='text'], INPUT[name='q']   {background:#333 none !important; color:#fff; padding:2px; border:solid 1px #ccc; font-weight:bold; color:#ff0;}" +
+	/* submit btns */		"INPUT[type='submit'], INPUT[value='Cancel'], INPUT[value='Save'], BUTTON, INPUT#stxemailsend, INPUT[value='Discard']   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff; cursor:pointer;}" +
+	/* submit btn hover */		"INPUT[type='submit']:hover   {background-color:#36f; color:#fff;}" +
 	/* home & images logo img */	"IMG[width='276']   {height:0px; padding-top:65px; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll bottom center !important;}" +
 	/* more pop layer */		"SPAN#more, #gbar .gb2   {background-color:#333 !important; border-right:solid 1px #a2bae7; border-bottom:solid 1px #a2bae7; color:#333 !important;}" +
 	/* google alerts txt */		"P[style='margin-left: 9px;'], SPAN[style='font-size: medium;']   {color:#999;}" +
 	/* mainbody txt */		"DIV.mainbody, TD.j, DIV.empty, DIV.empty DIV   {color:#999 !important;}" +
-	/* remove footers */		"#footer, #footer_promos, #footerwrap, P FONT[size='-2'], TABLE[class='t n bt'][width='100%'][cellpadding='2'], DIV[align='center'][style='white-space: nowrap;'], FONT[class='p'][size='-1'], FONT[size='-1'][color='#6f6f6f'], DIV.div-copyright, SPAN.copyr   {display:none;}" +
+	/* remove footers */		"#footer, #footer_promos, #footerwrap, P FONT[size='-2'], TABLE[class='t n bt'][width='100%'][cellpadding='2'], DIV[align='center'][style='white-space: nowrap;'], FONT[class='p'][size='-1'], FONT[size='-1'][color='#6f6f6f'], DIV.div-copyright, SPAN.copyr, DIV.content DIV.footer   {display:none;}" +
 
 	// Preferences
 		/* pre title line */	"TABLE TBODY TR TD[bgcolor='#3366cc']   {display:none;}" +
@@ -95,8 +96,8 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // iGoogle Homepage Enhancements
-	/* search btn spacing */	".gseain INPUT[type=submit], INPUT[name='btnG'], INPUT[name='btnI']   {margin-top:5px; margin-right:30px; margin-left:30px;}" +
-	/* lucky,save,send btn hover */	"INPUT#btnI:hover, INPUT[name='btnI']:hover, INPUT[value='Save']:hover, SPAN#button_0 BUTTON:hover, INPUT#stxemailsend:hover   {background-color:#090; color:#fff;}" +
+	/* search btn spacing */	".gseain INPUT[type='submit'], INPUT[name='btnG'], INPUT[name='btnI']   {margin-top:5px; margin-right:30px; margin-left:30px;}" +
+	/* lucky,save,send btn hover */	"INPUT#btnI:hover, INPUT[name='btnI']:hover, INPUT[value='Save']:hover, SPAN#button_0 BUTTON:hover, INPUT#stxemailsend:hover, INPUT[value='Submit Issue']:hover   {background-color:#090; color:#fff;}" +
 	/* setup block */		"DIV.setup_div   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
 	/* setup title txt */		"DIV.setup_title_welcome, DIV.setup_promo, DIV.setup_promo_subtext   {color:#999 !important;}" +
 	/* tabs */			"#tabs UL LI   {-moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
@@ -117,7 +118,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* module settings line */	"DIV.meditbox   {margin-top:0; border:0;}" +
 	/* module settings txt */	"DIV.meditbox DIV, DIV.meditbox TD, DIV.meditbox SPAN, DIV.meditbox NOBR   {color:#999 !important;}" +
 	/* module inner detail txt */	".modboxin FONT   {color:#000 !important;}" +
-	/* cancel btn hover */		"INPUT[value='Cancel']:hover, SPAN#button_1 BUTTON:hover   {background-color:#990000 !important; color:#fff !important;}" +
+	/* cancel btn hover */		"INPUT[value='Cancel']:hover, SPAN#button_1 BUTTON:hover, INPUT[value='Discard']:hover   {background-color:#990000 !important; color:#fff !important;}" +
 
 	// Add Stuff
 		/* header */		"#wrapper #header   {width:inherit;}" +
@@ -217,11 +218,13 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* help linx */			"DIV.helplinks DIV   {background-color:#000 !important; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* mapping tabs */		"TABLE#paneltabs TBODY TR TD   {background-color:#000 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
 	/* mapping tab txt */		"TABLE#paneltabs TBODY TR TD.tabOff A DIV, TABLE#paneltabs TBODY TR TD.tabOn A DIV   {font-weight:bold; color:#999 !important;}" +
+	/* map popup txt */		"DIV.iw #basics DIV, DIV.gmnoprint DIV DIV DIV B  {color:#000 !important;}" +
 	/* send panel container */	"DIV.sdb   {margin:5px; background-color:#000 !important; border:3px solid #f90 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* send panel inner */		"DIV.sdb DIV.c, DIV.sdb DIV.c DIV DIV   {border:0 !important; background-color:#000 !important; color:#999 !important;}" +
 	/* link to this page panel */	"DIV#le   {background-color:#000 !important; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* link to panel txt */		"DIV#le TABLE.letbl TBODY TR TD   {color:#999 !important;}" +
 	/* results area */		"DIV#hp DIV, DIV#hp TABLE TR TD, DIV#panel DIV DIV, DIV#panel DIV TABLE TBODY TR TD, DIV#page DIV, DIV#page TABLE TBODY TR TD   {color:#999 !important;}" +
+	/* sponsored linx */		"#panel DIV[class='ads topads noprint']   {display:none;}" +
 	/* highlight */			"FONT[color='red']   {color:#f00;}" +
 	/* map points */		"TABLE.ddwpt_table TD   {background-color:#333;}" +
 	/* search logo(s) */		"DIV.n DIV.imgn IMG   {display:none;}" +
@@ -229,10 +232,36 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* legal & navtech blocks */	"DIV.legal, DIV.cprt   {display:none;}" +
 
 
+// Code Enhancements
+	/* logo imgs */			"#logo IMG[src='/images/code_sm.png'], TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;'] IMG[src='/hosting/images/code_sm.png'], #logo IMG[src='http://code.google.com/images/code_sm.png']   {display:none;}" +
+	/* search button bg */		".gsc-search-box .gsc-search-button   {background-color:#000;}" +
+	/* search suggest */		".gsc-search-box .greytext   {background-color:#000; color:#999 !important;}" +
+	/* header bars */		"#gc-topnav, #gc-topnav H1, #header #title, TABLE.mainhdr, #issueheader, #issueheader TABLE TBODY TR TD, #makechanges DIV.h4   {padding-right:10px; background-color:#333; border:0 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#000 !important;}" +
+	/* page txt */			"#gc-home DIV, #codesiteContent DIV, #body, #body DIV, #body TABLE TBODY TR TD DIV, #maincol DIV, #maincol DIV TABLE TBODY TR TD, #maincol P, #maincol H4, #issuemeta, #issuemeta TD, TABLE.issuepage TBODY TR TD[class='vt issuedescription'], DIV.content DIV, DIV.content DIV DIV DIV H2, DIV.content DIV DIV TABLE TBODY TR TD   {color:#999 !important;}" +
+	/* section headers */		"DIV.g-unit H2, .g-c .column-title, #gc-toc UL.treelist LI H1, #gc-toc UL.treelist LI H2, #gc-pagecontent H1   {margin-top:10px; padding-top:2px; padding-left:4px; border:0; background-color:#333; -moz-border-radius-topleft:14px;-moz-border-radius-topright:14px;  color:#fff;}" +
+	/* labels tables */		".g-c .labels-table DIV   {background-color:#333;}" +
+	/* box bgs */			"#products-list, #preview-box   {border:0; background-color:#000;}" +
+	/* project tabs */		"TABLE#mt TBODY TR TH   {background:#333 none; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
+	/* project tab round bg */	"TABLE#mt TBODY TR TH DIV   {background-image:none !important;}" +
+	/* project details */		"#codesiteContent TABLE.columns TBODY TR TD   {background-color:#000; color:#999 !important;}" +
+	/* docs toc bg */		"#gc-toc UL.treelist LI UL LI   {background-color:inherit;}" +
+	/* docs sidebar bg */		"#maincol .pmeta_bubble_bg, .rounded_ul, .rounded_ur, .rounded_ll, .rounded_lr, DIV[style='background: rgb(221, 248, 204) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; margin-bottom: 5px; table-layout: fixed;'], .vt DIV.tip   {background:#333 none !important; border:0 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
+	/* docs code bg */		"PRE   {background-color:#ccc;}" +
+	/* downloads search bar */	"TABLE.st TBODY TR TD, TABLE.st TBODY TR TD DIV, TABLE.st TBODY TR TD DIV DIV SPAN   {background:#000 none !important; color:#999 !important;}" +
+	/* downloads results table */	".bubble_bg, TABLE#resultstable TBODY TR TH, TABLE#resultstable TBODY TR TD   {border-bottom-color:#333; border-left-color:#333; background:#000;}" +
+	/* org info block */		"#body TABLE TBODY TR TD DIV.extern_app   {background:#333 none; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
+	/* org info app list */		"#body DIV TABLE.applist   {background:#333 none; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
+	/* org info app details */	"#body DIV TABLE.applist TBODY TR TD   {color:#fff !important;}" +
+	/* org info app text */		"#body DIV TABLE.applist TBODY TR TD DIV.app_text   {padding:10px; background:#000 none; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff !important;}" +
+	/* alerts & messages */		"#codesiteContent P.note, #codesiteContent P.caution, #codesiteContent P.warning, #codesiteContent DIV.noticebox, #nowShowingDiv, DIV[class='bottom clearfix'] DIV.blog   {padding-top:4px; padding-bottom:5px; border:0; background:#333 none; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff;}" +
+	/* collapsible bg */		"#gc-collapsible   {border:2px solid #333; background:#333 none !important;}" +
+	/* footer bg */			"DIV#gc-footer   {background:#000 none;}" +
+
+
 // Gm-Script Google Search Sidebar Enhancements - http://userscripts.org/scripts/show/11888
 	/* sidebar width */		"#searchPlus   {width:26% !important; float:right !important;}" +
 	/* sidebar txt */		"#searchPlus DIV P, .luna-Ent td   {color:#fff !important;}" +
-	/* sidebar header */		"#searchPlus H1   {background-color:#333; border:0; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
+	/* sidebar header */		"#searchPlus H1   {background-color:#333; border:0; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; color:#fff;}" +
 	/* sidebar header link */	"#searchPlus H1 A   {color:#000 !important;}";
 
 

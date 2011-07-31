@@ -1,6 +1,6 @@
 // ==UserScript==
-	// @name		Google i&Search Dark + Enhancements
-	// @description		Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements
+	// @name		google Enhanced BLACK
+	// @description		This Google page-enhancer turns all Google service pages BLACK for reduced eye fatigue, removes ads & clutter and improves page layout and readability by widening results
 	// @version		1.9.1
 	// @date		2009-01-17
 	// @source		http://userscripts.org/scripts/show/12917
@@ -71,7 +71,7 @@ var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
 	// v1.8.8	Resolved iGoogle & Sign in linx layout between FF2 & FF3
 	// v1.8.9	Fixed iGoogle page layout & color scheme
 	// v1.9.0	Auto-update added: THANX Mindeye! Thanx to Margot&Psidre for inspiration to fix layout =)
-	// v1.9.1	Improved runtime to enhance Google first, then check for script-updates
+	// v1.9.1	Improved runtime to enhance Google first, then check for script-updates [&updatedName!]
 
 
 // To Do:

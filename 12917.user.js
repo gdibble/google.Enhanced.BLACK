@@ -2,7 +2,7 @@
 
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements
-	// @version		1.8.7
+	// @version		1.8.8
 	// @date		2008-09-25
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
@@ -21,7 +21,7 @@ var SCRIPT = {
 	description:	"Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements",
 	source:		"http://userscripts.org/scripts/show/12917",
 	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.8.7",
+	version:	"1.8.8",
 	date: (new Date( 2008,09,25 )).valueOf()
 };
 
@@ -71,6 +71,7 @@ var SCRIPT = {
 	// v1.8.5	Fixed visited linx; Updated Google Preferences & Support; Hid iGoogle CQ-modl ads
 	// v1.8.6	Added iGoogle & Sign in link to header-bar; Fixed News & Shopping logos; Updated sidebar
 	// v1.8.7	Improved added iGoogle & Sign in linx with conditional logic
+	// v1.8.8	Resolved iGoogle & Sign in linx layout between FF2 & FF3
 
 
 // To Do:
@@ -444,9 +445,10 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Modify Google Header Bar
-gHeaderBar = document.getElementById("gbar").getElementsByTagName('nobr')[0];
-gHeaderBar.style.position = "relative";
-gHeaderBar.style.left = "5em";
+gHeaderBarCntnr = document.getElementById("gbar");
+ gHeaderBar = gHeaderBarCntnr.getElementsByTagName('nobr')[0];
+  gHeaderBar.style.position = "relative";
+  gHeaderBar.style.left = "5em";
 iGheaderLink = document.createElement('a');
  iGheaderLink.innerHTML = "iGoogle";
  iGheaderLink.href = "/ig";
@@ -454,20 +456,21 @@ iGheaderLink = document.createElement('a');
  iGheaderLink.setAttribute('style', 'float:left; position:relative; top:-1.55em;');
   //adds iGoogle link to left-side
   gHeaderBar.insertBefore(iGheaderLink, parent.firstChild);
-gHdrUsrBar=document.getElementById("guser"); var addSignInLink = true;
-if ((!gHdrUsrBar) || (gHdrUsrBar && typeof gHdrUsrBar.getElementsByTagName('nobr')[0] == "undefined")) {
+gHdrUsrBarCntnr=document.getElementById("guser");
+ if (gHdrUsrBarCntnr) gHdrUsrBar=gHdrUsrBarCntnr.getElementsByTagName('nobr')[0];
+if ((!gHdrUsrBarCntnr) || (gHdrUsrBarCntnr && typeof gHdrUsrBar == "undefined")) {
 	signInLink = document.createElement('a');
 		 signInLink.innerHTML = "Sign in";
 	 signInLink.href = "https://www.google.com/accounts/ServiceLogin?continue=http://www.google.com/ig&followup=http://www.google.com/ig&service=ig&passive=true";
-	 signInLink.setAttribute('style', 'float:right; position:relative; top:-1.5em; font-family:Trebuchet MS,Verdna;');
+	 signInLink.setAttribute('style', 'position:absolute; top:4px; right:8px; font-family:Trebuchet MS,Verdna;');
 	  //adds Sign in link to right-side of Firefox start page (when signed out)
-	  gHeaderBar.appendChild(signInLink);
+	  gHeaderBarCntnr.appendChild(signInLink);
 }
-if (gHdrUsrBar && typeof gHdrUsrBar.getElementsByTagName('nobr')[0] == "object" && gHdrUsrBar.getElementsByTagName('nobr')[0].hasChildNodes()) for (iA=0; iA<gHdrUsrBar.getElementsByTagName('nobr')[0].getElementsByTagName('a').length; iA++) if (gHdrUsrBar.getElementsByTagName('nobr')[0].getElementsByTagName('a')[iA].innerHTML == "iGoogle") {
+if (gHdrUsrBarCntnr && typeof gHdrUsrBar == "object" && gHdrUsrBar.hasChildNodes()) for (iA=0; iA<gHdrUsrBar.getElementsByTagName('a').length; iA++) if (gHdrUsrBar.getElementsByTagName('a')[iA].innerHTML == "iGoogle") {
 	//removes iGoogle link from right-side (when signed in)
-	gHdrUsrBar.getElementsByTagName('nobr')[0].getElementsByTagName('a')[iA].style.display = "none";
-	//shift Account name over (when signed in)
-	gHdrUsrBar.getElementsByTagName('nobr')[0].firstChild.setAttribute('style', 'position:relative; left:0.8em;');
+	gHdrUsrBar.getElementsByTagName('a')[iA].style.display = "none";
+	//if exists, shift Account name over (when signed in)
+	if (gHdrUsrBar.getElementsByTagName('b')[0]) gHdrUsrBar.getElementsByTagName('b')[0].setAttribute('style', 'position:relative; left:0.8em;');
 }
 
 

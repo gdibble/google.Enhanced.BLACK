@@ -2,8 +2,8 @@
 
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Dark, plus Enhancements
-	// @version		1.7.3
-	// @date		2007-11-15
+	// @version		1.7.4
+	// @date		2008-03-15
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 
@@ -21,8 +21,8 @@ var SCRIPT = {
 	description:	"Make Google Search & iGoogle Hompage Dark, plus Enhancements",
 	source:		"http://userscripts.org/scripts/show/12917",
 	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.7.3",
-	date: (new Date( 2007,11,15 )).valueOf()
+	version:	"1.7.4",
+	date: (new Date( 2008,03,15 )).valueOf()
 };
 
 
@@ -59,6 +59,7 @@ var SCRIPT = {
 	// Version 1.7.1	Updated txt-field color; Updated Maps highlight colors & Print-page layout
 	// Version 1.7.2	Fixed iGoogle modules: Gmail linx & txt, YouTube bg; Excluded /custom
 	// Version 1.7.3	Fixed iGoogle add tab dialog & new tab txt, Add Stuff menu headers & added msg
+	// Version 1.7.4	Fixed Google Search Result descriptive txt, Image Labeler bg, News Results txt
 
 
 // To Do:
@@ -78,7 +79,7 @@ var SCRIPT = {
 	// Add User Script Command to turn On/Off 3.14 Hack
 
 
-	// Feel free to leave suggestions/criticism on the UserScript Page or via email (see above); THANX
+	// Feel free to leave suggestions/criticism on the UserScript Page or via email (see above); THANX!
 
 
 
@@ -110,6 +111,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // iGoogle Homepage Enhancements
+	/* header bg */			"#guser   {background:#000;}" +
 	/* search btn spacing */	".gseain INPUT[type='submit'], INPUT[name='btnG'], INPUT[name='btnI']   {margin-top:5px; margin-right:30px; margin-left:30px;}" +
 	/* go btns hover */		"INPUT#btnI:hover, INPUT[name='btnI']:hover, INPUT[value='Save']:hover, SPAN#button_0 BUTTON:hover, INPUT#stxemailsend:hover, INPUT[value='Submit Issue']:hover, INPUT[value='Download']:hover, INPUT[value='Add it now']:hover   {background-color:#090; color:#fff;}" +
 	/* setup block */		"DIV.setup_div   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
@@ -161,14 +163,14 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* remove sponsored linx */	"DIV#tads   {display:none;}" +
 	/* refine results txt */	"TABLE#po TBODY TR TD   {color:#999 !important;}" +
 	/* sponsored linx */		"DIV#res DIV.ta   {display:none;}" +
-	/* result-area txt */		"DIV#res P, DIV#res .j   {color:#999 !important;}" +
+	/* result-area txt */		"DIV#res P, DIV#res .j, DIV.sml   {color:#999 !important;}" +
 	/* description width */		"TD.j   {width:100% !important;}" +
 	/* description color */		"FONT   {color:#999;}" +
 	/* result spacing */		".g   {margin:2em 0pt;}" +
 	/* bottom related txt */	".r   {color:#aaa;}" +
 	/* nav bar */			"#navbar   {position:relative; left:33%; width:400px;}" +
 	/* footer logo(s) */		"#navbar DIV,#navbar IMG   {height:0px; background:none;}" +
-	/* footer bg */			"CENTER TABLE[class='ft t bb bt'] TD[align='center']   {background-color:#000 !important;}" +
+	/* footer bg */			"TABLE[class='ft t bb bt']   {background-color:#000 !important;}" +
 
 
 // Custom Seach iFrame-edition
@@ -180,6 +182,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* sizes alert */		"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255, 255, 153);']   {padding:5px !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* sizes alert txt */		"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255, 255, 153);'] FONT   {color:#333;}" +
 	/* sizes alert highlight */	"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255, 255, 153);'] FONT B   {color:#000 !important;}" +
+	/* g.image labeler */		"CENTER TABLE[cellpadding='10'][style='text-align: center;'] TBODY TR TD   {background-color:#000;}" +
 
 
 // Video Results Enhancements
@@ -217,6 +220,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* search header barL */	"TABLE TBODY TR TD[width='60%']   {background-color:#333; border:0; -moz-border-radius-topleft:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* search header barL txt*/	"TABLE TBODY TR TD[width='60%'] FONT   {color:#000;}" +
 	/* search header barR */	"TABLE TBODY TR TD[width='40%']   {background-color:#333; border:0; -moz-border-radius-topright:14px; -moz-border-radius-bottomright:14px;}" +
+	/* results txt */		"TABLE TBODY TR TD DIV[style='margin: 60px 22px;']   {color:#999 !important;}" +
 	/* result spacing */		"DIV.mainbody TABLE TBODY TR TD[align='left'] TABLE[cellspacing='7'][cellpadding='2']   {margin:0.5em 0pt;}" +
 	/* personalize header */	"#cust_link_tbl {background-color:#333; border:0 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
 

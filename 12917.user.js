@@ -1,29 +1,26 @@
 // ==UserScript==
-
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements
-	// @version		1.8.9
-	// @date		2008-11-20
+	// @version		1.9.0
+	// @date		2009-01-15
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
-
 	// @author		gabedibble <gdibble@gmail.com>
 	// @namespace		http://userscripts.org/people/24894
-
 	// @include		http://*.google.*/*
-
 	// @exclude		http://*.google.*/custom*
-
 // ==/UserScript==
-var SCRIPT = {
-	name:		"Google i&Search Dark + Enhancements",
-	namespace:	"http://userscripts.org/people/24894",
-	description:	"Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements",
-	source:		"http://userscripts.org/scripts/show/12917",
-	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.8.9",
-	date: (new Date( 2008,11,20 )).valueOf()
-};
+
+
+var scriptVersion = 1232049725078;   //alert(Date.now());
+
+var scriptLastCheck = parseInt(GM_getValue("scriptLastCheck", "0"), 10);
+	if (isNaN(scriptLastCheck)) scriptLastCheck = 0;
+var scriptLastRemoteVersion = parseInt(GM_getValue("scriptLastRemoteVersion", scriptVersion.toString()), 10);
+	if (isNaN(scriptLastRemoteVersion)) scriptLastRemoteVersion = scriptVersion;
+var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
+	var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
+
 
 
 // Change Log:
@@ -73,6 +70,7 @@ var SCRIPT = {
 	// v1.8.7	Improved added iGoogle & Sign in linx with conditional logic
 	// v1.8.8	Resolved iGoogle & Sign in linx layout between FF2 & FF3
 	// v1.8.9	Fixed iGoogle page layout & color scheme
+	// v1.9.0	Auto-update added: THANX Mindeye! Thanx to Margot&Psidre for inspiration to fix layout =)
 
 
 // To Do:
@@ -117,7 +115,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* google bar txt */		"#gbar DIV.gb1   {background-color:#c9d7f1 !important;}" +
 	/* google bar txt */		"#gbar DIV.gb2   {padding-top:0; padding-bottom:0; background-color:#c9d7f1 !important;}" +
 	/* google bar linx */		"#gbar A.gb1, #gbar B.gb1, #gbar A.gb3   {position:relative; bottom:0.2em; font-weight:bold; font-size:1.15em;}" +
-	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, #wrapper #header, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top'], #gc-header #logo, #header #logo, TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;'], TABLE[align='center'] TBODY TR TD[width='155'][rowspan='2'], TABLE[align='center'] TBODY TR[valign='middle'] TD[width='135'], BODY[bgcolor='#ffffff'][topmargin='3'] CENTER TABLE[width='725'] TBODY TR TD TABLE[cellspacing='1'] TBODY TR TD[height='1'][bgcolor='#666666'], BODY > TABLE[width='100%'][style='direction: ltr;'] > TBODY > TR > TD, BODY > TABLE[width='100%'] > TBODY > TR > TD[width='100%'][style='padding-left: 15px;'], BODY.siteowners > TABLE[width='96%'] > TBODY > TR > TD[width='1%'], BODY > CENTER > DIV > TABLE[width='739'] > TBODY > TR > TD[width='100%'], BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD[width='1%'], TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='1%'][valign='top'], BODY.search > TABLE[width='95%'] > TBODY > tr[valign='top'] > TD[width='1%'], BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'], BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='2'] > TBODY > TR > TD[width='1%'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD > DIV[style='margin: 5px 0pt 4px 4px; background: transparent url(/images/firefox/sprite.png) no-repeat scroll 0pt -95px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 23px; width: 80px;'], A#logo, A#glogo, BODY.answer_page TABLE.header_table > TBODY > TR > TD.header_logo_td, CENTER > H1#ps-logo   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}" +
+	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, #wrapper #header, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top'], #gc-header #logo, #header #logo, TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;'], TABLE[align='center'] TBODY TR TD[width='155'][rowspan='2'], TABLE[align='center'] TBODY TR[valign='middle'] TD[width='135'], BODY[bgcolor='#ffffff'][topmargin='3'] CENTER TABLE[width='725'] TBODY TR TD TABLE[cellspacing='1'] TBODY TR TD[height='1'][bgcolor='#666666'], BODY > TABLE[width='100%'][style='direction: ltr;'] > TBODY > TR > TD, BODY > TABLE[width='100%'] > TBODY > TR > TD[width='100%'][style='padding-left: 15px;'], BODY.siteowners > TABLE[width='96%'] > TBODY > TR > TD[width='1%'], BODY > CENTER > DIV > TABLE[width='739'] > TBODY > TR > TD[width='100%'], BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD[width='1%'], TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='1%'][valign='top'], BODY.search > TABLE[width='95%'] > TBODY > tr[valign='top'] > TD[width='1%'], BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'], BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='2'] > TBODY > TR > TD[width='1%'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD > DIV[style='margin: 5px 0pt 4px 4px; background: transparent url(/images/firefox/sprite.png) no-repeat scroll 0pt -95px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 23px; width: 80px;'], A#logo, A#glogo, BODY.answer_page TABLE.header_table > TBODY > TR > TD.header_logo_td, CENTER > H1#ps-logo, TABLE#sft > TBODY > TR[valign='top'] > TD[style='pading-right: 8px;'] > H1 > A#logo   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}" +
 	/* search input */		"INPUT[type='text'], INPUT[name='q']   {background:#333 none !important; color:#fff; padding:2px; border:solid 1px #ccc; font-weight:bold; color:#ff0 !important;}" +
 	/* submit btns */		"INPUT[type='submit'], INPUT[value='Cancel'], INPUT[value='Save'], BUTTON, INPUT#stxemailsend, INPUT[value='Discard'], BUTTON[type='submit'], INPUT[value='Download']   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff !important; cursor:pointer;}" +
 	/* submit btn hover */		"INPUT[type='submit']:hover, BUTTON[type='submit']:hover   {background-color:#36f; color:#fff;}" +
@@ -200,7 +198,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Google Search Results Page Enhancements
-	/* search within logo */	"TABLE[width='100%'] > TBODY > TR > TD[valign='top'] > A > IMG[width='200'][height='78'][alt='Google'], A#logo IMG[src='/images/experimental_sm.gif'], A#logo > IMG[width='150'][height='105']   {display:none;}" +
+	/* search within logo */	"TABLE[width='100%'] > TBODY > TR > TD[valign='top'] > A > IMG[width='200'][height='78'][alt='Google'], A#logo IMG[src='/images/experimental_sm.gif'], A#logo > IMG[width='150'][height='105'], A#logo > IMG[src='/images/nav_logo4.png']   {display:none;}" +
 	/* search within txt */		"TABLE[width='100%'] > TBODY > TR > TD[valign='top'] > CENTER > FONT > b   {position:relative; top:68px;}" +
 	/* search header bar */		"TABLE[class='t bt'], DIV#ssb   {background-color:#333; border:0; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* header bar experiment dd */	"DIV.std SPAN[style='background: rgb(255, 255, 255) none repeat scroll 0% 0%; float: right; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; position: relative;']   {background-color:#000 !important;}" +
@@ -216,8 +214,8 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* bottom related txt */	".r   {color:#aaa;}" +
 	/* bottom related selection */	"TABLE#brs.ts > TBODY > TR > TD > A > B   {color:#aaa !important;}" +
 	/* nav bar */			"#navbar   {position:relative; left:33%; width:400px;}" +
-	/* footer logo(s) */		"#navbar DIV,#navbar IMG, TABLE#nav SPAN#nf, TABLE#nav SPAN#nc, TABLE#nav SPAN.nr, TABLE#nav SPAN#nn, DIV#np   {height:0px; background:none;}" +
-	/* footer bg */			"TABLE[class='ft t bb bt']   {background-color:#000 !important;}" +
+	/* footer logo(s) */		"#navbar DIV,#navbar IMG, TABLE#nav SPAN#nf, TABLE#nav SPAN#nc, TABLE#nav SPAN.nr, TABLE#nav SPAN#nn, DIV#np, TABLE#nav > TBODY > TR[valign='top'] > TD.b > SPAN, TABLE#nav > TBODY > TR[valign='top'] > TD.cur > SPAN, TABLE#nav > TBODY > TR[valign='top'] > TD > A > SPAN.csb   {height:0px; background:none;}" +
+	/* footer bg */			"TABLE[class='ft t bb bt'], DIV.clr > DIV#bsf   {background-color:#000 !important; border-top:0 none; border-bottom:0 none;}" +
 
 	// Advanced Search
 		/* header bar line */	"BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='2'] > TBODY > TR > TD > TABLE[width='100%'][style='border-top: 1px solid rgb(51, 102, 204);']   {border-top:0 none !important;}" +
@@ -347,13 +345,15 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* logo img */			"A#glogo > IMG[width='150'][height='105'], CENTER > H1#ps-logo > IMG   {display:none;}" +
 	/* header bar */		"TABLE[cellspacing='0'][cellpadding='0'][style='border-top: 1px solid rgb(68, 120, 212); background: rgb(234, 239, 250) none repeat scroll 0% 0%; width: 100%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;'], TABLE#ps-titlebar   {padding:0 0.3em 0.1em 0.3em; background-color:#333 !important; border:0 none !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* sponsored linx */		"DIV[style='padding-top: 11px;'] > DIV[style='font-size: small; background-color: rgb(255, 249, 221);'], BODY[vlink='#551a8b'][text='#000000'][marginheight='3'][link='#0000cc'][alink='#ff0000'][topmargin='3'] > TABLE[cellspacing='0'][cellpadding='0'][border='0'][bgcolor='#ffffff'][align='right'][style='']   {display:none;}" +
-	/* search txt */		"TABLE.list FORM, TABLE.list SPAN.prod-detail   {color:#ccc;}" +
+	/* search txt */		"TABLE.list FORM, TABLE.list SPAN.prod-detail, TABLE.list > TBODY > TR > TD.ol NOBR, TABLE.list > TBODY > TR > TD.ol SPAN   {color:#ccc;}" +
 	/* vertical ads */		"TABLE#ps-vertical-ads   {display:none;}" +
 	/* footer search refinement */	"DIV.main-top > DIV#attr-div > TABLE.attr-table, DIV.main-top > DIV#attr-div > TABLE.attr-table LI   {color:#ccc;}" +
 	/* footer logo(s) */		"TABLE DIV#nf, TABLE DIV#nc, TABLE DIV.nr, TABLE DIV#nn   {height:0px; background:none;}" +
 	/* footer disclaimer */		"TABLE[width='65%'][align='center'] > TBODY > TR > TD[align='center'] > SPAN.disclaimer   {display:none;}" +
 	/* footer search */		"BODY > TABLE[cellspacing='0'][cellpadding='3'][style='border-top: 1px solid rgb(68, 120, 212); border-bottom: 1px solid rgb(68, 120, 212); background: rgb(234, 239, 250) none repeat scroll 0% 0%; width: 100%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;'], BODY > TABLE#ps-footer   {background-color:#000 !important; border:0 none !important;}" +
 	/* footer txt */		"BODY > TABLE[cellspacing='0'][cellpadding='3'][style='border-top: 1px solid rgb(68, 120, 212); border-bottom: 1px solid rgb(68, 120, 212); background: rgb(234, 239, 250) none repeat scroll 0% 0%; width: 100%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;'] > TBODY > TR > TD[align='center'] > FONT[size='-1'], BODY[vlink='#551a8b'][text='#000000'][marginheight='3'][link='#0000cc'][alink='#ff0000'][topmargin='3'] > CENTER > FONT[size='-1'], BODY > TABLE#ps-footer > TBODY > TR > TD[align='center'] > FONT[size='-1']   {display:none;}" +
+	/* footer bg */			"BODY > DIV#ps-footer > DIV#ps-footer-bg   {background-color:#000 !important;}" +
+	/* footer disclaimer */		"BODY > DIV#ps-footer > P.ps-disclaimer   {color:#777;}" +
 
 
 // Code Enhancements
@@ -457,8 +457,11 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* sidebar width */		"#searchPlus   {width:26% !important; float:right !important;}" +
 	/* sidebar txt */		"#searchPlus DIV P, .luna-Ent td   {color:#fff !important;}" +
 	/* sidebar header */		"#searchPlus H1   {background-color:#333 !important; border:0 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; color:#fff;}" +
-	/* sidebar header link */	"#searchPlus H1 A   {color:#000 !important;}";
+	/* sidebar header link */	"#searchPlus H1 A   {color:#000 !important;}" +
 
+
+// Script Update Message Box
+	/* layout */			"#gsscriptVersionMessage   {position:fixed; top:0px; right:0px; width:22em; height:7.2em; z-index:99; overflow:auto; padding:5px; background-color:#C00040; outline:#fff solid 1px; font-family:verdana; font-weight:bold; font-size:0.9em; color:#fff !important; text-align:center;}";
 
 
 
@@ -540,10 +543,109 @@ else {
 	"O/PvoDPdKr/IZcwypfabhzGuIa36ENApedn4DxC1GYoUHgjne5dlIbFwaieyWO36lqeGCKp81aavE7hR+mPw57lX4YrhmX6QgVEtzXXB4+hv6v8A/9k%3D";
 
 
-// User Script Updates - http://userscripts.org/scripts/show/2296
-function updateCheck() {try {(unsafeWindow || window.wrappedJSObject || window).UserScriptUpdates.requestAutomaticUpdates(SCRIPT);} catch (ex) {};};
+
+// Shortcut to document.getElementById
+function $(id) {return document.getElementById(id);}
+
+// Creates a new node with the given attributes and properties (be careful with XPCNativeWrapper limitations)
+function createNode(type, attributes, props) {
+	var node = document.createElement(type);
+	if (attributes) {
+		for (var attr in attributes) {
+			node.setAttribute(attr, attributes[attr]);
+		}
+	}
+	if (props) {
+		for (var prop in props) {
+			if (prop in node) node[prop] = props[prop];
+		}
+	}
+	return node;
+}
+
+// Shortcut to sessionStorage (saved values will be discarded at the end of the browser session)
+var sSt = unsafeWindow.sessionStorage;
+
+// Shows/hides an update notice to the user (according to the boolean parameter scriptShowMessage)
+// The scriptNewVersion parameters is used to display the new version number/date in Date.prototype.getTime() format
+function scriptShowUpdateMessage(scriptShowMessage, scriptNewVersion) {
+	// Gets the notice box and the script new version date in UTC format
+	var messageDiv = $("gsscriptVersionMessage");
+	var scriptNewVersionDate = (new Date(scriptNewVersion)).toUTCString();
+
+	// Shows/creates/hides the update notice
+	if (scriptShowMessage == false) {
+		// Hides the notice if it exists
+		if (messageDiv) messageDiv.style.display = "none";
+	}
+	else {
+		// The notice shouldn't be shown/created if the user has chosen to hide it for this session
+		if (sSt.gsscriptVersionNoticeHide) return;
+
+		if (messageDiv) {
+			// Shows the notice
+			messageDiv.style.display = "";
+		}
+		else {
+			// Creates the notice
+			messageDiv = createNode("div", {id: "gsscriptVersionMessage", title: "A new Google i&Search Dark + Enhancements version is available!"});
+			messageDiv.innerHTML = "A new version of Google i&Search Dark + Enhancements is available<br />" +
+				"<span style='font-weight:normal; font-size:0.8em;'>Updated: " + scriptNewVersionDate + "</span><br /><br />" +
+				"<a style='color:#fcc !important; font-size:1em;' href='" + scriptFileURL + "' title='Install the script update'>INSTALL NOW</a>" +
+				" &nbsp;&middot;&nbsp; " +
+				"<a style='color:#f99 !important;' href='" + scriptHomepageURL + "' target='_blank' title='Go to Google i&Search Dark + Enhancements homepage in a new tab'>Go to web page</a>" +
+				" &nbsp;&middot;&nbsp; " +
+				"<a style='color:#fcc !important;' id='gsscriptVersionMessageHide' href='javascript:void(null)' title='Hide the notice for this session'>Hide</a>";
+			document.body.appendChild(messageDiv);
+			// Adds an event listener to the hide notice link
+			$("gsscriptVersionMessageHide").addEventListener("click", function(evt) {
+				sSt.gsscriptVersionNoticeHide = "1"; // Sets a sessionStorage variable to prevent the notice to be shown for this session
+				scriptShowUpdateMessage(false, null);
+			}, false);
+		}
+	}
+}
+// Checks if there is a new script version according to the version information in the script homepage
+// The version information is in a line in the full description of the script: "<p>#[V:00000000]#</p>" (00000000 is the version number)
+// If the request is successful and there is a new version available, a message to the user is displayed
+function scriptCheckVersion() {
+	GM_xmlhttpRequest({
+		method: "GET",
+		url: scriptHomepageURL,
+		onload: function(evt) {
+			if ((evt.readyState == 4) && (evt.status == 200)) {
+
+				// Gets the remote version from the response and makes sure it is a number
+				var responseMatch = evt.responseText.match(/<p>#\[V:(\d+)]#<\/p>/);
+				var remoteVersion = (responseMatch === null) ? NaN : parseInt(responseMatch[1], 10);
+				if (isNaN(remoteVersion)) return;
+
+				// Saves the more recent version according to the server and shows the update notice if the server version is newer
+				GM_setValue("scriptLastRemoteVersion", remoteVersion.toString());
+				if (remoteVersion > scriptVersion) scriptShowUpdateMessage(true, remoteVersion);
+
+			}
+		}
+	});
+}
+
 
 
 // RUN!!!
 enhanceGoogle();
-updateCheck();
+
+
+
+// Checks for script updates
+if (Date.now() - scriptLastCheck >= 1) {   // 86400000 == 1 day
+	// At least a day has passed since the last check. Sends a request to check for a new script version
+	GM_setValue("scriptLastCheck", Date.now().toString());
+	scriptCheckVersion();
+}
+else {
+	// If a new version was previously detected the notice will be shown to the user
+	// This is to prevent that the notice will only be shown once a day (when an update check is scheduled)
+	if (scriptLastRemoteVersion > scriptVersion) {
+		scriptShowUpdateMessage(true, scriptLastRemoteVersion);
+	}
+}

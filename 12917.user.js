@@ -2,7 +2,7 @@
 
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Dark, plus Enhancements
-	// @version		1.5.1
+	// @version		1.5.2
 	// @date		2007-10-31
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
@@ -19,7 +19,7 @@ var SCRIPT = {
 	description:	"Make Google Search & iGoogle Hompage Dark, plus Enhancements",
 	source:		"http://userscripts.org/scripts/show/12917",
 	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.5.1",
+	version:	"1.5.2",
 	date: (new Date( 2007,10,31 )).valueOf()
 };
 
@@ -48,6 +48,7 @@ var SCRIPT = {
 	// Version 1.4.3	Moved black Google logo into script-code (only 3.8k)
 	// Version 1.5.0	Major Code Optimization & a few minor bg fixes
 	// Version 1.5.1	Refixed iGoogle Add Stuff (old disabled); Fixed more linx; Images size alert
+	// Version 1.5.2	Fixed iGoogle Make your own gadget pages, Add Stuff search results
 
 
 // To Do:
@@ -77,7 +78,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* inner txt color */		"DIV, TD   {color:#000 !important;}" +
 	/* bold txt color */		"B   {color:#fff !important;}" +
 	/* google bar txt */		"DIV#gbar SPAN   {color:#999;}" +
-	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, #wrapper #header   {width:150px; height:55px; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important;}" +
+	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, #wrapper #header, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top']   {width:150px; height:55px; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important;}" +
 	/* search input */		"INPUT[type=text], INPUT[name='q']   {background-color:#333; color:#fff; padding:2px; border:solid 1px #ccc; font-weight:bold; color:#ff0;}" +
 	/* submit btns */		"INPUT[type=submit], INPUT[value='Cancel'], INPUT[value='Save'], BUTTON, INPUT#stxemailsend   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff; cursor:pointer;}" +
 	/* submit btn hover */		"INPUT[type=submit]:hover   {background-color:#36f; color:#fff;}" +
@@ -85,7 +86,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* more pop layer */		"SPAN#more, #gbar .gb2   {background-color:#333 !important; border-right:solid 1px #a2bae7; border-bottom:solid 1px #a2bae7; color:#333 !important;}" +
 	/* google alerts txt */		"P[style='margin-left: 9px;'], SPAN[style='font-size: medium;']   {color:#999;}" +
 	/* mainbody txt */		"DIV.mainbody, TD.j, DIV.empty, DIV.empty DIV   {color:#999 !important;}" +
-	/* remove footers */		"#footer, #footer_promos, #footerwrap, P FONT[size='-2'], TABLE[class='t n bt'][width='100%'][cellpadding='2'], DIV[align='center'][style='white-space: nowrap;'], FONT[class='p'][size='-1'], FONT[size='-1'][color='#6f6f6f'], DIV.div-copyright   {display:none;}" +
+	/* remove footers */		"#footer, #footer_promos, #footerwrap, P FONT[size='-2'], TABLE[class='t n bt'][width='100%'][cellpadding='2'], DIV[align='center'][style='white-space: nowrap;'], FONT[class='p'][size='-1'], FONT[size='-1'][color='#6f6f6f'], DIV.div-copyright, SPAN.copyr   {display:none;}" +
 
 	// Preferences
 		/* pre title line */	"TABLE TBODY TR TD[bgcolor='#3366cc']   {display:none;}" +
@@ -121,7 +122,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	// Add Stuff
 		/* header */		"#wrapper #header   {width:inherit;}" +
 		/* header box */	"#wrapper #header .header_title   {background-color:#333; border:0 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#000 !important;}" +
-		/* gadget txt */	"#wrapper #container #gadget-info TABLE TBODY TR TD, #wrapper #container #comments DIV   {color:#999 !important;}" +
+		/* gadget txt */	"#wrapper #container #gadget-info TABLE TBODY TR TD, #wrapper #container #comments DIV, #wrapper #container #pagehead, #wrapper #container #search_main DIV, #wrapper #container UL#nav, #wrapper #container DIV#main DIV   {color:#999 !important;}" +
 		/* screenshot border */	"#wrapper #container #gadget-info TABLE TBODY TR TD.screenshot-box IMG   {border:0;}" +
 		/* sidebar item head */	"#wrapper #sidebar DIV.module H3   {background:#333; padding-bottom:5px; border:0; -moz-border-radius-topleft:14px; -moz-border-radius-topright:14px; color:#000;}" +
 		/* sidebar item */	"#wrapper #sidebar DIV.module   {background:#000; padding-bottom:20px; border:0; moz-border-radius-bottomleft:14px; -moz-border-radius-bottomright:14px; color:#999 !important;}" +
@@ -133,6 +134,9 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		///* module info txt */	"TABLE[cellpadding='6'][align='left'][valign='top'] TD[width='600'] DIV   {color:#fff !important;}" +
 		///* module preview */	"TD[valign='top'][style='border: 1px solid rgb(187, 204, 237); padding: 6px; font-size: 82%;']   {border:0 !important;}" +
 		///* module info */	"TABLE[cellpadding='6'][align='left'][valign='top'] TD[width='600']   {background-color:#000;}" +
+		/* makeyourown logo */	"IMG[src='http://img2.gmodules.com/ig/images/igoogle_logo_sm.gif']   {display:none;}" +
+		/* makeyourown head */	"TABLE TBODY TR TD DIV#bluebar   {background-color:#333; border:0 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
+		/* makeyourown txt */	"CENTER DIV#gm_choices DIV, CENTER DIV#gm_choices TABLE TBODY TR TD, CENTER DIV#gm_wizard DIV.gm_intro DIV, CENTER DIV#gm_wizard TABLE TBODY TR TD, CENTER DIV#gm_wizard TABLE TBODY TR TD DIV   {color:#999 !important;}" +
 
 
 // Google Search Results Page Enhancements

@@ -2,8 +2,8 @@
 
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements
-	// @version		1.8.6
-	// @date		2008-09-24
+	// @version		1.8.7
+	// @date		2008-09-25
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 
@@ -21,8 +21,8 @@ var SCRIPT = {
 	description:	"Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements",
 	source:		"http://userscripts.org/scripts/show/12917",
 	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.8.6",
-	date: (new Date( 2008,09,24 )).valueOf()
+	version:	"1.8.7",
+	date: (new Date( 2008,09,25 )).valueOf()
 };
 
 
@@ -70,6 +70,7 @@ var SCRIPT = {
 	// v1.8.4	Enhanced News quote box; Updated Search paging & Shopping txt color
 	// v1.8.5	Fixed visited linx; Updated Google Preferences & Support; Hid iGoogle CQ-modl ads
 	// v1.8.6	Added iGoogle & Sign in link to header-bar; Fixed News & Shopping logos; Updated sidebar
+	// v1.8.7	Improved added iGoogle & Sign in linx with conditional logic
 
 
 // To Do:
@@ -133,7 +134,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // iGoogle Homepage Enhancements
-	/* header bg */			"#guser, #gbar, #gbar *   {background:#000; font-family:Trebuchet MS, Verdna !important;}" +
+	/* header */			"#guser, #guser *, #gbar, #gbar *   {background:#000; font-family:Trebuchet MS, Verdna !important;}" +
 	/* search btn spacing */	".gseain INPUT[type='submit'], INPUT[name='btnG'], INPUT[name='btnI']   {margin-top:5px; margin-right:30px; margin-left:30px;}" +
 	/* go btns hover */		"INPUT#btnI:hover, INPUT[name='btnI']:hover, INPUT[value='Save']:hover, SPAN#button_0 BUTTON:hover, INPUT#stxemailsend:hover, INPUT[value='Submit Issue']:hover, INPUT[value='Download']:hover, INPUT[value='Add it now']:hover, INPUT[value='Add it now'], INPUT[value='Save Preferences']:hover, INPUT[value='Save Preferences ']:hover   {background-color:#090; color:#fff;}" +
 	/* setup block */		"DIV.setup_div   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
@@ -451,20 +452,30 @@ iGheaderLink = document.createElement('a');
  iGheaderLink.href = "/ig";
  iGheaderLink.className = "gb1";
  iGheaderLink.setAttribute('style', 'float:left; position:relative; top:-1.55em;');
+  //adds iGoogle link to left-side
   gHeaderBar.insertBefore(iGheaderLink, parent.firstChild);
 gHdrUsrBar=document.getElementById("guser"); var addSignInLink = true;
-if (gHdrUsrBar && gHdrUsrBar.hasChildNodes() && typeof gHdrUsrBar.getElementsByTagName('nobr')[0] == "undefined") {
+if ((!gHdrUsrBar) || (gHdrUsrBar && typeof gHdrUsrBar.getElementsByTagName('nobr')[0] == "undefined")) {
 	signInLink = document.createElement('a');
-	signInLink.innerHTML = "Sign in";
-	signInLink.href = "https://www.google.com/accounts/ServiceLogin?continue=http://www.google.com/ig&followup=http://www.google.com/ig&service=ig&passive=true";
-	signInLink.setAttribute('style', 'float:right; position:relative; top:-1.35em; padding-right:2px; font-family:Trebuchet MS,Verdna;');
-	 gHdrUsrBar.appendChild(signInLink);
+		 signInLink.innerHTML = "Sign in";
+	 signInLink.href = "https://www.google.com/accounts/ServiceLogin?continue=http://www.google.com/ig&followup=http://www.google.com/ig&service=ig&passive=true";
+	 signInLink.setAttribute('style', 'float:right; position:relative; top:-1.5em; font-family:Trebuchet MS,Verdna;');
+	  //adds Sign in link to right-side of Firefox start page (when signed out)
+	  gHeaderBar.appendChild(signInLink);
 }
+if (gHdrUsrBar && typeof gHdrUsrBar.getElementsByTagName('nobr')[0] == "object" && gHdrUsrBar.getElementsByTagName('nobr')[0].hasChildNodes()) for (iA=0; iA<gHdrUsrBar.getElementsByTagName('nobr')[0].getElementsByTagName('a').length; iA++) if (gHdrUsrBar.getElementsByTagName('nobr')[0].getElementsByTagName('a')[iA].innerHTML == "iGoogle") {
+	//removes iGoogle link from right-side (when signed in)
+	gHdrUsrBar.getElementsByTagName('nobr')[0].getElementsByTagName('a')[iA].style.display = "none";
+	//shift Account name over (when signed in)
+	gHdrUsrBar.getElementsByTagName('nobr')[0].firstChild.setAttribute('style', 'position:relative; left:0.8em;');
+}
+
 
 
 // Remove Right-side Ads
 iframe = document.getElementsByTagName("iframe");
-for(var iii=0; iii<iframe.length; iii++){if(iframe[iii].src.indexOf("pagead2.googlesyndication.com/pagead/ads") != -1){iframe[iii].height = 0; iframe[iii].width = 0;};};
+for(var iB=0; iB<iframe.length; iB++){if(iframe[iB].src.indexOf("pagead2.googlesyndication.com/pagead/ads") != -1){iframe[iB].height = 0; iframe[iB].width = 0;};};
+
 
 
 // Add Style

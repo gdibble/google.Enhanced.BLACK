@@ -1,8 +1,8 @@
 // ==UserScript==
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Black/Dark, plus Enhancements
-	// @version		1.9.0
-	// @date		2009-01-15
+	// @version		1.9.1
+	// @date		2009-01-17
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		gabedibble <gdibble@gmail.com>
@@ -12,7 +12,7 @@
 // ==/UserScript==
 
 
-var scriptVersion = 1232049725078;   //alert(Date.now());
+var scriptVersion = 1232209058113;   //alert(Date.now());
 
 var scriptLastCheck = parseInt(GM_getValue("scriptLastCheck", "0"), 10);
 	if (isNaN(scriptLastCheck)) scriptLastCheck = 0;
@@ -71,6 +71,7 @@ var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
 	// v1.8.8	Resolved iGoogle & Sign in linx layout between FF2 & FF3
 	// v1.8.9	Fixed iGoogle page layout & color scheme
 	// v1.9.0	Auto-update added: THANX Mindeye! Thanx to Margot&Psidre for inspiration to fix layout =)
+	// v1.9.1	Improved runtime to enhance Google first, then check for script-updates
 
 
 // To Do:
@@ -515,6 +516,9 @@ else {
 	};
 };
 
+//After all else, check for updates
+scriptUpdateCheck();
+
 }; var googleLogoBLACK = "data:image/jpeg;base64,"+
 	"/9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja3kAAQAEAAAAMwAA/+4AIUFkb2JlAGTAAAAAAQMAEAMDBgkAAAUhAAAHlQAACrz/2wCEAAgFBQUGBQgGBggLBwYHCw0KCAgKDQ8MDA0MDA8RDA0N" +
 	"DQ0MEQ8REhMSEQ8XFxkZFxciISEhIiYmJiYmJiYmJiYBCAkJEA4QHRQUHSAaFRogJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJv/CABEIAEEAlgMBEQAC" +
@@ -628,24 +632,22 @@ function scriptCheckVersion() {
 		}
 	});
 }
-
+// Checks for script updates
+function scriptUpdateCheck() {
+	if (Date.now() - scriptLastCheck >= 86400000) {   // 86400000 == 1 day
+		// At least a day has passed since the last check. Sends a request to check for a new script version
+		GM_setValue("scriptLastCheck", Date.now().toString());
+		scriptCheckVersion();
+	}
+	else {
+		// If a new version was previously detected the notice will be shown to the user
+		// This is to prevent that the notice will only be shown once a day (when an update check is scheduled)
+		if (scriptLastRemoteVersion > scriptVersion) {
+			scriptShowUpdateMessage(true, scriptLastRemoteVersion);
+		}
+	}
+}
 
 
 // RUN!!!
 enhanceGoogle();
-
-
-
-// Checks for script updates
-if (Date.now() - scriptLastCheck >= 86400000) {   // 86400000 == 1 day
-	// At least a day has passed since the last check. Sends a request to check for a new script version
-	GM_setValue("scriptLastCheck", Date.now().toString());
-	scriptCheckVersion();
-}
-else {
-	// If a new version was previously detected the notice will be shown to the user
-	// This is to prevent that the notice will only be shown once a day (when an update check is scheduled)
-	if (scriptLastRemoteVersion > scriptVersion) {
-		scriptShowUpdateMessage(true, scriptLastRemoteVersion);
-	}
-}

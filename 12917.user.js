@@ -2,8 +2,8 @@
 
 	// @name		Google i&Search Dark + Enhancements
 	// @description		Make Google Search & iGoogle Hompage Dark, plus Enhancements
-	// @version		1.7.4
-	// @date		2008-03-15
+	// @version		1.7.5
+	// @date		2008-03-18
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 
@@ -21,8 +21,8 @@ var SCRIPT = {
 	description:	"Make Google Search & iGoogle Hompage Dark, plus Enhancements",
 	source:		"http://userscripts.org/scripts/show/12917",
 	identifier:	"http://userscripts.org/scripts/source/12917.user.js",
-	version:	"1.7.4",
-	date: (new Date( 2008,03,15 )).valueOf()
+	version:	"1.7.5",
+	date: (new Date( 2008,03,18 )).valueOf()
 };
 
 
@@ -60,6 +60,7 @@ var SCRIPT = {
 	// Version 1.7.2	Fixed iGoogle modules: Gmail linx & txt, YouTube bg; Excluded /custom
 	// Version 1.7.3	Fixed iGoogle add tab dialog & new tab txt, Add Stuff menu headers & added msg
 	// Version 1.7.4	Fixed Google Search Result descriptive txt, Image Labeler bg, News Results txt
+	// Version 1.7.5	Fixed iGoogle header bar bg
 
 
 // To Do:
@@ -111,7 +112,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // iGoogle Homepage Enhancements
-	/* header bg */			"#guser   {background:#000;}" +
+	/* header bg */			"#guser, #gbar   {background:#000;}" +
 	/* search btn spacing */	".gseain INPUT[type='submit'], INPUT[name='btnG'], INPUT[name='btnI']   {margin-top:5px; margin-right:30px; margin-left:30px;}" +
 	/* go btns hover */		"INPUT#btnI:hover, INPUT[name='btnI']:hover, INPUT[value='Save']:hover, SPAN#button_0 BUTTON:hover, INPUT#stxemailsend:hover, INPUT[value='Submit Issue']:hover, INPUT[value='Download']:hover, INPUT[value='Add it now']:hover   {background-color:#090; color:#fff;}" +
 	/* setup block */		"DIV.setup_div   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +

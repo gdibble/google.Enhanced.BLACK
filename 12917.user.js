@@ -1,8 +1,8 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.2.2
-	// @date		2009-07-14
+	// @version		2.3.0
+	// @date		2009-07-15
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		gabedibble <gdibble@gmail.com>
@@ -16,7 +16,7 @@
 
 
 
-var scriptVersion = 1247558590544;   //alert(Date.now());
+var scriptVersion = 1247706771710;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -97,11 +97,11 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.2.0	Enhanced Patents; Fixed Logo & Experimental keyboard >; Fixed Translate txt; Voice @inc
 	// v2.2.1	Fixed Patents search results; Fixed Web Advanced Search
 	// v2.2.2	Updated Videos; Fixed Images logo; News logo & top ads; Updated Confucius Quotes module
+	// v2.3.0	Enhanced Trends; Optimized Brute Force globals; Updated Voice
 
 
 // To Do:
-	// !! Add Trends support
-	// ! Add Labs support
+	// Add Labs support
 	// Add iGoogle Graphical Themes support
 	// Add to Products/Froogle support
 	// Add to Support Enhancements
@@ -116,6 +116,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// Add Patents support
 	// Add Scholar support
 	// Add Earth support
+	// Add Insights for Search
 	// Add User Script Command to launch Options panel
 	// Add Option: Turn On/Off 3.14 Hack
 	// Add Option: Font Choice dropdown
@@ -669,13 +670,21 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	document.getElementsByTagName('head')[0].appendChild(style);
 	var Ssheet = $('bruteForce').sheet;
 
-
-	// Web: Advanced Search enhancements
-	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/advanced_search?') > -1) {
+	// Global B.F. enhancements
+	function gBFenh() {
 		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
 		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
 		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
 		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+		/* search input */	Ssheet.insertRule("INPUT[type='text'], INPUT[name='q']   {background:#333 none !important; color:#fff; padding:2px; border:solid 1px #ccc; font-weight:bold; color:#ff0 !important;}", 0);
+		/* submit button */	Ssheet.insertRule("INPUT[type='submit']   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff !important; cursor:pointer;}", 0);
+		/* submit btn hover */	Ssheet.insertRule("INPUT[type='submit']:hover, BUTTON[type='submit']:hover   {background-color:#36f; color:#fff;}", 0);
+	}
+
+
+	// Web: Advanced Search enhancements
+	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/advanced_search?') > -1) {
+		/* Global BF Styles */	gBFenh();
 
 		/* logo img [replce] */	Ssheet.insertRule("BODY > FORM[name='f'] > TABLE[width='99%'][cellspacing='2'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:first-child > A#logo > SPAN   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
 		/* header */		Ssheet.insertRule("BODY > FORM[name='f'] > TABLE > TBODY > TR > TD > TABLE > TBODY > TR > TD[bgcolor='#3366cc'], BODY > FORM[name='f'] > TABLE > TBODY > TR > TD > TABLE > TBODY > TR > TD[bgcolor='#d5ddf3']   {background-color:#000;};", 0);
@@ -688,10 +697,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 	// Web: Search Within enhancements
 	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/swr?') > -1) {
-		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
-		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
-		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
-		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+		/* Global BF Styles */	gBFenh();
 
 		/* logo img [hide] */	Ssheet.insertRule("BODY > FORM > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:first-child > A[href='/'] > IMG   {display:none;}", 0);
 		/* logo img [insert] */	Ssheet.insertRule("BODY > FORM > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:first-child   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
@@ -703,10 +709,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 	// Translate: Top Frame enhancements
 	if (location.href.indexOf('//translate.google.') > -1 && location.href.indexOf('/translate_n?') > -1) {
-		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
-		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
-		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
-		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+		/* Global BF Styles */	gBFenh();
 
 		/* logo img [hide] */	Ssheet.insertRule("BODY > DIV[style='padding: 8px; white-space: nowrap;'] > DIV[style='float: left; font-size: 12px;'] > A > IMG   {display:none;}", 0);
 		/* logo img [insert] */	Ssheet.insertRule("BODY > DIV[style='padding: 8px; white-space: nowrap;']   {padding-left:160px !important; width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll top left !important; font-size:0;}", 0);
@@ -716,10 +719,10 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 	// Voice enhancements
 	if ((location.href.indexOf('http://www.google.com/googlevoice') > -1) || (location.href.indexOf('https://www.google.com/voice') > -1) || (location.href.indexOf('https%3A%2F%2Fwww.google.com%2Fvoice%2Faccount%2Fsignin%2F') > -1) || (location.href.indexOf('https://services.google.com/fb/forms/googlevoiceinvite/') > -1)) {
-		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
-		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
-		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
-		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+		/* Global BF Styles */	gBFenh();
+
+		/* logo img [hide] */	Ssheet.insertRule("BODY > DIV.g-doc-800 > DIV.header > A > IMG[alt='Google Voice'], BODY.compact > H1 > A > IMG[alt='Google Voice'], BODY.gc > DIV > DIV#gc-header > DIV.g-unit > DIV > DIV.g-section > DIV.g-unit > A[href='/voice'] > IMG#gc-header-logo   {display:none;}", 0);
+		/* logo img [insert] */	Ssheet.insertRule("BODY > DIV.g-doc-800 > DIV.header, BODY.compact > H1, BODY.gc > DIV > DIV#gc-header > DIV.g-unit > DIV > DIV.g-section > DIV.g-unit:first-child   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
 
 		/* about header bar */	Ssheet.insertRule("P.highlight-box   {background-color:#333; border:0; color:#fff; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
 
@@ -730,21 +733,20 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/* login signin boxI */	Ssheet.insertRule("BODY > DIV.gc-mid > DIV.gc-si-content > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD   {background-color:#333; color:#ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
 		/* login invite bar */	Ssheet.insertRule("BODY > DIV#gc-signup-closed   {background-color:#333; border:0; color:#fff; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
 
-		/* admin bg */		Ssheet.insertRule("DIV.gc-header, .gc-inbox-sidebar-menu, #gc-view-main, .gc-footer, .g-section, .g-tpl-67-33, .gc-message, #gc-splitpane, #gc-sidebar-balance-header, .gc-bubble-mc   {background:#000 none !important; color:#ccc}", 0);
+		/*  footer */		Ssheet.insertRule("BODY.compact > DIV#about   {display:none;}", 0);
+
+		/* admin bg */		Ssheet.insertRule("DIV.gc-header, .gc-inbox-sidebar-menu, #gc-view-main, .gc-footer, .g-section, .g-tpl-67-33, .gc-message, #gc-splitpane, .gc-bubble-mc   {background:#000 none !important; color:#ccc}", 0);
 		/*  admin buttons */	Ssheet.insertRule(".goog-button-base-content, .gc-text, .goog-flat-menu-button-caption   {background:#333 none !important; color:#fff}", 0);
 		/* admin callout  */	Ssheet.insertRule(".gc-message-transcript, .gc-message-callout, .gc-message-transcript-b, .gc-message-transcript-t, .gc-message-transcript-r, .gc-message-transcript-l, .gc-message-transcript-m, .gc-message-transcript-bl, .gc-message-transcript-br, .gc-message-transcript-tl, .gc-message-transcript-tr   {background:#333 none !important; color:#fff}", 0);
-		/*  admin c.out txt */	Ssheet.insertRule(".goog-menuitem-content, .gc-inbox-no-items, .gc-inbox-page-range, .gc-user-tip .goog-inline-block, .goog-container, .g-section, LABEL, .gc-message-message-display *, .gc-quicksms > DIV, SPAN   {color:#fff !important}", 0);
-		/*  admin sidebar */	Ssheet.insertRule(".goog-option-selected, #gc-inbox-sidebar-header, #gc-view-header, .goog-splitpane-handle, .gc-user-tip .goog-inline-block, .goog-menuitem   {background:#111 none}", 0);
-		/*  admin menu */	Ssheet.insertRule(".goog-menuitem-highlight   {background:#333 none !important;}", 0);
+		/* admin c.out txt */	Ssheet.insertRule(".goog-menuitem-content, .gc-inbox-no-items, .gc-inbox-page-range, .gc-user-tip .goog-inline-block, .goog-container, .g-section, LABEL, .gc-message-message-display *, .gc-quicksms > DIV, SPAN   {color:#fff !important}", 0);
+		/* admin sidebar */	Ssheet.insertRule(".goog-option-selected, #gc-inbox-sidebar-header, #gc-view-header, .goog-splitpane-handle, .gc-user-tip .goog-inline-block, .goog-menuitem, .gc-inbox-sidebar-main, #gc-sidebar-balance-header, TD.goog-splitpane-first-container > DIV[style='overflow: hidden;']   {background:#181818 none;}", 0);
+		/* admin menu */	Ssheet.insertRule(".goog-menuitem-highlight   {background:#333 none !important;}", 0);
 	}
 
 
 // Patents: Advanced Search enhancements
 	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/advanced_patent_search?') > -1) {
-		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
-		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
-		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
-		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+		/* Global BF Styles */	gBFenh();
 
 		/* logo img [hide] */	Ssheet.insertRule("BODY > FORM[name='f'] > TABLE:first-child > TBODY > TR > TD:first-child > A > IMG   {display:none;}", 0);
 		/* logo img [insert] */	Ssheet.insertRule("BODY > FORM[name='f'] > TABLE:first-child > TBODY > TR > TD:first-child   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
@@ -756,12 +758,27 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	}
 
 
+// Trends enhancements
+	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/trends') > -1) {
+		/* Global BF Styles */	gBFenh();
+
+		/* logo img [hide] */	Ssheet.insertRule("BODY > CENTER > IMG[alt='Google Trends']:first-child, BODY.product > H1 > A[href='/trends/'] > IMG, BODY > FORM[name='search'] > TABLE > TBODY > TR > TD[width='1'][rowspan='2'] > A[href='/trends'] > IMG   {display:none;}", 0);
+		/* logo img [insert] */	Ssheet.insertRule("BODY > CENTER > TABLE[cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:nth-child(2), BODY.product > H1, BODY > FORM[name='search'] > TABLE > TBODY > TR > TD[width='1'][rowspan='2']   {width:150px; height:55px; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll top center !important; font-size:0;}", 0);
+		/* logo img [adjust] */	Ssheet.insertRule("BODY > CENTER > TABLE[cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:nth-child(2)   {height:120px !important; vertical-align:bottom;}", 0);
+		/* searchbar cntnr */	Ssheet.insertRule("BODY > CENTER > TABLE[cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[align='left'] > FORM[name='search'] > TABLE > TBODY > TR > TD[align='left']   {white-space:nowrap; font-style:italic;}", 0);
+		/* pre header bar */	Ssheet.insertRule("TABLE > TBODY > TR > TD[height='1'][bgcolor='#3366cc'], BODY > TABLE[bgcolor='#e5ecf9']:nth-child(2)   {display:none;}", 0);
+		/* headers */		Ssheet.insertRule("BODY > CENTER > TABLE > TBODY > TR > TD > TABLE[bgcolor='#e5ecf9'], BODY > FORM[name='search'] > TABLE[bgcolor='#e5ecf9'], TABLE.list > TBODY > TR[bgcolor='#e5ecf9']:first-child > TD, BODY > FORM[name='search'] > TABLE > TBODY > TR > TD > TABLE[bgcolor='#e5ecf9'], BODY > TABLE[bgcolor='#e5ecf9']:nth-child(3), BODY > TABLE.hotLayout > TBODY > TR > TD.hotSection > TABLE[bgcolor='#e5ecf9']   {padding-right:0.7em; padding-left:0.2em; background-color:#333; border:0 none !important; color:#fff; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
+		/* header cntnr bg */	Ssheet.insertRule("TABLE.list > TBODY > TR[bgcolor='#e5ecf9']:first-child   {background-color:#000;}", 0);
+		/* header export adj */	Ssheet.insertRule("BODY > FORM[name='search'] > TABLE > TBODY > TR > TD > TABLE[bgcolor='#e5ecf9']   {width:inherit; padding-left:0.7em; background-color:#6495ed !important;}", 0);
+		/* header export lnk */	Ssheet.insertRule("BODY > FORM[name='search'] > TABLE > TBODY > TR > TD > TABLE[bgcolor='#e5ecf9'] TD A   {color:#fff !important;}", 0);
+		/* story info bg */	Ssheet.insertRule(".gs-publisher, .gs-location, .gs-relativePublishedDate   {margin:0 !important; padding-right:0.2em; padding-left:0.2em; background-color:#181818 !important;}", 0);
+		/* footer */		Ssheet.insertRule("BODY > CENTER > P > FONT[size='-2'], BODY > FORM[name='search'] > TABLE > TBODY > TR > TD[height='1'][bgcolor='#cccccc'], BODY > FORM[name='search'] > TABLE > TBODY > TR > TD[align='center'] > FONT[size='-1'], BODY > TABLE > TBODY > TR > TD[height='1'][bgcolor='#cccccc'], BODY > TABLE[cellpadding='5'] > TBODY > TR > TD[align='center'] > FONT[size='-1']   {display:none;}", 0);
+	}
+
+
 // Experimental enhancements
 	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/experimental/') > -1) {
-		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
-		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
-		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
-		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+		/* Global BF Styles */	gBFenh();
 
 		/* logo img [hide] */	Ssheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'] IMG[width='150'][height='55']   {display:none;}", 0);
 		/* logo img [insert] */	Ssheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;']   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
@@ -774,10 +791,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 // Google Login enhancements
 	if (location.href.indexOf('.google.') > -1 && (location.href.indexOf('/Login?') > -1 || (location.href.indexOf('/ServiceLogin?') > -1 && location.href.indexOf('&service=ig') > -1))) {
-		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
-		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
-		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
-		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+		/* Global BF Styles */	gBFenh();
 
 
 		/* logo img [hide] */	Ssheet.insertRule("BODY[onload='gaia_setFocus();'] > DIV#main > DIV.header > A > IMG, BODY[onload='gaia_setFocus();'] > DIV#main > DIV#maincontent > TABLE > TBODY > TR > TD > DIV#rhs > DIV#rhs_login_signup_box > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD > DIV.loginBox > TABLE#gaia_table > TBODY > TR> TD > TABLE > TBODY > TR > TD > IMG, BODY[onload='gaia_setFocus();'].compact > H1 > IMG:first-child, BODY[onload='gaia_setFocus();'].compact > DIV#main > DIV.rightside > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD > DIV.loginBox > TABLE#gaia_table > TBODY > TR > TD > TABLE > TBODY > TR > TD> IMG:first-child   {display:none;}", 0);

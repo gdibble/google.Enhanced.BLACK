@@ -282,7 +282,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* outer result cntnr */	"BODY#gsr > DIV#cnt   {max-width:100%;}" +
 	/* result-area width [DYNMC] */	"DIV#res   {width:" + resW + "% !important;}" +
 	/* remove sponsored linx */	"DIV#tads   {display:none;}" +
-	/* refine results txt */	"TABLE#po TBODY TR TD, BODY > SPAN#main > DIV#header > DIV#sform > FORM#tsf > TABLE#sft > TBODY > TR > TD#sff > DIV#bsb   {color:#999 !important;}" +
+	/* refine results txt */	"TABLE#po TBODY TR TD, TD#sff > DIV#bsb   {color:#999 !important;}" +
 	/* sponsored linx */		"DIV#res DIV.ta, BODY#gsr > TABLE#mbEnd   {display:none;}" +
 	/* result-area txt */		"DIV#res P, DIV#res .j, DIV.sml, DIV.std, DIV#res OL LI, DIV#res OL LI DIV ,BODY > SPAN#main > DIV#cnt > DIV#res > SPAN#topstuff > DIV.e > DIV.std TD   {color:#999 !important;}" +
 	/* description width */		"TD.j, OL > LI.g > DIV.s   {width:100% !important; max-width:100% !important;}" +

@@ -7,12 +7,12 @@
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		gabedibble <gdibble@gmail.com>
 	// @namespace		http://userscripts.org/people/24894
-	// @include		htt*://*.google.*/*
-	// @include		htt*://www.google.*/accounts/*
-	// @include		htt*://services.google.*/*
+	// @include		htt*://*.google.*
+	// @include		htt*://www.google.*/accounts*
+	// @include		htt*://services.google.*
 	// @include		htt*://www.google.*/voice*
 	// @include		htt*://www.google.*/reader*
-	// @include		htt*://*.googlelabs.*/*
+	// @include		htt*://*.googlelabs.*
 	// @exclude		htt*://*.google.*/custom*
 // ==/UserScript==
 

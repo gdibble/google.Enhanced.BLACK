@@ -1,7 +1,7 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.7.2
+	// @version		2.7.3
 	// @date		2009-08-21
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
@@ -18,7 +18,7 @@
 
 
 
-var scriptVersion = 1250841252496;   //alert(Date.now());
+var scriptVersion = 1250843750028;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -109,6 +109,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.7.0	Enhanced Finance; Fixed Images Options & Advanced Image Search; Updated News & Support
 	// v2.7.1	Fixed Finance, Products, Groups & g.Homepage Logos; Added Adaptive Resolution Support
 	// v2.7.2	Fixed Web Search layout, Videos selection, Maps layout, Shopping layout & News AdvSearch
+	// v2.7.3	Removed Images Ad Bar!
 
 
 // To Do:
@@ -330,6 +331,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* sizes alert */		"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255, 255, 153);'], BODY > DIV#ImgCont > DIV#rstc > CENTER > SPAN   {padding:2px 7px 2px 7px !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* sizes alert txt */		"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255, 255, 153);'] FONT, BODY > DIV#ImgCont > DIV#rstc > CENTER > SPAN > FONT   {color:#777;}" +
 	/* sizes alert highlight */	"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255, 255, 153);'] FONT B, BODY > DIV#ImgCont > DIV#rstc > CENTER > SPAN > FONT > B   {color:#000 !important;}" +
+	/* ad bar */			"DIV#ImgCont > TABLE[width='100%'][style='padding: 8px; background: rgb(255, 248, 221) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; margin-top: 10px;']   {display:none;}" +
 	/* img size txt */		"DIV.std > .f, DIV.std > .m   {color:#999 !important;}" +
 	/* img source txt */		"DIV.std > .a   {color:#090 !important;}" +
 	/* g.image labeler */		"CENTER TABLE[cellpadding='10'][style='text-align: center;'] TBODY TR TD   {background-color:#000;}" +

@@ -1,8 +1,8 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.9.0
-	// @date		2009-08-24
+	// @version		2.9.1
+	// @date		2009-09-01
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		gabedibble <gdibble@gmail.com>
@@ -18,7 +18,7 @@
 
 
 
-var scriptVersion = 1251102619885;   //alert(Date.now());
+var scriptVersion = 1251833864797;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -112,6 +112,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.7.3	Removed Images Ad Bar!
 	// v2.8.0	Enhanced Books; Fixed News layout
 	// v2.9.0	Enhanced Scholar; Enhanced Blogs; Fixed Code layout & Experimental Keyboard Shortcuts
+	// v2.9.1	Fixed Reader for R0bert & iGoogle Themed BG support; New G-logo (only 2.2Kb; saved 621b)
 
 
 // To Do:
@@ -154,6 +155,13 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* search input */		"INPUT[type='text'], INPUT[type='password'], INPUT[name='q']   {background:#333 none !important; color:#fff; padding:2px; border:solid 1px #ccc; font-weight:bold; color:#ff0 !important;}" +
 	/* submit btns */		"INPUT[type='submit'], INPUT[value='Cancel'], INPUT[value='Save'], BUTTON, INPUT#stxemailsend, INPUT[value='Discard'], BUTTON[type='submit'], INPUT[value='Download'], INPUT[value='Add it now']   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff !important; cursor:pointer;}" +
 	/* submit btn hover */		"INPUT[type='submit']:hover, BUTTON[type='submit']:hover   {background-color:#36f; color:#fff;}" +
+	/* div btn outer */		".goog-button-base-outer-box   {border-top-color:#555; border-bottom-color:#333;}" +
+	/* div btn inner */		".goog-button-base-inner-box   {border-left-color:#555; border-right-color:#333; background-color:#555;}" +
+	/* div btn T-shadow */		".goog-button-base-top-shadow   {background-color:#777; border-bottom-color:#555;}" +
+	/* div btn restrict */		"#search-restrict   {border-bottom-color:#000;}" +
+	/* menu dropd folder */		"DIV.goog-menu > DIV.goog-menuitem > DIV.goog-menuitem-content   {color:#ccc !important;}" +
+	/* menu dropd item */		"DIV.goog-menu > DIV.goog-menuitem   {background-color:#222; color:#999 !important;}" +
+	/* menu dropd itemHov*/		"DIV.goog-menu > DIV.goog-menuitem:hover   {background-color:#333; color:#ccc !important;}" +
 	/* home international txt */	"DIV[style='background: transparent url(/intl/en_com/images/logo_plain.png) no-repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 110px; width: 276px;'] > DIV[style='color: rgb(102, 102, 102); font-size: 16px; font-weight: bold; left: 208px; position: relative; top: 78px;']   {top:-18px !important; left:180px !important; color:#fff !important;}" +
 	/* more pop layer */		"SPAN#more, #gbar .gb2   {background-color:#333 !important; border-right:solid 1px #a2bae7; border-bottom:solid 1px #a2bae7; color:#333 !important;}" +
 	/* google alerts txt */		"P[style='margin-left: 9px;'], SPAN[style='font-size: medium;']   {color:#999;}" +
@@ -171,6 +179,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 // iGoogle Homepage enhancements
 	/* header */			"#guser, #guser *, #gbar, #gbar *   {background:#000 !important; font-family:Trebuchet MS, Verdna !important;}" +
+	/* header Themed BG */		"#nhdrwrap   {background-color:transparent;}" +
 	/* search btn spacing */	".gseain INPUT[type='submit'], INPUT[name='btnG'], INPUT[name='btnI']   {margin-top:5px; margin-right:30px; margin-left:30px;}" +
 	/* go btns hover */		"INPUT#btnI:hover, INPUT[name='btnI']:hover, INPUT[value='Save']:hover, SPAN#button_0 BUTTON:hover, INPUT#stxemailsend:hover, INPUT[value='Submit Issue']:hover, INPUT[value='Download']:hover, INPUT[value='Add it now']:hover, INPUT[value='Add it now'], INPUT[value='Save Preferences']:hover, INPUT[value='Save Preferences ']:hover   {background-color:#090; color:#fff;}" +
 	/* setup block */		"DIV.setup_div   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
@@ -179,9 +188,9 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* create heading */		"FORM#_setup > DIV#box > DIV#box_heading   {background-color:#222; color:#fff !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
 	/* create body */		"FORM#_setup > DIV#box > DIV#box_body   {background-color:#333; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* create body txt */		"FORM#_setup > DIV#box > DIV#box_body DIV, FORM#_setup > DIV#box > DIV#box_body TD   {color:#ccc !important;}" +
-	/* nav top gradient 1 */	"#nhdrwrapinner > .gradient > B   {background-color:#171717;}" +
-	/* nav top gradient 2 */	"#nhdrwrapinner > .gradient > B > B   {background-color:#252525;}" +
-	/* nav top gradient 3 */	"#nhdrwrapinner > .gradient > B > B > B   {background-color:#333;}" +
+	/* nav top gradient 1 */	"#nhdrwrapinner > .gradient > B   {background-color:#171717 !important;}" +
+	/* nav top gradient 2 */	"#nhdrwrapinner > .gradient > B > B   {background-color:#252525 !important;}" +
+	/* nav top gradient 3 */	"#nhdrwrapinner > .gradient > B > B > B   {background-color:#333 !important;}" +
 	/* nav container */		"TABLE > TBODY > TR > TD#col1   {width:134px; background-color:#333; border-color:#333;}" +
 	/* nav bg */			"#full_nav   {background-color:#333;}" +
 	/* nav tab color */		"#full_nav H2   {color:#6495ed;}" +
@@ -217,6 +226,13 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* module settings txt */	"DIV.meditbox DIV, DIV.meditbox TD, DIV.meditbox SPAN, DIV.meditbox NOBR   {color:#999 !important;}" +
 	/* module inner detail txt */	".modboxin FONT   {color:#000 !important;}" +
 	/* cancel btn hover */		"INPUT[value='Cancel']:hover, SPAN#button_1 BUTTON:hover, INPUT[value='Discard']:hover, INPUT[value='Delete Group']:hover   {background-color:#990000 !important; color:#fff !important;}" +
+
+	// Theme Selection Box
+		/* outer box & hdr */	"DIV#indi, DIV#indi_top   {border:0 none; background-color:#333; color:#999 !important;}" +
+		/* headline & selctn */	"DIV#indi H1, DIV#indi DIV SPAN.indi_current_item   {color:#fff !important;}" +
+		/* inner desc txt */	"DIV#indi DIV SPAN   {color:#777 !important;}" +
+		/* inner txt */		"DIV#indi DIV   {color:#ccc !important;}" +
+		/* theme select indc */	"DIV#indi DIV DIV.indi_undo   {background-color:#333 !important; border:0 none !important; color:#ffaa1c !important; -moz-border-radius-topright:8px; -moz-border-radius-topleft:8px; -moz-border-radius-bottomright:8px; -moz-border-radius-bottomleft:8px;}" +
 
 	// Module-specific Requests
 		/* gmail */		"HTML > BODY > DIV > #modules A B   {color:#36a !important;}" +
@@ -801,6 +817,13 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/* search input */	sIR("INPUT[type='text'], INPUT[type='password'], INPUT[name='q']   {background:#333 none !important; color:#fff; padding:2px; border:solid 1px #ccc; font-weight:bold; color:#ff0 !important;}");
 		/* submit button */	sIR("INPUT[type='submit'], INPUT[type='button']   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff !important; cursor:pointer;}");
 		/* submit btn hover */	sIR("INPUT[type='submit']:hover, BUTTON[type='submit']:hover, INPUT[type='button']:hover   {background-color:#36f; color:#fff;}");
+		/* div btn outer */	sIR(".goog-button-base-outer-box   {border-top-color:#555; border-bottom-color:#333;}");
+		/* div btn inner */	sIR(".goog-button-base-inner-box   {border-left-color:#555; border-right-color:#333; background-color:#555;}");
+		/* div btn T-shadow */	sIR(".goog-button-base-top-shadow   {background-color:#777; border-bottom-color:#555;}");
+		/* div btn restrict */	sIR("#search-restrict   {border-bottom-color:#000;}");
+		/* menu dropd folder */	sIR("DIV.goog-menu > DIV.goog-menuitem > DIV.goog-menuitem-content   {color:#ccc !important;}");
+		/* menu dropd item */	sIR("DIV.goog-menu > DIV.goog-menuitem   {background-color:#222; color:#999 !important;}");
+		/* menu dropd itemHov*/	sIR("DIV.goog-menu > DIV.goog-menuitem:hover   {background-color:#333; color:#ccc !important;}");
 	}
 
 	// Login Elements enhancements
@@ -903,15 +926,18 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/* chrome addSub btn */	sIR("DIV#lhn-add-subscription   {position:relative; top:15px; left:0;}");
 		/* chrome addSub box */	sIR("DIV#quick-add-bubble-holder   {background-color:#000; border:1px solid #777; color:#ccc !important; -moz-border-radius-topright:8px; -moz-border-radius-bottomright:8px; -moz-border-radius-bottomleft:8px;}");
 		/* chrome border */	sIR("DIV#chrome   {border:0 none;}");
-		/* chrome header */	sIR("DIV#chrome-header   {background-color:#555; border:0; color:#fff !important; -moz-border-radius-topleft:14px;}");
+		/* chrome hdr */	sIR("DIV#chrome-header   {background-color:#555; border:0; color:#fff !important; -moz-border-radius-topleft:14px;}");
+		/* chrome hdr v-Linx */	sIR("DIV#chrome-header > SPAN#chrome-view-links   {background-color:#555;}");
 		/* chrome menu txt */	sIR(".lhn-section a, .lhn-section a .text, .lhn-section .link, UL#your-items-tree LI, SPAN.name > SPAN, UL#friends-tree *, UL#sub-tree LI   {color:#888 !important;}");
+		/* chrome menu sel/h */	sIR(".scroll-tree LI A:hover, .scroll-tree LI .tree-link-selected, .scroll-tree LI .tree-link-selected SPAN, .scroll-tree LI .tree-link-selected:hover, #lhn-selectors .selector:hover, #lhn-selectors .selected, #lhn-selectors .selected SPAN, #lhn-selectors .selected:hover   {background-color:#555; color:#fff !important;}");
 		/* chrome menu spcng */	sIR("DIV#lhn-selectors, DIV#your-items-tree-container, DIV.lhn-section, DIV.friends-tree-notification-info   {margin-top:1.5em;}");
 		/* chrome light grey */	sIR("TABLE#chrome-viewer-container > TBODY > TR > TD#chrome-lhn-toggle, TABLE#chrome-viewer-container > TBODY > TR > TD#chrome-viewer   {background-color:#555;}");
 		/* chrome dark grey */	sIR("TABLE#chrome-viewer-container > TBODY > TR > TD#chrome-viewer > DIV#viewer-header, TABLE#chrome-viewer-container > TBODY > TR > TD#chrome-viewer > DIV#viewer-footer, DIV.tab-group > DIV.tab-header-selected, DIV.card-actions   {background-color:#333 !important;}");
-		/* chrome black bg */	sIR("DIV#lhn-selectors, DIV#lhn-friends, DIV#lhn-subscriptions, TABLE#chrome-viewer-container > TBODY > TR > TD#chrome-viewer > DIV#viewer-container, DIV#entries > DIV.entry, UL#your-items-tree LI, UL#friends-tree *, DIV#viewer-page-container, DIV#friends-manager, UL#sub-tree LI, DIV.preview-interruption, DIV.friend-interruption, DIV.interruption, DIV#settings > TABLE TD, DIV.tab-group, DIV.tab-group-contents, DIV#discover-container, DIV.tab-group > DIV.tab-header, DIV#directory-search-container, DIV#recommendations-tab-contents, DIV.card-common, DIV.entry-likers, DIV.fr-modal-dialog DIV   {background:#000 none !important;}");
-		/* chrome no borders */	sIR("DIV#lhn-selectors, DIV#viewer-top-controls, DIV.friends-tree-following-info, DIV.friends-tree-notification-info   {border:0 none !important;}");
+		/* chrome black bg */	sIR("DIV#lhn-selectors, DIV#lhn-friends, DIV#lhn-subscriptions, TABLE#chrome-viewer-container > TBODY > TR > TD#chrome-viewer > DIV#viewer-container, DIV#entries > DIV.entry, UL#your-items-tree LI, UL#friends-tree *, DIV#viewer-page-container, DIV#friends-manager, UL#sub-tree LI, DIV.preview-interruption, DIV.friend-interruption, DIV.interruption, DIV#settings > TABLE TD, DIV.tab-group, DIV.tab-group-contents, DIV#discover-container, DIV.tab-group > DIV.tab-header, DIV#directory-search-container, DIV#recommendations-tab-contents, DIV.card-common, DIV.entry-likers, DIV.fr-modal-dialog DIV, DIV.entry-comments, DIV.entry > DIV.comment-entry   {background:#000 none !important;}");
+		/* chrome no borders */	sIR("DIV#lhn-selectors, DIV#viewer-top-controls, DIV.friends-tree-following-info, DIV.friends-tree-notification-info, DIV.entry > DIV.comment-entry   {border:0 none !important;}");
 		/* chrome Vwr header */	sIR("TABLE#chrome-viewer-container > TBODY > TR > TD#chrome-viewer > DIV#viewer-header   {-moz-border-radius-topleft:14px;}");
 		/* chrome Vwr cntrls */	sIR("DIV#viewer-all-new-links, DIV#entries-status   {padding-left:0.5em !important; color:#ccc !important;}");
+		/* chrome note box */	sIR("DIV#overview > DIV#featured-bundles-promo   {background-color:#333; color:#fff !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}");
 		/* chrome page txt */	sIR("DIV#friends-manager DIV, DIV.results DIV, DIV#quick-add-helptext, .unselectable, DIV#viewer-container DIV, DIV#viewer-container LI, DIV#viewer-container SPAN, DIV.subscription-title, TR.data-row TD, TABLE#homepage-table TD, DIV#viewer-comments-all-links, DIV.fr-modal-dialog DIV   {color:#999 !important;}");
 		/* chrome card box */	sIR("DIV.card   {border-color:#333 !important; -moz-box-shadow:none !important;}");
 		/* chrome R boxes */	sIR("DIV#rec-preview, DIV#tips   {background-color:#222; border:0 none; color:#ccc !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}");
@@ -1239,36 +1265,31 @@ else {
 };
 
 }; var googleLogoBLACK = "data:image/gif;base64," +
-	"R0lGODlhlgBBAOYAAMYcBBAubi4JBBhJtPcoCgsWLQAAAPjMBQNEBpB0A4sTAxdEqAa1D+q+BQ4lWAJjBxI1gW4QAwSSDE0MAydm6SojBKSEAxtSySlm06QXAx" +
-	"Q8kLYZAx1X1WxYAwQmBhVAnbyWA/7qDAgMFxoGA9etBCBa1hwXA1hIBNceBXpjAy515jo5OiFSqM6mBDB59gsbPCkpKkE1AwMUBBlNvgoDAR5b4CdguuYhBgMD" +
-	"BgoQHsWeBLCNAkdHSOC1BKmcCyNg3wUHDQIJARAOAips78G4Dw0gSBEREgcKETJ+8AcHBxxRvh9OmC9z9gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+	"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
-	"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" +
-	"S5CIcfTn96cjaxSXkkKutaD7vYx052YQUCADs%3D";
+	"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";
 
 
 // Adaptive Resolution Support from 800x600 to 2560x1600 for Search Results

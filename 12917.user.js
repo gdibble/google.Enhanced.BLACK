@@ -1,8 +1,8 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.2.0
-	// @date		2009-07-08
+	// @version		2.2.1
+	// @date		2009-07-12
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		gabedibble <gdibble@gmail.com>
@@ -16,7 +16,7 @@
 
 
 
-var scriptVersion = 1247047152129;   //alert(Date.now());
+var scriptVersion = 1247430934203;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -95,6 +95,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.1.8	Fixed iGoogle Login, iGoogle header-link per international domains; Videos headers
 	// v2.1.9	Fixed Logos, iGoogle & Web header-linx, iG Create box & Weather module
 	// v2.2.0	Enhanced Patents; Fixed Logo & Experimental keyboard >; Fixed Translate txt; Voice @inc
+	// v2.2.1	Fixed Patents search results; Fixed Web Advanced Search
 
 
 // To Do:
@@ -214,7 +215,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	// Module-specific Requests
 		/* gmail */		"HTML > BODY > DIV > #modules A B   {color:#36a !important;}" +
 		/* youtube video */	"HTML > BODY > DIV > DIV#middle, HTML > BODY > DIV > DIV#uppernav, HTML > BODY > DIV > DIV#searchFooter   {background-color:#fff;}" +
-		/* confucius quotes */	"DIV#modules DIV#remote_56 > IFRAME#remote_iframe_56   {overflow:hidden !important; height:82px !important;}" +
+		/* confucius quotes */	"DIV#modules DIV#remote_56 > IFRAME#remote_iframe_56   {overflow:hidden !important; height:8em !important;}" +
 		/* weather */		"DIV#modules DIV.w_box, DIV#modules DIV.w_box DIV   {height:8em; overflow:visible; font-size:11px;}" +
 
 	// Add Stuff
@@ -583,8 +584,8 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* titlebar txt */		"BODY > DIV#titlebar H1, BODY > DIV#titlebar SPAN   {color:#fff !important;}" +
 	/* menu active */		"BODY > TABLE#viewport_table > TBODY > TR > TD#menu_td > DIV#menu_container > DIV#menu DIV.menu_content > DIV > DIV.sidebarnav > SPAN.nolink   {color:#fff;}" +
 	/* headers */			"BODY > TABLE#viewport_table > TBODY > TR > TD#viewport_td H3   {border:0; background-color:#222 !important; color:#ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
-	/* page txt */			"BODY > TABLE#viewport_table > TBODY > TR > TD#viewport_td > DIV.vertical_module_list_row TD, BODY > TABLE#viewport_table > TBODY > TR > TD#viewport_td DD   {color:#ccc !important;}" +
-	/* footer C */			"BODY > DIV#footer_table > SPAN, BODY > DIV > DIV#footer_table > SPAN   {display:none;}" +
+	/* page txt */			"BODY > TABLE#viewport_table > TBODY > TR > TD#viewport_td > DIV.vertical_module_list_row TD, BODY > TABLE#viewport_table > TBODY > TR > TD#viewport_td DD, BODY > DIV.scontentarea DIV P, BODY > DIV.scontentarea > SPAN.big   {color:#ccc !important;}" +
+	/* footer */			"BODY > DIV#footer_table > SPAN, BODY > DIV > DIV#footer_table > SPAN, BODY > DIV[align='center'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD.k   {display:none;}" +
 	/* Advanced Search expanded below in brute force enhancements */
  
 
@@ -662,6 +663,22 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	    style.setAttribute('id', 'bruteForce');
 	document.getElementsByTagName('head')[0].appendChild(style);
 	var Ssheet = $('bruteForce').sheet;
+
+
+	// Web: Advanced Search enhancements
+	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/advanced_search?') > -1) {
+		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
+		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
+		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
+		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+
+		/* logo img [replce] */	Ssheet.insertRule("BODY > FORM[name='f'] > TABLE[width='99%'][cellspacing='2'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:first-child > A#logo > SPAN   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
+		/* header */		Ssheet.insertRule("BODY > FORM[name='f'] > TABLE > TBODY > TR > TD > TABLE > TBODY > TR > TD[bgcolor='#3366cc'], BODY > FORM[name='f'] > TABLE > TBODY > TR > TD > TABLE > TBODY > TR > TD[bgcolor='#d5ddf3']   {background-color:#000;};", 0);
+		/* outer box bg */	Ssheet.insertRule("TABLE[width='99%'] > TBODY > TR[bgcolor='#cbdced']   {background-color:#000 !important;}", 0);
+		/* lower box bg */	Ssheet.insertRule("TABLE[width='99%'] > TBODY > TR[bgcolor='#cbdced'] > TD TABLE[width='100%'] > TBODY > TR[bgcolor='#ffffff'], TABLE[width='99%'] > TBODY > TR[bgcolor='#cbdced'] > TD > TABLE[width='100%'] > TBODY > TR[bgcolor='#ffffff'] TD, BODY > FORM[name='f'] > FONT > TABLE > TBODY > TR > TD, BODY > FORM[name='f'] > FONT > TABLE > TBODY > TR > TD TD   {background-color:#000 !important; color:#ccc !important;}", 0);
+		/* top box bg */	Ssheet.insertRule("TABLE[width='99%'] > TBODY > TR[bgcolor='#cbdced'] > TD TABLE[width='100%'] > TBODY > TR[bgcolor='#cbdced'], TABLE[width='99%'] > TBODY > TR[bgcolor='#cbdced'] > TD > TABLE[width='100%'] > TBODY > TR[bgcolor='#cbdced'] TD, BODY > FORM[name='f'] > FONT > TABLE:nth-child(2) > TBODY > TR:first-child > TD:first-child   {padding-left:0.5em; background-color:#222 !important; color:#ccc !important;}", 0);
+		/* footer */		Ssheet.insertRule("BODY > FORM[name='f'] > CENTER > FONT[face='arial,sans-serif'] > FONT[size='-1']   {display:none;}", 0);
+	}
 
 
 	// Web: Search Within enhancements

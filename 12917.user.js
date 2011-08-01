@@ -1,8 +1,8 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.1.5
-	// @date		2009-07-05
+	// @version		2.1.6
+	// @date		2009-07-06
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		gabedibble <gdibble@gmail.com>
@@ -15,7 +15,7 @@
 
 
 
-var scriptVersion = 1246828719137;   //alert(Date.now());
+var scriptVersion = 1246863930291;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -89,6 +89,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.1.3	Fixed Experimental; Improved Intl. support: Fixed UK Google homepage & search results
 	// v2.1.4	Optimized Brute Force CSS-override fucntionality: faster & lighter; Updated Experimental
 	// v2.1.5	Improved Google Voice all thanks to godsyn
+	// v2.1.6	Enhanced Google Login pages; Updated Search Suggest bg
 
 
 // To Do:
@@ -234,7 +235,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 // Google Search Results Page Enhancements
 	/* logo */			"BODY#gsr > DIV#header > FORM#tsf > TABLE#sft > TBODY > TR > TD > H1 > A#logo > IMG   {display:none;}" +
 	/* search container */		"BODY#gsr > DIV#header > FORM#tsf > TABLE#sft > TBODY > TR > TD#sff > TABLE.ts, BODY#gsr > DIV#header > FORM#tsf > TABLE#sft > TBODY > TR > TD#sff > TABLE.ts > TBODY > TR > TD:first-child, BODY#gsr > DIV#header > FORM#tsf > TABLE#sft > TBODY > TR > TD#sff > TABLE.ts > TBODY > TR > TD > INPUT[name='q']   {width:80%;}" +
-	/* search suggest bg */		"TABLE.gac_m, TABLE.gac_m *, .google-ac-a, .google-ac-a *   {background-color:#222 !important; color:#999 !important;}" +
+	/* search suggest bg */		".gac_m, .gac_m *, .google-ac-a, .google-ac-a *   {background-color:#222 !important; color:#999 !important;}" +
 	/* search suggest hover */	".gac_b .gac_c, .gac_b .gac_c *, .google-ac-b, .google-ac-b *, .google-ac-e, .google-ac-e *   {background-color:#444 !important; color:#fff !important;}" +
 	/* search within logo */	"TABLE[width='100%'] > TBODY > TR > TD[valign='top'] > A > IMG[width='200'][height='78'][alt='Google'], A#logo IMG[src='/images/experimental_sm.gif'], A#logo > IMG[width='150'][height='105'], A#logo > IMG[src='/images/nav_logo4.png']   {display:none;}" +
 	/* search within txt */		"TABLE[width='100%'] > TBODY > TR > TD[valign='top'] > CENTER > FONT > b   {position:relative; top:68px;}" +
@@ -505,7 +506,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 // Code Enhancements
 	/* logo imgs */			"#logo IMG[src='/images/code_sm.png'], TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;'] IMG[src='/hosting/images/code_sm.png'], #logo IMG[src='http://code.google.com/images/code_sm.png']   {display:none;}" +
 	/* search button bg */		".gsc-search-box .gsc-search-button   {background-color:#000;}" +
-	/* search suggest */		".gsc-search-box .greytext   {background-color:#000; color:#999 !important;}" +
+	/* search suggest */		".gsc-search-box .greytext   {background-color:#000 !important; color:#999 !important;}" +
 	/* header bars */		"#gc-topnav, #gc-topnav H1, #header #title, TABLE.mainhdr, #issueheader, #issueheader TABLE TBODY TR TD, #makechanges DIV.h4   {padding-right:10px; background-color:#333; border:0 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#000 !important;}" +
 	/* page txt */			"#gc-home DIV, #codesiteContent DIV, #body, #body DIV, #body TABLE TBODY TR TD DIV, #maincol DIV, #maincol DIV TABLE TBODY TR TD, #maincol P, #maincol H4, #issuemeta, #issuemeta TD, TABLE.issuepage TBODY TR TD[class='vt issuedescription'], DIV.content DIV, DIV.content DIV DIV DIV H2, DIV.content DIV DIV TABLE TBODY TR TD   {color:#999 !important;}" +
 	/* section headers */		"DIV.g-unit H2, .g-c .column-title, #gc-toc UL.treelist LI H1, #gc-toc UL.treelist LI H2, #gc-pagecontent H1   {margin-top:10px; padding-top:2px; padding-left:4px; border:0; background-color:#333; -moz-border-radius-topleft:14px;-moz-border-radius-topright:14px;  color:#fff;}" +
@@ -617,7 +618,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Script Update Message Box
-	/* layout */			"#gsscriptVersionMessage   {position:fixed; top:0px; right:1px; width:33em; height:5.3em; z-index:99; overflow:auto; padding:1em; background-color:#C00040; outline:#aaa solid 1px; font-family:verdana; font-weight:bold; font-size:0.9em; color:#fff !important; text-align:center; cursor:default;}";
+	/* layout */			"#gsscriptVersionMessage   {position:fixed; top:0px; right:1px; width:470px; height:76px; z-index:99; overflow:auto; padding:10px; background-color:#C00040; outline:#aaa solid 1px; font-family:Trebuchet MS, Verdna; font-weight:bold; font-size:14px; color:#fff !important; text-align:center; cursor:default;}";
 
 
 
@@ -662,11 +663,28 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
 
 		/* logo img [hide] */	Ssheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'] IMG[width='150'][height='55']   {display:none;}", 0);
-		/* logo img [insert] */	Ssheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;']   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
+		/* logo img [insert] */	Ssheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;']   {width:150px !important; height:55px !impor none;tant; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
 		/* page title */	Ssheet.insertRule("BODY > DIV#container > DIV#header > DIV > DIV.title   {color:#fff;}", 0);
 		/* header & try out */	Ssheet.insertRule("BODY > DIV#container > DIV#content > TABLE.expheader > TBODY > TR > TD, BODY > DIV#container > DIV#content > TABLE.expheader > TBODY > TR > TD > SPAN, BODY > DIV#container > DIV#content > TABLE > TBODY > TR > TD.expdesc > TABLE > TBODY > TR[valign='middle'] > TD[bgcolor='#ffffcc'][style='padding: 5px;'], BODY > DIV#container > DIV#content > TABLE > TBODY > TR > TD.expdesc > TABLE > TBODY > TR > TD.corners_yellow > SPAN   {background:#333 none !important; border:0; color:#fff;}", 0);
 		/* content */		Ssheet.insertRule("BODY > DIV#container > DIV#content   {color:#999 !important;}", 0);
 		/* footer */		Ssheet.insertRule("BODY > DIV#container > DIV#footer   {display:none;}", 0);
+	}
+
+
+// Google Login Enhancements
+	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/Login?') > -1) {
+		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
+		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
+		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
+		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+
+
+		/* logo img [hide] */	Ssheet.insertRule("BODY[onload='gaia_setFocus();'] > DIV#main > DIV.header > A > IMG, BODY[onload='gaia_setFocus();'] > DIV#main > DIV#maincontent > TABLE > TBODY > TR > TD > DIV#rhs > DIV#rhs_login_signup_box > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD > DIV.loginBox > TABLE#gaia_table > TBODY > TR> TD > TABLE > TBODY > TR > TD > IMG, BODY[onload='gaia_setFocus();'].compact > H1 > IMG:first-child, BODY[onload='gaia_setFocus();'].compact > DIV#main > DIV.rightside > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD > DIV.loginBox > TABLE#gaia_table > TBODY > TR > TD > TABLE > TBODY > TR > TD> IMG:first-child   {display:none;}", 0);
+		/* logo img [insert] */	Ssheet.insertRule("BODY[onload='gaia_setFocus();'] > DIV#main > DIV.header, BODY[onload='gaia_setFocus();'].compact > H1   {width:150px !important; height:55px !important; border:0 none; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
+		/* strong txt */	Ssheet.insertRule("BODY[onload='gaia_setFocus();'] > DIV#main > DIV#maincontent > TABLE > TBODY > TR > TD B:first-child, BODY[onload='gaia_setFocus();'].compact > DIV#main > H2, BODY[onload='gaia_setFocus();'].compact > DIV#main > P.icon > B   {color:#fff;}", 0);
+		/* grey cntnrs */	Ssheet.insertRule("BODY[onload='gaia_setFocus();'] > DIV#main > DIV#maincontent > TABLE > TBODY > TR > TD > DIV#rhs > DIV#rhs_login_signup_box > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent, BODY[onload='gaia_setFocus();'] > DIV#main > DIV#maincontent > TABLE > TBODY > TR > TD > DIV#rhs > DIV#rhs_login_signup_box > TABLE.form-noindent, BODY[onload='gaia_setFocus();'].compact > DIV#main > DIV.tip, BODY[onload='gaia_setFocus();'].compact > DIV#main > DIV.rightside > FORM#gaia_loginform > DIV#gaia_loginbox, BODY[onload='gaia_setFocus();'].compact > DIV#main > DIV.rightside > DIV.gaia_signupbox   {background-color:#333; border:0; text-align:center; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
+		/* inner boxes */	Ssheet.insertRule("BODY[onload='gaia_setFocus();'] > DIV#main > DIV#maincontent > TABLE > TBODY > TR > TD > DIV#rhs > DIV#rhs_login_signup_box > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD, BODY[onload='gaia_setFocus();'] > DIV#main > DIV#maincontent > TABLE > TBODY > TR > TD > DIV#rhs > DIV#rhs_login_signup_box > TABLE.form-noindent > TBODY > TR > TD, BODY[onload='gaia_setFocus();'].compact > DIV#main > DIV.rightside > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD, BODY[onload='gaia_setFocus();'].compact > DIV#main > DIV.rightside > FORM#gaia_loginform > DIV#gaia_loginbox, BODY[onload='gaia_setFocus();'].compact > DIV#main > DIV.rightside > DIV.gaia_signupbox > TABLE.form-noindent > TBODY > TR > TD   {background-color:#000; border:0; color:#fff; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
+		/* footer */		Ssheet.insertRule("BODY[onload='gaia_setFocus();'] > DIV#main > DIV.footer, BODY[onload='gaia_setFocus();'].compact > DIV#main > DIV#about   {display:none;}", 0);
 	}
 
 
@@ -800,13 +818,13 @@ function scriptShowUpdateMessage(scriptShowMessage, scriptNewVersion) {
 			// Creates the notice
 			messageDiv = createNode("div", {id: "gsscriptVersionMessage", title: "A new version of google Enhanced BLACK is available"});
 			messageDiv.innerHTML = "A new version of google Enhanced BLACK is available<br />" +
-				"<span style='font-weight:normal; color:#f77;'>Updated: " + scriptNewVersionDate + "</span><br /><br />" +
-				"<a style='position:absolute; bottom:7px; left:13px;' href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2654952' target='_blank'><img src='http://images2.rdefined.com/d/89712-1/jar.gif' title=' Tip  Jar  ' border=0 /></a>" +
-				"<a style='color:#fcc !important; font-size:1.1em;' id='gsscriptVersionInstallUpdate' href='" + scriptFileURL + "' title='Install the script update now'><blink>INSTALL UPDATE</blink></a>" +
+				"<span style='font-weight:normal; color:#f77; font-family:Trebuchet MS, Verdna;'>Updated: " + scriptNewVersionDate + "</span><br /><br />" +
+				"<a style='position:absolute; top:67px; left:9px;' href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2654952' target='_blank'><img src='http://images2.rdefined.com/d/89712-1/jar.gif' title=' Tip  Jar  ' border=0 /></a>" +
+				"<a style='color:#fcc !important; font-size:16px; font-family:Trebuchet MS, Verdna;' id='gsscriptVersionInstallUpdate' href='" + scriptFileURL + "' title='Install the script update now'><blink>INSTALL UPDATE</blink></a>" +
 				" &nbsp;&middot;&nbsp; " +
-				"<a style='color:#f99 !important;' href='" + scriptHomepageURL + "' target='_blank' title='Go to the google Enhanced BLACK UserScript page in a new tab'>Go to UserScript page</a>" +
+				"<a style='color:#f99 !important; font-family:Trebuchet MS, Verdna;' href='" + scriptHomepageURL + "' target='_blank' title='Go to the google Enhanced BLACK UserScript page in a new tab'>Go to UserScript page</a>" +
 				" &nbsp;&middot;&nbsp; " +
-				"<a style='color:#fcc !important;' id='gsscriptVersionMessageHide' href='javascript:void(null)' title='Hide the notice for this session'>Hide notice</a>";
+				"<a style='color:#fcc !important; font-family:Trebuchet MS, Verdna;' id='gsscriptVersionMessageHide' href='javascript:void(null)' title='Hide the notice for this session'>Hide notice</a>";
 			document.body.appendChild(messageDiv);
 			// Adds event listeners to the hide update-notice upon Install or Hide
 			$("gsscriptVersionInstallUpdate").addEventListener("click", function(evt) {

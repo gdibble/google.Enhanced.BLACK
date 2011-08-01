@@ -2,7 +2,7 @@
 	// @name		google Enhanced BLACK
 	// @description		This Black Google script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
 	// @version		3.2.5
-	// @date		2011-05-15
+	// @date		2011-05-16
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		Gabriel Dibble <gdibble@gmail.com>
@@ -26,7 +26,7 @@
 
 
 function sI(w){switch(w){
-	case "v":return 1305527661763;
+	case "v":return 1305534785308;
 	case "h":return "http://userscripts.org/scripts/show/12917";
 	case "f":return "http://userscripts.org/scripts/source/12917.user.js";
 }}//alert(Date.now());
@@ -1108,7 +1108,7 @@ function enhanceGoogle(){
 	}
 
 	// Web srch  (inc. GEncrypted Home)
-	else if((iO(lH,".google.")>-1&&(iO(lH,Gtld+"/search?")>-1||iO(lH,Gtld+"/#hl=")>-1||iO(lH,Gtld+"/webhp?")>-1))||(iO(lH,"encrypted.google."+Gtld+"/")>-1)){
+	else if((iO(lH,".google.")>-1&&(iO(lH,"/webhp")>-1||iO(lH,Gtld+"/search?")>-1||iO(lH,Gtld+"/#hl=")>-1||iO(lH,Gtld+"/#sclient=")>-1||iO(lH,Gtld+"/webhp?")>-1))||(iO(lH,"encrypted.google."+Gtld+"/")>-1)){
 		/* RemovSrchTracking */	setTimeout(RST,1001);
 
 		/* applyGlobals */	Ge();
@@ -1116,7 +1116,7 @@ function enhanceGoogle(){
 		/* Home logo [hide] */	sIR("BODY > CENTER > DIV#lga > IMG,SPAN#body > CENTER > DIV#lga > IMG {visibility:hidden;}");
 		/* Home logo [ins] */	sIR("BODY > CENTER > DIV#lga,SPAN#body > CENTER > DIV#lga {padding-top:20px; background:transparent url('"+gHpL+"') no-repeat scroll center top !important;}");
 		/* logo [rem] */	sIR("BODY > DIV#cnt > DIV#sfcnt > FORM#tsf > DIV > DIV:first-child > A:first-child > IMG[style='padding-top: 10px;']:first-child,FORM#tsf > DIV > DIV:first-child > H1 > A#logo {display:none;}");
-		/* logo [ins] */	sIR("BODY > DIV#cnt > DIV#sfcnt > FORM#tsf > DIV > DIV:first-child,FORM#tsf > DIV > DIV:first-child {width:150px; height:65px; background:transparent url('"+gL+"') no-repeat scroll 0 center;}");
+		/* logo [ins] */	sIR("BODY > DIV#cnt > DIV#sfcnt > FORM#tsf > DIV > DIV:first-child,FORM#tsf > DIV > DIV:first-child,#logocont	 {width:150px; height:65px; background:transparent url('"+gL+"') no-repeat scroll 0 center !important;}");
 		/* boxes */		sIR("#fctr, #ghead, #pmocntr, #sbl, #tba, #tbe, .fade {background:transparent;}");
 
 		/* cnt outer pos */	sIR("#cnt {margin:0; max-width:100%;}");

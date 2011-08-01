@@ -224,7 +224,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* remove sponsored linx */	"DIV#tads   {display:none;}" +
 	/* refine results txt */	"TABLE#po TBODY TR TD   {color:#999 !important;}" +
 	/* sponsored linx */		"DIV#res DIV.ta, BODY#gsr > TABLE#mbEnd   {display:none;}" +
-	/* result-area txt */		"DIV#res P, DIV#res .j, DIV.sml, DIV.std, DIV#res OL LI DIV   {color:#999 !important;}" +
+	/* result-area txt */		"DIV#res P, DIV#res .j, DIV.sml, DIV.std, DIV#res OL LI, DIV#res OL LI DIV   {color:#999 !important;}" +
 	/* description width */		"TD.j, OL > LI.g > DIV.s   {width:100% !important; max-width:100% !important;}" +
 	/* description color */		"FONT   {color:#999;}" +
 	/* result spacing */		".g   {margin:2em 0pt;}" +

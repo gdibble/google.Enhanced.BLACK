@@ -1,7 +1,7 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.1.3
+	// @version		2.1.4
 	// @date		2009-07-04
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
@@ -15,7 +15,7 @@
 
 
 
-var scriptVersion = 1246728643323;   //alert(Date.now());
+var scriptVersion = 1246731736265;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -87,6 +87,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.1.1	Improved international logo support
 	// v2.1.2	Fixed Images logo, Img Size Indicator & Alert; Minor update to Firefox start-page
 	// v2.1.3	Fixed Experimental; Improved Intl. support: Fixed UK Google homepage & search results
+	// v2.1.4	Optimized Brute Force CSS-override fucntionality: faster & lighter; Updated Experimental
 
 
 // To Do:
@@ -527,9 +528,17 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Experimental Enhancements
-	/* (this is the old version, expanded below in brute force enhancements) */
+	/*   These two maintained for older G.versions, expanded below and in brute force enhancements: */
 	/* logo img */			"BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'] IMG[width='150'][height='55']   {display:none;}" +
 	/* content */			"BODY > DIV#container > DIV#content   {color:#999 !important;}" +
+
+	/*   New web search results implementations: */
+	/* right side drop menu */	"BODY#gsr > DIV#header > DIV.std > SPAN[style='background: rgb(255, 255, 255) none repeat scroll 0% 0%; float: right; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous; position: relative;']   {background-color:#555 !important; padding-right:0.25em; padding-left:0.25em; color:#fff !important; text-decoration:none; -moz-border-radius-topright:7px; -moz-border-radius-topleft:7px; -moz-border-radius-bottomright:7px; -moz-border-radius-bottomleft:7px;}" +
+	/* right side drop menuLink */	"BODY#gsr > DIV#header > DIV.std > SPAN[style='background: rgb(255, 255, 255) none repeat scroll 0% 0%; float: right; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous; position: relative;'] A, BODY#gsr > DIV#header > DIV.std > SPAN[style='background: rgb(255, 255, 255) none repeat scroll 0% 0%; float: right; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous; position: relative;'] A U   {color:#fff !important; text-decoration:none !important;}" +
+	/* right side drop menu drop */	"BODY#gsr > DIV#header > DIV.std > SPAN[style='background: rgb(255, 255, 255) none repeat scroll 0% 0%; float: right; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous; position: relative;'] > DIV#exp_info   {background-color:#333 !important;}" +
+	/* keyboard exp Key bg */	"BODY#gsr > TABLE.mbEnd   {margin-top:1em; margin-bottom:1em; background:#222 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
+	/* keyboard exp Key bar */	"BODY#gsr > TABLE.mbEnd > TBODY > TR > TD.std   {border-left:0 none !important;}" +
+	/* keyboard exp Key title */	"BODY#gsr > TABLE.mbEnd > TBODY > TR > TD.std > CENTER.f   {color:#fff;}" +
 
 
 // Support Enhancements
@@ -613,41 +622,42 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 // BRUTE-FORCE for "less cooperative" sites (each URI validated)
 	var style = document.createElement('style');
-	style.setAttribute('id', 'bruteForce');
+	    style.setAttribute('id', 'bruteForce');
 	document.getElementsByTagName('head')[0].appendChild(style);
+	var Ssheet = document.getElementById('bruteForce').sheet;
 
 
 	// Voice Enhancements
 	if ((location.href.indexOf('http://www.google.com/googlevoice') > -1) || (location.href.indexOf('https%3A%2F%2Fwww.google.com%2Fvoice%2Faccount%2Fsignin%2F') > -1) || (location.href.indexOf('https://services.google.com/fb/forms/googlevoiceinvite/') > -1)) {
-		/* Global font */	document.getElementById('bruteForce').sheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
-		/* page bg */		document.getElementById('bruteForce').sheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
-		/* link color */	document.getElementById('bruteForce').sheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
-		/* visited linx */	document.getElementById('bruteForce').sheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
+		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
+		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
+		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
 
-		/* about header bar */	document.getElementById('bruteForce').sheet.insertRule("P.highlight-box   {background-color:#333; border:0; color:#fff; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
+		/* about header bar */	Ssheet.insertRule("P.highlight-box   {background-color:#333; border:0; color:#fff; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
 
-		/* invite headline */	document.getElementById('bruteForce').sheet.insertRule("BODY[class='compact product']> H2   {margin-top:2em; color:#fff;}}", 0);
+		/* invite headline */	Ssheet.insertRule("BODY[class='compact product']> H2   {margin-top:2em; color:#fff;}}", 0);
 
-		/* login feat-txt */	document.getElementById('bruteForce').sheet.insertRule("BODY> DIV.gc-mid > TABLE#gc-features > TBODY > TR > TD > DIV.gc-item-hd   {color:#fff;}}", 0);
-		/* login signin boxO */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV.gc-mid > DIV.gc-si-content > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent   {background-color:#000; border:0; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
-		/* login signin boxI */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV.gc-mid > DIV.gc-si-content > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD   {background-color:#333; color:#ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
-		/* login invite bar */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#gc-signup-closed   {background-color:#333; border:0; color:#fff; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
+		/* login feat-txt */	Ssheet.insertRule("BODY> DIV.gc-mid > TABLE#gc-features > TBODY > TR > TD > DIV.gc-item-hd   {color:#fff;}}", 0);
+		/* login signin boxO */	Ssheet.insertRule("BODY > DIV.gc-mid > DIV.gc-si-content > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent   {background-color:#000; border:0; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
+		/* login signin boxI */	Ssheet.insertRule("BODY > DIV.gc-mid > DIV.gc-si-content > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD   {background-color:#333; color:#ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
+		/* login invite bar */	Ssheet.insertRule("BODY > DIV#gc-signup-closed   {background-color:#333; border:0; color:#fff; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
 	}
 
 
 // Experimental Enhancements
 	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/experimental/') > -1) {
-		/* Global font */	document.getElementById('bruteForce').sheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
-		/* page bg */		document.getElementById('bruteForce').sheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
-		/* link color */	document.getElementById('bruteForce').sheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
-		/* visited linx */	document.getElementById('bruteForce').sheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
+		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
+		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
+		/* visited linx */	Ssheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
 
-		/* logo img [hide] */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'] IMG[width='150'][height='55']   {display:none;}", 0);
-		/* logo img [insert] */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;']   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
-		/* page title */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#header > DIV > DIV.title   {color:#fff;}", 0);
-		/* header & try out */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#content > TABLE.expheader > TBODY > TR > TD, BODY > DIV#container > DIV#content > TABLE.expheader > TBODY > TR > TD > SPAN, BODY > DIV#container > DIV#content > TABLE > TBODY > TR > TD.expdesc > TABLE > TBODY > TR[valign='middle'] > TD[bgcolor='#ffffcc'][style='padding: 5px;'], BODY > DIV#container > DIV#content > TABLE > TBODY > TR > TD.expdesc > TABLE > TBODY > TR > TD.corners_yellow > SPAN   {background:#333 none !important; border:0; color:#fff;}", 0);
-		/* content */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#content   {color:#999 !important;}", 0);
-		/* footer */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#footer   {display:none;}", 0);
+		/* logo img [hide] */	Ssheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'] IMG[width='150'][height='55']   {display:none;}", 0);
+		/* logo img [insert] */	Ssheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;']   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
+		/* page title */	Ssheet.insertRule("BODY > DIV#container > DIV#header > DIV > DIV.title   {color:#fff;}", 0);
+		/* header & try out */	Ssheet.insertRule("BODY > DIV#container > DIV#content > TABLE.expheader > TBODY > TR > TD, BODY > DIV#container > DIV#content > TABLE.expheader > TBODY > TR > TD > SPAN, BODY > DIV#container > DIV#content > TABLE > TBODY > TR > TD.expdesc > TABLE > TBODY > TR[valign='middle'] > TD[bgcolor='#ffffcc'][style='padding: 5px;'], BODY > DIV#container > DIV#content > TABLE > TBODY > TR > TD.expdesc > TABLE > TBODY > TR > TD.corners_yellow > SPAN   {background:#333 none !important; border:0; color:#fff;}", 0);
+		/* content */		Ssheet.insertRule("BODY > DIV#container > DIV#content   {color:#999 !important;}", 0);
+		/* footer */		Ssheet.insertRule("BODY > DIV#container > DIV#footer   {display:none;}", 0);
 	}
 
 

@@ -2,7 +2,7 @@
 	// @name		google Enhanced BLACK
 	// @description		This Google page-enhancer turns all Google service pages BLACK for reduced eye fatigue, removes ads & clutter and improves page layout and readability by widening results
 	// @version		1.9.1
-	// @date		2009-01-17
+	// @date		2009-01-18
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		gabedibble <gdibble@gmail.com>
@@ -12,7 +12,7 @@
 // ==/UserScript==
 
 
-var scriptVersion = 1232209058113;   //alert(Date.now());
+var scriptVersion = 1232313669144;   //alert(Date.now());
 
 var scriptLastCheck = parseInt(GM_getValue("scriptLastCheck", "0"), 10);
 	if (isNaN(scriptLastCheck)) scriptLastCheck = 0;
@@ -462,7 +462,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Script Update Message Box
-	/* layout */			"#gsscriptVersionMessage   {position:fixed; top:0px; right:0px; width:22em; height:7.2em; z-index:99; overflow:auto; padding:5px; background-color:#C00040; outline:#fff solid 1px; font-family:verdana; font-weight:bold; font-size:0.9em; color:#fff !important; text-align:center;}";
+	/* layout */			"#gsscriptVersionMessage   {position:fixed; top:0px; right:1px; width:33em; height:6em; z-index:99; overflow:auto; padding:1em; background-color:#C00040; outline:#aaa solid 1px; font-family:verdana; font-weight:bold; font-size:0.9em; color:#fff !important; text-align:center;}";
 
 
 
@@ -592,14 +592,14 @@ function scriptShowUpdateMessage(scriptShowMessage, scriptNewVersion) {
 		}
 		else {
 			// Creates the notice
-			messageDiv = createNode("div", {id: "gsscriptVersionMessage", title: "A new Google i&Search Dark + Enhancements version is available!"});
-			messageDiv.innerHTML = "A new version of Google i&Search Dark + Enhancements is available<br />" +
-				"<span style='font-weight:normal; font-size:0.8em;'>Updated: " + scriptNewVersionDate + "</span><br /><br />" +
-				"<a style='color:#fcc !important; font-size:1em;' href='" + scriptFileURL + "' title='Install the script update'>INSTALL NOW</a>" +
+			messageDiv = createNode("div", {id: "gsscriptVersionMessage", title: "A new version of google Enhanced BLACK is available"});
+			messageDiv.innerHTML = "A new version of google Enhanced BLACK is available<br />" +
+				"<span style='font-weight:normal; color:#f77;'>Updated: " + scriptNewVersionDate + "</span><br /><br />" +
+				"<a style='color:#fcc !important; font-size:1.1em;' href='" + scriptFileURL + "' title='Install the script update now'><blink>INSTALL UPDATE</blink></a>" +
 				" &nbsp;&middot;&nbsp; " +
-				"<a style='color:#f99 !important;' href='" + scriptHomepageURL + "' target='_blank' title='Go to Google i&Search Dark + Enhancements homepage in a new tab'>Go to web page</a>" +
+				"<a style='color:#f99 !important;' href='" + scriptHomepageURL + "' target='_blank' title='Go to the google Enhanced BLACK UserScript page in a new tab'>Go to UserScript page</a>" +
 				" &nbsp;&middot;&nbsp; " +
-				"<a style='color:#fcc !important;' id='gsscriptVersionMessageHide' href='javascript:void(null)' title='Hide the notice for this session'>Hide</a>";
+				"<a style='color:#fcc !important;' id='gsscriptVersionMessageHide' href='javascript:void(null)' title='Hide the notice for this session'>Hide notice</a>";
 			document.body.appendChild(messageDiv);
 			// Adds an event listener to the hide notice link
 			$("gsscriptVersionMessageHide").addEventListener("click", function(evt) {

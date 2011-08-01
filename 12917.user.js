@@ -1,8 +1,8 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.9.7
-	// @date		2009-10-07
+	// @version		2.9.8
+	// @date		2009-10-11
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		gabedibble <gdibble@gmail.com>
@@ -16,131 +16,18 @@
 	// @exclude		htt*://*.google.*/custom*
 // ==/UserScript==
 
+// GENUINE FREEWARE <3
+// (CC) BY-NC-SA: This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License. <http://creativecommons.org/licenses/by-nc-sa/3.0/us/>
+
+// Change Log & To-Do Lists available @source (URI above)
+// Feel free to leave suggestions/criticism on the UserScript Page or via email; THANX! =)
 
 
-var scriptVersion = 1254962790788;   //alert(Date.now());
+var scriptVersion = 1255329038744;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
 var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
-
-
-
-
-// Change Log:
-	// v1.0.0	Initial Release
-	// v1.0.1	Added Enhancements for Gm-Script Google Search Sidebar
-	// v1.1.0	Fixed Google News Search Results
-	// v1.1.1	Logo fixes for Google News; iGoogle module header enhancements
-	// v1.1.2	Added support for Gm-Script User Script Updates [removed as of v1.9.0]
-	// v1.1.3	Fixed color scheme on Google News Homepage; Rearranged functions
-	// v1.1.4	Added Removal Of Right Side Ads; Fixed Search Results no match response
-	// v1.1.5	Removed Search Results sponsored linx; Fixed refine results txt
-	// v1.2.0	Added Video Results Enhancements; Rounded News left headline; Fixed nav bar
-	// v1.2.1	Updated iGoogle I'm Feeling Lucky & Cancel buttons, Module Settings updates
-	// v1.2.2	Fixed Google Home & Images logos; Fixed Video bg, time txt; Fixed News logo
-	// v1.2.3	Fixed iGoogle Home logo; Setup block; Search linx position, Settings txt
-	// v1.2.4	Fixed iGoogle skins box; News spacing, Headers, Show morefewer linx, Alerts txt
-	// v1.2.5	Fixed Google Search & Image Home non-search logos; Fixed Preferences
-	// v1.2.6	Fixed Search more pop layer; Fixed iGoogle module inner detail txt
-	// v1.2.7	Fixed iGoogle Dialogs; Module selection page & delete confirmation box
-	// v1.3.0	Major Code Optimization & a few minor txt fixes
-	// v1.4.0	Added Maps Enhancements
-	// v1.4.1	Fixed iGoogle txt & skin box; Video filter txt; News Image v& AFP.google
-	// v1.4.2	Changed visited link color to be grey-blue; Fixed iGoogle module bg
-	// v1.4.3	Moved black Google logo into script-code (only 3.8k)
-	// v1.5.0	Major Code Optimization & a few minor bg fixes
-	// v1.5.1	Refixed iGoogle Add Stuff (old disabled); Fixed more linx; Images size alert
-	// v1.5.2	Fixed iGoogle Make your own gadget pages, Add Stuff search results
-	// v1.6.0	Added Code Enhancements; Fixed Maps popup txt & removed Sponsored Linx
-	// v1.6.1	Refixed AP/AFP.google News
-	// v1.6.2	Changed Maps results color to be visible if also selected, My Maps fixes
-	// v1.6.3	Removed Google Search Sponsored Linx!
-	// v1.7.0	Added Support Enhancements; Toolbar Enhancements; Firefox Tools Enhancements +
-	// v1.7.1	Updated txt-field color; Updated Maps highlight colors & Print-page layout
-	// v1.7.2	Fixed iGoogle modules: Gmail linx & txt, YouTube bg; Excluded /custom
-	// v1.7.3	Fixed iGoogle add tab dialog & new tab txt, Add Stuff menu headers & added msg
-	// v1.7.4	Fixed Google Search Result desc-txt, Image Labeler bg, News Results txt
-	// v1.7.5	Fixed iGoogle header bar bg
-	// v1.7.6	Fixed Google Result txt, Advanced Search & Footer Tools; Experimental Enhancements
-	// v1.7.7	Added Firefox Start Enhancements
-	// v1.8.0	Quick update for Google Updates; Added Products; Minor fixes for Experimental/Maps
-	// v1.8.1	Removed Google Search, Maps & Shopping Sponsored Links; fixed Shopping logo
-	// v1.8.2	ReEnhanced Firefox Start, fixed Google Search & Intnl logo, Widened search results
-	// v1.8.3	Enhanced top menu, results link colors & changed font to Trebuchet MS; MonkeyBarrel moved
-	// v1.8.4	Enhanced News quote box; Updated Search paging & Shopping txt color
-	// v1.8.5	Fixed visited linx; Updated Google Preferences & Support; Hid iGoogle CQ-modl ads
-	// v1.8.6	Added iGoogle & Sign in link to header-bar; Fixed News & Shopping logos; Updated sidebar
-	// v1.8.7	Improved added iGoogle & Sign in linx with conditional logic
-	// v1.8.8	Resolved iGoogle & Sign in linx layout between FF2 & FF3
-	// v1.8.9	Fixed iGoogle page layout & color scheme
-	// v1.9.0	Auto-update added: THANX Mindeye! Thanx to Margot&Psidre for inspiration to fix layout =)
-	// v1.9.1	Improved runtime to enhance Google first, then check for script-updates [&updatedName!]
-	// v2.0.0	Added some Groups Enhancements; fixed Google Preferences layout
-	// v2.0.1	Fixed Web Advanced Search page and iGoogle Add Stuff directory, module page & Create
-	// v2.0.2	Fixed News menu and other layout elements (thanks Dan!)
-	// v2.0.3	Fixed search results width (expansion), News And Video fixes & updates
-	// v2.0.4	Tightened up header elements on Web, Images, News & Video search; Fixed News logo & form
-	// v2.0.5	Fixed News head link positioning
-	// v2.0.6	Fixed Web search result txt (thanks Makarielis & Justini) and News/Video headers
-	// v2.0.7	Fixed Logos; Search Suggest, Results & Footer, Pref-txt; Shopping desc; iG txt & icon
-	// v2.0.8	Improved Search Suggest bgs; Fixed Video header & footer; Google Search Sidebar headers
-	// v2.0.9	Fixed Images safe search dropdown menu; Fixed News left-menu & right-side video headers
-	// v2.1.0	Added some Google Voice Enhancements; Fixed Google international site logos
-	// v2.1.1	Improved international logo support
-	// v2.1.2	Fixed Images logo, Img Size Indicator & Alert; Minor update to Firefox start-page
-	// v2.1.3	Fixed Experimental; Improved Intl. support: Fixed UK Google homepage & search results
-	// v2.1.4	Optimized Brute Force CSS-override fucntionality: faster & lighter; Updated Experimental
-	// v2.1.5	Improved Google Voice all thanks to godsyn
-	// v2.1.6	Enhanced Google Login pages; Updated Search Suggest bg
-	// v2.1.7	Enhanced Translate; Updated Google Web Search Language Tools, Search Within & Feedback
-	// v2.1.8	Fixed iGoogle Login, iGoogle header-link per international domains; Videos headers
-	// v2.1.9	Fixed Logos, iGoogle & Web header-linx, iG Create box & Weather module
-	// v2.2.0	Enhanced Patents; Fixed Logo & Experimental keyboard >; Fixed Translate txt; Voice @inc
-	// v2.2.1	Fixed Patents search results; Fixed Web Advanced Search
-	// v2.2.2	Updated Videos; Fixed Images logo; News logo & top ads; Updated Confucius Quotes module
-	// v2.3.0	Enhanced Trends; Optimized Brute Force globals; Updated Voice
-	// v2.4.0	Enhanced Labs; Disabled update-check in Opera; Optimized Brute Force functionality
-	// v2.4.1	Improved G-logo; Fixed Images txt & Shopping grid view price; Updated News AP layout
-	// v2.5.0	Enhanced Reader; Enhanced Profiles; Fixed Support; Fixed password field bg; BF optimiz.
-	// v2.5.1	Updated for Google Chrome support; Enhanced Add to Google (RSS); Fixed FF3.0.12 G-logo
-	// v2.6.0	Enhanced Dictionary; Enhanced Calendar; Updated Voice Logo & VM; Updated Support
-	// v2.6.1	Updated Groups and Support; Fixed Code, Web Advanced Search and g.Toolbar site
-	// v2.7.0	Enhanced Finance; Fixed Images Options & Advanced Image Search; Updated News & Support
-	// v2.7.1	Fixed Finance, Products, Groups & g.Homepage Logos; Added Adaptive Resolution Support
-	// v2.7.2	Fixed Web Search layout, Videos selection, Maps layout, Shopping layout & News AdvSearch
-	// v2.7.3	Removed Images Ad Bar!
-	// v2.8.0	Enhanced Books; Fixed News layout
-	// v2.9.0	Enhanced Scholar; Enhanced Blogs; Fixed Code layout & Experimental Keyboard Shortcuts
-	// v2.9.1	Fixed Reader for R0bert & iGoogle Themed BG support; New G-logo (only 2.2Kb; saved 621b)
-	// v2.9.2	Fixed Voice & News layouts, iGoogle Themes site AND Gmail login & basic HTML view!
-	// v2.9.3	Fixed Ff-logos/Reader bugs and Shopping, Finance, Blogs, Groups, Scholar, Books & Logins
-	// v2.9.4	Removed ads; Fixed Calendar (thanx RoyK&Paul 4inspratn) & Gmail [basic HTML], VidAdvSrch
-	// v2.9.5	Fixed logos; Updated News edit-page panel, more-services layer & [g.Labs-News] FastFlip!
-	// v2.9.6	Fixed Google Docs (thanx2 thadarklord 4insp), Images Adv Search header & Youtube Login
-	// v2.9.7	Fixed Special Logo; Layout4 Translate, Profiles, Blogs, Trends, Patents, Notebook &more!
-
-
-// To Do:
-	// Add to Voice Setting enhancements
-	// Add to Code enhancements
-	// Add to Notebook enhancements
-	// Add to Docs enhancements
-	// Add Earth support
-	// Add Web History support
-	// Add Insights for Search
-	// Add User Script Command to launch Options panel
-	// Add Option: Turn On/Off 3.14 Hack
-	// Add Option: Font Choice dropdown
-	// Add Option: Link color selections
-	// Add Option: Hide G-logo
-	// Add Option: Also replace "special logos"
-	// Test functionality of custom background-color and G.logo
-
-
-	// Feel free to leave suggestions/criticism on the UserScript Page or via email (see above); THANX!
-
-
 
 
 var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
@@ -157,7 +44,8 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* google bar txt */		"#gbar DIV.gb2   {padding-top:0; padding-bottom:0; background-color:#c9d7f1 !important;}" +
 	/* google bar linx */		"#gbar A.gb1, #gbar B.gb1, #gbar A.gb3   {position:relative; bottom:0.2em; font-weight:bold !important; font-size:1.15em !important;}" +
 	/* google bar b-line */		"#gbh, .gbh   {border-color:#777;}" +
-	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top'], #gc-header #logo, #header #logo, TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;'], TABLE[align='center'] TBODY TR TD[width='155'][rowspan='2'], TABLE[align='center'] TBODY TR[valign='middle'] TD[width='135'], BODY[bgcolor='#ffffff'][topmargin='3'] CENTER TABLE[width='725'] TBODY TR TD TABLE[cellspacing='1'] TBODY TR TD[height='1'][bgcolor='#666666'], BODY > TABLE[width='100%'][style='direction: ltr;'] > TBODY > TR > TD, BODY > TABLE[width='100%'] > TBODY > TR > TD[width='100%'][style='padding-left: 15px;'], BODY.siteowners > TABLE[width='96%'] > TBODY > TR > TD[width='1%'], BODY > CENTER > DIV > TABLE[width='739'] > TBODY > TR > TD[width='100%'], BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD[width='1%'], TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='1%'][valign='top'], BODY.search > TABLE[width='95%'] > TBODY > tr[valign='top'] > TD[width='1%'], BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'], BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='2'] > TBODY > TR > TD[width='1%'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD > DIV[style='margin: 5px 0pt 4px 4px; background: transparent url(/images/firefox/sprite.png) no-repeat scroll 0pt -95px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 23px; width: 80px;'], A#logo, A#glogo, BODY.answer_page TABLE.header_table > TBODY > TR > TD.header_logo_td, CENTER > H1#ps-logo, BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > CENTER > TABLE > TBODY TR > TD[align='left'] > TABLE > TBODY > TR > TD[valign='top'] > DIV, BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[valign='top'] > DIV, BODY > TABLE[width='100%'][cellspacing='2'][cellpadding='0'][border='0'][style='margin-top: 1em;'] > TBODY > TR > TD[width='1%'], BODY > DIV#wrapper > DIV#header_logo, BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#browse-header > TABLE > TBODY > TR:first-child > TD:first-child, BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#search-header, BODY.sp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#browse-header > TABLE > TBODY > TR:first-child > TD:first-child, BODY > CENTER > DIV#videoheader > TABLE.table-header > TBODY > TR > TD.td-logo, BODY#search-results-body > DIV#videoheader > TABLE.table-header > TBODY > TR > TD.td-logo, BODY > DIV > DIV#videoheader > TABLE > TBODY > TR > TD:first-child, BODY > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#page-header > TABLE > TBODY > TR > TD:first-child, BODY > FORM[name='f'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'][style='clear: left;'] > TBODY > TR > TD:first-child, BODY > DIV#whole > TABLE[cellspacing='0'][cellpadding='0'][border='0'][style='font-size: medium;'] > TBODY > TR > TD, BODY > TABLE[cellspacing='0'][cellpadding='0'][border='0'][style='font-size: medium;'] > TBODY > TR > TD, DIV[style='background: transparent url(/intl/en_com/images/logo_plain.png) no-repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 110px; width: 276px;'], BODY > FORM > TABLE#sft > TBODY > TR > TD.tc, BODY > DIV[style='clear: both;'] > CENTER > TABLE[cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[style='padding-bottom: 8px; padding-top: 2px;'], BODY > DIV#top_search_bar > DIV[style='padding: 1px 10px 0px 6px; float: left;'], BODY > TABLE[cellspacing='0'][cellpadding='0'][border='0'][style='clear: both;'] > TBODY > TR > TD[valign='top'][rowspan='2'], BODY#search-results-body > DIV#videoheader > TABLE.table-header > TBODY > TR > TD:first-child, BODY > DIV#body-wrapper > DIV.g-doc > DIV.g-section > DIV.g-unit > DIV.sfe-logo > A > DIV.SP_logo, BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section > DIV.g-unit > DIV.sfe-logo > A > DIV.SP_logo, BODY > DIV.g-doc > DIV.g-section > DIV.g-unit > DIV.sfe-logo > A > DIV.SP_logo, BODY DIV.g-doc DIV.g-section > DIV.g-unit > DIV.sfe-logo, BODY > DIV#hp-cont > H1#hp-logo, BODY > FORM > DIV#advd-search-header > TABLE:first-child > TBODY > TR > TD[width='1%']:first-child, BODY > SPAN#main > DIV#header > DIV#sform > FORM#tsf > TABLE#sft > TBODY > TR > TD:first-child > H1, BODY[vlink='#551a8b'] > CENTER > TABLE[cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:first-child, BODY > FORM[name='f'] > TABLE[width='99%'] > TBODY > TR:first-child > TD[width='1%'], BODY > DIV > TABLE#srch_box_t > TBODY > TR > TD:first-child, BODY[bgcolor='#ffffff'] > TABLE[width='100%'] > TBODY > TR:first-child > TD[width='143']:first-child, BODY > TABLE[style='margin: 7px 3px; clear: both;'] > TBODY > TR:first-child > TD:first-child, BODY > DIV#srp-header > FORM[name='f'] > TABLE > TBODY > TR > TD:first-child, BODY > TABLE#sft > TBODY > TR > TD.tc, BODY[bgcolor='#ffffff'] > TABLE[style='margin: 9px 0px 11px; clear: both;'] > TBODY > TR > TD[valign='top'][rowspan='2'], BODY > DIV#h > TABLE:first-child > TBODY > TR > TD:first-child, BODY > DIV#headerdiv > TABLE[width='100%']:first-child > TBODY > TR:first-child > TD[width='1%'][valign='top'], BODY > DIV#masthead > TABLE.searchbar > TBODY > TR#logo-section > TD.searchbar-logo, BODY > DIV[style='clear: both;'] > CENTER > TABLE[cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[style='padding-bottom: 8px; padding-top: 2px;'], BODY.e > DIV.h TABLE#gn_ph > TBODY > TR:first-child > TD[align='right']:first-child   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}" +
+	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top'], #gc-header #logo, #header #logo, TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;'], TABLE[align='center'] TBODY TR TD[width='155'][rowspan='2'], TABLE[align='center'] TBODY TR[valign='middle'] TD[width='135'], BODY[bgcolor='#ffffff'][topmargin='3'] CENTER TABLE[width='725'] TBODY TR TD TABLE[cellspacing='1'] TBODY TR TD[height='1'][bgcolor='#666666'], BODY > TABLE[width='100%'][style='direction: ltr;'] > TBODY > TR > TD, BODY > TABLE[width='100%'] > TBODY > TR > TD[width='100%'][style='padding-left: 15px;'], BODY.siteowners > TABLE[width='96%'] > TBODY > TR > TD[width='1%'], BODY > CENTER > DIV > TABLE[width='739'] > TBODY > TR > TD[width='100%'], BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD[width='1%'], TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='1%'][valign='top'], BODY.search > TABLE[width='95%'] > TBODY > tr[valign='top'] > TD[width='1%'], BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'], BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='2'] > TBODY > TR > TD[width='1%'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD > DIV[style='margin: 5px 0pt 4px 4px; background: transparent url(/images/firefox/sprite.png) no-repeat scroll 0pt -95px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 23px; width: 80px;'], A#logo, A#glogo, BODY.answer_page TABLE.header_table > TBODY > TR > TD.header_logo_td, CENTER > H1#ps-logo, BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > CENTER > TABLE > TBODY TR > TD[align='left'] > TABLE > TBODY > TR > TD[valign='top'] > DIV, BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[valign='top'] > DIV, BODY > TABLE[width='100%'][cellspacing='2'][cellpadding='0'][border='0'][style='margin-top: 1em;'] > TBODY > TR > TD[width='1%'], BODY > DIV#wrapper > DIV#header_logo, BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#browse-header > TABLE > TBODY > TR:first-child > TD:first-child, BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#search-header, BODY.sp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#browse-header > TABLE > TBODY > TR:first-child > TD:first-child, BODY > CENTER > DIV#videoheader > TABLE.table-header > TBODY > TR > TD.td-logo, BODY#search-results-body > DIV#videoheader > TABLE.table-header > TBODY > TR > TD.td-logo, BODY > DIV > DIV#videoheader > TABLE > TBODY > TR > TD:first-child, BODY > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#page-header > TABLE > TBODY > TR > TD:first-child, BODY > FORM[name='f'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'][style='clear: left;'] > TBODY > TR > TD:first-child, BODY > DIV#whole > TABLE[cellspacing='0'][cellpadding='0'][border='0'][style='font-size: medium;'] > TBODY > TR > TD, BODY > TABLE[cellspacing='0'][cellpadding='0'][border='0'][style='font-size: medium;'] > TBODY > TR > TD, DIV[style='background: transparent url(/intl/en_com/images/logo_plain.png) no-repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 110px; width: 276px;'], BODY > FORM > TABLE#sft > TBODY > TR > TD.tc, BODY > DIV[style='clear: both;'] > CENTER > TABLE[cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[style='padding-bottom: 8px; padding-top: 2px;'], BODY > DIV#top_search_bar > DIV[style='padding: 1px 10px 0px 6px; float: left;'], BODY > TABLE[cellspacing='0'][cellpadding='0'][border='0'][style='clear: both;'] > TBODY > TR > TD[valign='top'][rowspan='2'], BODY#search-results-body > DIV#videoheader > TABLE.table-header > TBODY > TR > TD:first-child, BODY > DIV#body-wrapper > DIV.g-doc > DIV.g-section > DIV.g-unit > DIV.sfe-logo > A > DIV.SP_logo, BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section > DIV.g-unit > DIV.sfe-logo > A > DIV.SP_logo, BODY > DIV.g-doc > DIV.g-section > DIV.g-unit > DIV.sfe-logo > A > DIV.SP_logo, BODY DIV.g-doc DIV.g-section > DIV.g-unit > DIV.sfe-logo, BODY > DIV#hp-cont > H1#hp-logo, BODY > FORM > DIV#advd-search-header > TABLE:first-child > TBODY > TR > TD[width='1%']:first-child, BODY > SPAN#main > DIV#header > DIV#sform > FORM#tsf > TABLE#sft > TBODY > TR > TD:first-child > H1, BODY[vlink='#551a8b'] > CENTER > TABLE[cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:first-child, BODY > FORM[name='f'] > TABLE[width='99%'] > TBODY > TR:first-child > TD[width='1%'], BODY > DIV > TABLE#srch_box_t > TBODY > TR > TD:first-child, BODY[bgcolor='#ffffff'] > TABLE[width='100%'] > TBODY > TR:first-child > TD[width='143']:first-child, BODY > TABLE[style='margin: 7px 3px; clear: both;'] > TBODY > TR:first-child > TD:first-child, BODY > DIV#srp-header > FORM[name='f'] > TABLE > TBODY > TR > TD:first-child, BODY > TABLE#sft > TBODY > TR > TD.tc, BODY[bgcolor='#ffffff'] > TABLE[style='margin: 9px 0px 11px; clear: both;'] > TBODY > TR > TD[valign='top'][rowspan='2'], BODY > DIV#h > TABLE:first-child > TBODY > TR > TD:first-child, BODY > DIV#headerdiv > TABLE[width='100%']:first-child > TBODY > TR:first-child > TD[width='1%'][valign='top'], BODY > DIV#masthead > TABLE.searchbar > TBODY > TR#logo-section > TD.searchbar-logo, BODY > DIV[style='clear: both;'] > CENTER > TABLE[cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[style='padding-bottom: 8px; padding-top: 2px;'], BODY.e > DIV.h TABLE#gn_ph > TBODY > TR:first-child > TD[align='right']:first-child, BODY > SPAN#main > CENTER > SPAN#body > CENTER > DIV#logo   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}" +
+	/* intl home logoHeight o.r. */	"BODY > SPAN#main > CENTER > SPAN#body > CENTER > DIV#logo   {height:110px !important;}" +
 
 	/* CONDITIONAL-EVALUATION related to Homepage Special Logo [exception for g.Images-homepage] */
 	   ((($('logo') && $('logo').alt == 'Google') || location.href.indexOf('images.google.') > -1) ? 
@@ -565,7 +453,9 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* logo adjust */		"BODY > DIV#hp-cont > H1#hp-logo   {width:100% !important; height:120px !important; background-position:center center !important;}" +
 	/* adv search logo adjust */	"BODY > FORM > DIV#advd-search-header > TABLE:first-child > TBODY > TR > TD[width='1%']:first-child > A   {width:inherit !important;}" +
 	/* header bar */		"TABLE[cellspacing='0'][cellpadding='0'][style='border-top: 1px solid rgb(68, 120, 212); background: rgb(234, 239, 250) none repeat scroll 0% 0%; width: 100%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;'], TABLE#ps-titlebar, BODY > DIV#ps-titlebar, BODY > FORM > DIV#advd-search-header H1   {padding:0 0.3em 0.1em 0.3em; background-color:#333 !important; border:0 none !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
+	/* L-menu */			"BODY > DIV#lhs-ref   {padding-top:0.2em; background-color:#181818; border-right:0 none; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* sponsored linx */		"DIV[style='padding-top: 11px;'] > DIV[style='font-size: small; background-color: rgb(255, 249, 221);'], BODY[vlink='#551a8b'][text='#000000'][marginheight='3'][link='#0000cc'][alink='#ff0000'][topmargin='3'] > TABLE[cellspacing='0'][cellpadding='0'][border='0'][bgcolor='#ffffff'][align='right'][style='']   {display:none;}" +
+	/* top & bottom ads */		"BODY > DIV#ads-top, BODY > DIV.list > DIV#ads-bot   {display:none;}" +
 	/* results width aleviater */	"BODY > DIV.rhs, BODY > DIV.list   {max-width:none; margin-right:0;}" +
 	/* search txt */		"TABLE.list FORM, TABLE.list SPAN.prod-detail, TABLE.list > TBODY > TR > TD.ol NOBR, TABLE.list > TBODY > TR > TD.ol SPAN, TD.bo > NOBR, BODY > DIV.list DIV, BODY > DIV.list P, BODY > DIV.grid DIV   {color:#999 !important;}" +
 	/* result prices */		"BODY > DIV.list > OL#results P.result-price, BODY > DIV.list > OL#results P.result-taxship, BODY > DIV.grid P.result-price, BODY > DIV.grid P.result-taxship   {color:#fff !important;}" +
@@ -577,6 +467,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* footer disclaimer */		"TABLE[width='65%'][align='center'] > TBODY > TR > TD[align='center'] > SPAN.disclaimer   {display:none;}" +
 	/* footer search */		"BODY > TABLE[cellspacing='0'][cellpadding='3'][style='border-top: 1px solid rgb(68, 120, 212); border-bottom: 1px solid rgb(68, 120, 212); background: rgb(234, 239, 250) none repeat scroll 0% 0%; width: 100%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;'], BODY > TABLE#ps-footer   {background-color:#000 !important; border:0 none !important;}" +
 	/* footer txt */		"BODY > TABLE[cellspacing='0'][cellpadding='3'][style='border-top: 1px solid rgb(68, 120, 212); border-bottom: 1px solid rgb(68, 120, 212); background: rgb(234, 239, 250) none repeat scroll 0% 0%; width: 100%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;'] > TBODY > TR > TD[align='center'] > FONT[size='-1'], BODY[vlink='#551a8b'][text='#000000'][marginheight='3'][link='#0000cc'][alink='#ff0000'][topmargin='3'] > CENTER > FONT[size='-1'], BODY > TABLE#ps-footer > TBODY > TR > TD[align='center'] > FONT[size='-1'], BODY > P.as-footer   {display:none;}" +
+	/* footer pagination imgs */	"BODY > DIV.n > TABLE > TBODY > TR > TD > DIV#nl   {background-image:none;}" +
 	/* footer bg */			"BODY > DIV#ps-footer > DIV#ps-footer-bg   {background-color:#000 !important;}" +
 	/* footer disclaimer */		"BODY > DIV#ps-footer > P.ps-disclaimer   {color:#777;}" +
 	/* footer */			"BODY > DIV#hp-cont > P:last-child   {display:none;}" +
@@ -843,7 +734,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* shift down slightly */	"DIV[style='position: fixed; top: 10px; left: 10px; margin-bottom: 10px; background-color: transparent; z-index: 99999;']   {top:28px !important; left:2px !important;}" +
 
 
-// Notebooks enhancements
+// Notebook enhancements
 	/* logo img */			"BODY.e > DIV.h TABLE#gn_ph > TBODY > TR:first-child > TD[align='right']:first-child > A > IMG   {visibility:hidden;}" +
 	/* left menu border */		"BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc > DIV > DIV.wb   {-moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* left menu header */		"BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc DIV.vb   {-moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}" +
@@ -857,6 +748,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* faq title block */		"BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD > TABLE[width='100%'][bgcolor='#c3d9ff'][align='center'][style='margin-bottom: 5px;'] TBODY TR TD   {background-color:#000;}" +
 	/* faq title block corners */	"BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD > TABLE[width='100%'][bgcolor='#c3d9ff'][align='center'][style='margin-bottom: 5px;'] TBODY TR TD IMG   {display:none;}" +
 	/* faq list txt */		"OL.answers LI UL.response LI, OL.response LI   {color:#999 !important;}" +
+	/* Notebook expanded below in brute force enhancements */
 
 
 // Translate enhancements
@@ -918,7 +810,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	function gBFenh() {
 		/* Global font */	sIR("*   {font-family:Trebuchet MS, Verdna;}");
 		/* page bg */		sIR("HTML,BODY   {background:#000 none !important; color:#fff;}");
-		/* link color */	sIR("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A, SPAN#show-new, SPAN#show-all, SPAN.link, SPAN[dir='ltr'] > FONT[color='blue'], FONT[color='blue'][dir='ltr'], .gc-control, .goog-flat-menu-button, .gsc-tabHeader.gsc-tabhInactive   {color:#6495ed !important;}");
+		/* link color */	sIR("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A, SPAN#show-new, SPAN#show-all, SPAN.link, SPAN[dir='ltr'] > FONT[color='blue'], FONT[color='blue'][dir='ltr'], .gc-control, .goog-flat-menu-button, .gsc-tabHeader.gsc-tabhInactive, .goog-tab-bar-top .goog-tab   {color:#6495ed !important;}");
 		/* visited linx */	sIR("A:visited   {color:#406b80 !important;}");
 		/* resultsvisitedlnx */	sIR("DIV#res A:visited   {font-size:0.8em !important;}");
 		/* header */		sIR("#guser, #guser *, #gbar, #gbar *   {background-color:transparent !important; font-family:Trebuchet MS, Verdna !important; color:#ccc;}");
@@ -940,6 +832,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/* menu dropd item */	sIR("DIV.goog-menu > DIV.goog-menuitem   {background-color:#222; color:#999 !important;}");
 		/* menu dropd itemHov*/	sIR("DIV.goog-menu > DIV.goog-menuitem:hover   {background-color:#333; color:#ccc !important;}");
 		/* more pop layer */	sIR("SPAN#more, #gbar .gb2   {background-color:#333 !important; border-right:solid 1px #a2bae7; border-bottom:solid 1px #a2bae7; color:#333 !important;}");
+		/* 404 error header */	sIR("BODY[text='#000000'][bgcolor='#ffffff'] TABLE[width='100%'] > TBODY > TR > TD[bgcolor='#3366cc']:first-child   {background-color:#000;}");
 	}
 
 
@@ -1104,6 +997,34 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	}
 
 
+	// Notebook enhancements
+	if (location.href.indexOf('.google.') > -1 && (location.href.indexOf('/notebook/') > -1 || location.href.indexOf('/googlenotebook/') > -1)) {
+		/* Global BF Styles */	gBFenh();
+
+		/* logo img [hide] */	sIR("BODY.e > DIV.h TABLE#gn_ph > TBODY > TR:first-child > TD[align='right']:first-child > A > IMG   {visibility:hidden;}");
+		/* logo img [insert] */	sIR("BODY.e > DIV.h TABLE#gn_ph > TBODY > TR:first-child > TD[align='right']:first-child   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 20px 0 !important; font-size:0;}");
+		/* left menu border */	sIR("BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc > DIV > DIV.wb   {-moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}");
+		/* left menu header */	sIR("BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc DIV.vb   {-moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}");
+		/* left menu l-block */	sIR("BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc TABLE.vb, BODY.e > DIV.h > TABLE.p > TBODY > TR > TD > DIV.jc > DIV.rc > DIV TABLE.rb  {display:none;}");
+		/* leftmenu C-footer */	sIR("BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc > DIV.bf   {display:none;}");
+		/* labelsblockheader */	sIR("BODY.e > DIV.h > TABLE.p > TBODY > TR > TD > DIV.jc > DIV.rc > DIV[class='sc rb']   {-moz-border-radius-topright:14px; -moz-border-radius-topleft:14px;}");
+		/* labels lowerblock */	sIR("BODY.e > DIV.h > TABLE.p > TBODY > TR > TD > DIV.jc > DIV.rc > DIV[class='wc sb']   {border-bottom:2px solid #b5edbc; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}");
+		/* tip bar */		sIR("BODY.e TD.cb > SPAN.eb   {-moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}");
+		/* page txt */		sIR("BODY.e > DIV.h > TABLE.p > TBODY > TR > TD > DIV > DIV.m > DIV.oa > DIV.zg > DIV.dh > DIV.hh > DIV:first-child   {color:#000;}");
+		/* faq logo img */	sIR("BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD[width='1%'] > A[href='http://www.google.com/notebook'] > IMG   {display:none;}");
+		/* faq title block */	sIR("BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD > TABLE[width='100%'][bgcolor='#c3d9ff'][align='center'][style='margin-bottom: 5px;'] TBODY TR TD   {background-color:#000;}");
+		/* faqtitle bcorners */	sIR("BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD > TABLE[width='100%'][bgcolor='#c3d9ff'][align='center'][style='margin-bottom: 5px;'] TBODY TR TD IMG   {display:none;}");
+		/* faq list txt */	sIR("OL.answers LI UL.response LI, OL.response LI   {color:#999 !important;}");
+
+		/* logo img [hide] */	sIR("BODY > TABLE[width='100%']:first-child > TBODY > TR[valign='middle']:first-child > TD[width='1%']:first-child > A > IMG   {display:none;}");
+		/* logo img [insert] */	sIR("BODY > TABLE[width='100%']:first-child > TBODY > TR[valign='middle']:first-child > TD[width='1%']:first-child   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll top left !important; font-size:0;}");
+		/* header bg */		sIR("BODY > TABLE[width='100%']:first-child > TBODY > TR[valign='middle']:first-child > TD > TABLE[width='100%'][bgcolor='#c3d9ff'] TD.bubble   {background-color:#000;}");
+		/* header corner */	sIR("BODY > TABLE[width='100%']:first-child > TBODY > TR[valign='middle']:first-child > TD > TABLE[width='100%'][bgcolor='#c3d9ff']  TD.bubble IMG   {display:none;}");
+		/* menu R-border */	sIR("BODY > TABLE[width='100%'] > TBODY > TR > TD[width='1'][background='http://www.google.com/images/dot2.gif']   {border-left:1px solid #333; background-image:none;}");
+		/* footer */		sIR("BODY > TABLE[width='99%'][bgcolor='#c3d9ff'][style='margin-bottom: 5px;']   {display:none;}");
+	}
+
+
 	// Translate: Top Frame enhancements
 	if (location.href.indexOf('//translate.google.') > -1 && location.href.indexOf('/translate_n?') > -1) {
 		/* Global BF Styles */	gBFenh();
@@ -1254,6 +1175,11 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/* msg transcrpt */	sIR("DIV.gc-message-transcript   {padding:4px 7px 4px 7px; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}");
 		/* msg btm line */	sIR("BODY.gc > DIV.gc-forward-content > DIV.gc-forward-message   {border:0 none;}");
 		/* msg separator */	sIR("DIV.gc-message-bg   {border-bottom:1px dotted #222;}");
+		/* settings page bg */	sIR("DIV.gc-settings-description, DIV#gc-settings-tab-bar-content, DIV.gc-settings-content   {color:#eee; background:#000 none !important;}");
+		/* settingsPg-tblAlt */	sIR("TABLE.gc-billing-trans > TBODY > TR > TD, DIV.gc-billing-index, TR.gc-group-list-row-alt   {color:#eee; background:#222 none !important;}");
+		/* settingsPgBg2 */	sIR("TABLE.gc-billing-trans > TBODY > TR > TH ,TH.gc-billing-stat-hd, DIV.gc-phone-list-item > TABLE   {color:#eee; background:#222 none !important;}");
+		/* settingsPgTabBar1 */	sIR("DIV.goog-tab-bar-top   {border-bottom:#ccc 1px solid; color:#eee; background:#000 none !important;}");
+		/* settingsPgTabBar2 */	sIR("DIV.goog-tab-bar-top > DIV.goog-tab-selected   {border:0 none; background:#000 none !important; color:#fff !important;}");
 	}
 
 
@@ -1290,7 +1216,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 	// Labs enhancements
-	if (location.href.indexOf('.googlelabs.') > -1) {
+	if (location.href.indexOf('.googlelabs.') > -1 || location.href.indexOf('//labs.google.') > -1) {
 		/* Global BF Styles */	gBFenh();
 
 		/* logo img [hide] */	sIR("BODY > DIV#g-hdr > FORM > TABLE#g-hdr-table > TBODY > TR > TD#g-hdr-logo-col > H1 > A > IMG   {display:none;}");
@@ -1574,7 +1500,6 @@ function scriptShowUpdateMessage(scriptShowMessage, scriptNewVersion) {
 			messageDiv = createNode("div", {id: "gsscriptVersionMessage", title: "A new version of google Enhanced BLACK is available"});
 			messageDiv.innerHTML = "A new version of google Enhanced BLACK is available<br />" +
 				"<span style='font-weight:normal; color:#f77; font-family:Trebuchet MS, Verdna;'>Updated: " + scriptNewVersionDate + "</span><br /><br />" +
-				"<a style='position:absolute; top:67px; left:9px;' href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2654952' target='_blank'><img src='http://images2.rdefined.com/d/89712-1/jar.gif' title=' Tip  Jar  ' border=0 /></a>" +
 				"<a style='color:#fcc !important; font-size:16px; font-family:Trebuchet MS, Verdna;' id='gsscriptVersionInstallUpdate' href='" + scriptFileURL + "' title='Install the script update now'><blink>INSTALL UPDATE</blink></a>" +
 				" &nbsp;&middot;&nbsp; " +
 				"<a style='color:#f99 !important; font-family:Trebuchet MS, Verdna;' href='" + scriptHomepageURL + "' target='_blank' title='Go to the google Enhanced BLACK UserScript page in a new tab'>Go to UserScript page</a>" +

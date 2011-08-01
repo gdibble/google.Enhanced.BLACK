@@ -1,8 +1,8 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.1.4
-	// @date		2009-07-04
+	// @version		2.1.5
+	// @date		2009-07-05
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		gabedibble <gdibble@gmail.com>
@@ -15,7 +15,7 @@
 
 
 
-var scriptVersion = 1246731736265;   //alert(Date.now());
+var scriptVersion = 1246828719137;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -88,6 +88,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.1.2	Fixed Images logo, Img Size Indicator & Alert; Minor update to Firefox start-page
 	// v2.1.3	Fixed Experimental; Improved Intl. support: Fixed UK Google homepage & search results
 	// v2.1.4	Optimized Brute Force CSS-override fucntionality: faster & lighter; Updated Experimental
+	// v2.1.5	Improved Google Voice all thanks to godsyn
 
 
 // To Do:
@@ -624,11 +625,11 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	var style = document.createElement('style');
 	    style.setAttribute('id', 'bruteForce');
 	document.getElementsByTagName('head')[0].appendChild(style);
-	var Ssheet = document.getElementById('bruteForce').sheet;
+	var Ssheet = $('bruteForce').sheet;
 
 
 	// Voice Enhancements
-	if ((location.href.indexOf('http://www.google.com/googlevoice') > -1) || (location.href.indexOf('https%3A%2F%2Fwww.google.com%2Fvoice%2Faccount%2Fsignin%2F') > -1) || (location.href.indexOf('https://services.google.com/fb/forms/googlevoiceinvite/') > -1)) {
+	if ((location.href.indexOf('http://www.google.com/googlevoice') > -1) || (location.href.indexOf('https://www.google.com/voice') > -1) || (location.href.indexOf('https%3A%2F%2Fwww.google.com%2Fvoice%2Faccount%2Fsignin%2F') > -1) || (location.href.indexOf('https://services.google.com/fb/forms/googlevoiceinvite/') > -1)) {
 		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
 		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
 		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
@@ -642,6 +643,14 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/* login signin boxO */	Ssheet.insertRule("BODY > DIV.gc-mid > DIV.gc-si-content > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent   {background-color:#000; border:0; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
 		/* login signin boxI */	Ssheet.insertRule("BODY > DIV.gc-mid > DIV.gc-si-content > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD   {background-color:#333; color:#ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
 		/* login invite bar */	Ssheet.insertRule("BODY > DIV#gc-signup-closed   {background-color:#333; border:0; color:#fff; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
+
+		/* admin bg */		Ssheet.insertRule("DIV.gc-header, .gc-inbox-sidebar-menu, #gc-view-main, .gc-footer, .g-section, .g-tpl-67-33, .gc-message, #gc-splitpane, #gc-sidebar-balance-header, .gc-bubble-mc   {background:#000 none !important; color:#ccc}", 0);
+		/*  admin buttons */	Ssheet.insertRule(".goog-button-base-content, .gc-text, .goog-flat-menu-button-caption   {background:#333 none !important; color:#fff}", 0);
+		/* admin callout  */	Ssheet.insertRule(".gc-message-transcript, .gc-message-callout, .gc-message-transcript-b, .gc-message-transcript-t, .gc-message-transcript-r, .gc-message-transcript-l, .gc-message-transcript-m, .gc-message-transcript-bl, .gc-message-transcript-br, .gc-message-transcript-tl, .gc-message-transcript-tr   {background:#333 none !important; color:#fff}", 0);
+		/*  admin c.out txt */	Ssheet.insertRule(".goog-menuitem-content, .gc-inbox-no-items, .gc-inbox-page-range, .gc-user-tip .goog-inline-block, .goog-container, .g-section, LABEL, .gc-message-message-display *, .gc-quicksms > DIV, SPAN   {color:#fff !important}", 0);
+		/*  admin sidebar */	Ssheet.insertRule(".goog-option-selected, #gc-inbox-sidebar-header, #gc-view-header, .goog-splitpane-handle, .gc-user-tip .goog-inline-block, .goog-menuitem   {background:#111 none}", 0);
+		/*  admin menu */	Ssheet.insertRule(".goog-menuitem-highlight   {background:#333 none !important;}", 0);
+
 	}
 
 
@@ -663,7 +672,8 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Modify Google Header Bar
-gHeaderBarCntnr = document.getElementById("gbar");
+gHeaderBarCntnr = $("gbar");
+gHeaderBarCntnrVoice = $("gc-gaia-bar");
  gHeaderBar = gHeaderBarCntnr.getElementsByTagName('nobr')[0];
   gHeaderBar.style.position = "relative";
   gHeaderBar.style.left = "5em";
@@ -674,8 +684,8 @@ iGheaderLink = document.createElement('a');
  iGheaderLink.setAttribute('style', 'float:left; position:relative; top:-1.55em;');
   //adds iGoogle link to left-side
   gHeaderBar.insertBefore(iGheaderLink, parent.firstChild);
-gHdrUsrBarCntnr=document.getElementById("guser");
- if (gHdrUsrBarCntnr) gHdrUsrBar=gHdrUsrBarCntnr.getElementsByTagName('nobr')[0];
+gHdrUsrBarCntnr = $("guser");
+ if (gHdrUsrBarCntnr || gHeaderBarCntnrVoice) gHdrUsrBar = gHdrUsrBarCntnr.getElementsByTagName('nobr')[0];
 if ((!gHdrUsrBarCntnr) || (gHdrUsrBarCntnr && typeof gHdrUsrBar == "undefined")) {
 	signInLink = document.createElement('a');
 		 signInLink.innerHTML = "Sign in";
@@ -744,7 +754,7 @@ scriptUpdateCheck();
 
 
 
-// Shortcut to document.getElementById
+// Shortcut!
 function $(id) {return document.getElementById(id);}
 
 // Creates a new node with the given attributes and properties (be careful with XPCNativeWrapper limitations)

@@ -707,7 +707,7 @@ function scriptShowUpdateMessage(scriptShowMessage, scriptNewVersion) {
 			messageDiv = createNode("div", {id: "gsscriptVersionMessage", title: "A new version of google Enhanced BLACK is available"});
 			messageDiv.innerHTML = "A new version of google Enhanced BLACK is available<br />" +
 				"<span style='font-weight:normal; color:#f77;'>Updated: " + scriptNewVersionDate + "</span><br /><br />" +
-				"<a style='position:absolute; bottom:0.6em; left:0.8em;' href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2654952' target='_blank'><img src='http://renovare.us/Portals/0/Skins/Renovare/images/nextsteps_donate.png' title='Please help me help you [PayPal Donate] - Any contribution is deeply appreciated, though not required; google Enhanced BLACK is freeware for the people' width=20 height=20 border=0 /></a>" +
+				"<a style='position:absolute; bottom:0.6em; left:0.8em;' href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2654952' target='_blank'><img src='http://renovare.us/Portals/0/Skins/Renovare/images/nextsteps_donate.png' title='Burrito fund - Happy Belly make Happy Programmer' width=20 height=20 border=0 /></a>" +
 				"<a style='color:#fcc !important; font-size:1.1em;' href='" + scriptFileURL + "' title='Install the script update now'><blink>INSTALL UPDATE</blink></a>" +
 				" &nbsp;&middot;&nbsp; " +
 				"<a style='color:#f99 !important;' href='" + scriptHomepageURL + "' target='_blank' title='Go to the google Enhanced BLACK UserScript page in a new tab'>Go to UserScript page</a>" +

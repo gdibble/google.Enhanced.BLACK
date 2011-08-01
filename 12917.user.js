@@ -1,8 +1,8 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.0.4
-	// @date		2009-03-13
+	// @version		2.0.5
+	// @date		2009-03-15
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
 	// @author		gabedibble <gdibble@gmail.com>
@@ -13,7 +13,7 @@
 
 
 
-var scriptVersion = 1237000166934;   //alert(Date.now());
+var scriptVersion = 1237190629859;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -76,6 +76,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.0.2	Fixed News menu and other layout elements (thanks Dan!)
 	// v2.0.3	Fixed search results width (expansion), News And Video fixes & updates
 	// v2.0.4	Tightened up header elements on Web, Images, News & Video search; Fixed News logo & form
+	// v2.0.5	Fixed News head link positioning
 
 
 // To Do:
@@ -297,7 +298,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 // News Results Enhancements
 	/* header Google links */	"BODY.hp > DIV#gbar > NOBR, BODY.serp > DIV#gbar > NOBR, BODY.sp > DIV#gbar > NOBR   {position:relative; top:0.2em;}" +
-	/* header iGoogle link */	"BODY.hp > DIV#gbar > NOBR > A[href='/ig'].gb1, BODY.serp > DIV#gbar > NOBR > A[href='/ig'].gb1, BODY.sp > DIV#gbar > NOBR > A[href='/ig'].gb1   {top:-1.15em !important;}" +
+	/* header iGoogle link */	"BODY.hp > DIV#gbar > NOBR > A[href='/ig'].gb1, BODY.serp > DIV#gbar > NOBR > A[href='/ig'].gb1, BODY.sp > DIV#gbar > NOBR > A[href='/ig'].gb1   {top:-1.3em !important;}" +
 	/* search table */		"TABLE[width='1%']   {position:relative; top:1px; background-color:#000; width:100% !important;}" +
 	/* search form input */		"BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#search-header > FORM.search-form > *   {float:none;}" +
 	/* logo imgs */			"IMG[src='/images/logo_sm.gif'], IMG[src='images/news.gif'], IMG[src='/images/news.gif'], IMG[width='150'][height='58'][alt='Go to Google News Home'], BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#browse-header > TABLE > TBODY > TR > TD > A > IMG[width='205'][height='85'], BODY.sp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#browse-header > TABLE > TBODY > TR > TD > A > IMG[width='205'][height='85'], BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#search-header > A > IMG[width='150'][height='58'], BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#search-header > A > IMG[width='150'][height='55']    {visibility:hidden;}" +

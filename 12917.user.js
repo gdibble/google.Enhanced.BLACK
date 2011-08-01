@@ -1,7 +1,7 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.1.7
+	// @version		2.1.8
 	// @date		2009-07-06
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
@@ -15,7 +15,7 @@
 
 
 
-var scriptVersion = 1246919127803;   //alert(Date.now());
+var scriptVersion = 1246941628983;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -91,6 +91,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.1.5	Improved Google Voice all thanks to godsyn
 	// v2.1.6	Enhanced Google Login pages; Updated Search Suggest bg
 	// v2.1.7	Enhanced Translate; Updated Google Web Search Language Tools, Search Within & Feedback
+	// v2.1.8	Fixed iGoogle Login, iGoogle header-link per international domains; Videos headers
 
 
 // To Do:
@@ -313,7 +314,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* header/footer bgs */		"#videoheader, BODY#search-results-body DIV.div-footer   {background-color:#000 !important;}" +
 	/* body txt */			"#main-container DIV, #slideout-player DIV   {color:#777 !important;}" +
 	/* filter option txt */		"TD[style='padding: 0pt;'] SPAN.filter-prefix, TD[style='padding: 0pt;'] LABEL.filter-option   {color:#999;}" +
-	/* section header */		"DIV.div-section-header, BODY > DIV#hotstuff > DIV.hot_videos_container > TABLE.hot_videos_title_bar, DIV.container DIV.mod_titlebar   {padding:0.1em 0 0.2em 0.4em !important; background-color:#333; border:0 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
+	/* section header */		"DIV.div-section-header, BODY > DIV#hotstuff > DIV.hot_videos_container > TABLE.hot_videos_title_bar, DIV.container DIV.mod_titlebar, DIV.container DIV.mod-header   {padding:0.1em 0 0.2em 0.4em !important; background-color:#333; border:0 !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* section borders */		"BODY > DIV#hotstuff > DIV.hot_videos_container > TABLE.hot_videos_body > TBODY > TR > TD.embedded_player_container, BODY > CENTER > DIV.container > DIV > DIV.mod_content   {border:0 none;}" +
 	/* section header txt */	"TD.td-section-header-left B   {color:#000 !important;}" +
 	/* home video time */		"DIV.div-video-text   {color:#090 !important;}" +
@@ -656,7 +657,6 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/* page txt */		Ssheet.insertRule("TD, DIV   {color:#ccc;}", 0);
 		/* bold txt */		Ssheet.insertRule("TD B, DIV B   {color:#fff;}", 0);
 		/* footer */		Ssheet.insertRule("BODY > CENTER > DIV[class='t n bt']   {display:none;}", 0);
-
 	}
 
 
@@ -695,7 +695,6 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/*  admin c.out txt */	Ssheet.insertRule(".goog-menuitem-content, .gc-inbox-no-items, .gc-inbox-page-range, .gc-user-tip .goog-inline-block, .goog-container, .g-section, LABEL, .gc-message-message-display *, .gc-quicksms > DIV, SPAN   {color:#fff !important}", 0);
 		/*  admin sidebar */	Ssheet.insertRule(".goog-option-selected, #gc-inbox-sidebar-header, #gc-view-header, .goog-splitpane-handle, .gc-user-tip .goog-inline-block, .goog-menuitem   {background:#111 none}", 0);
 		/*  admin menu */	Ssheet.insertRule(".goog-menuitem-highlight   {background:#333 none !important;}", 0);
-
 	}
 
 
@@ -716,7 +715,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Google Login Enhancements
-	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/Login?') > -1) {
+	if (location.href.indexOf('.google.') > -1 && (location.href.indexOf('/Login?') > -1 || (location.href.indexOf('/ServiceLogin?') > -1 && location.href.indexOf('&service=ig') > -1))) {
 		/* Global font */	Ssheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
 		/* page bg */		Ssheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
 		/* link color */	Ssheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
@@ -734,6 +733,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Modify Google Header Bar
+var cGtld = location.href.substring(location.href.indexOf('.google.')+8,location.href.indexOf('/',location.href.indexOf('.google.')+8)); //current Google Top Level Domain
 gHeaderBarCntnr = $("gbar");
 gHeaderBarCntnrVoice = $("gc-gaia-bar");
  gHeaderBar = gHeaderBarCntnr.getElementsByTagName('nobr')[0];
@@ -741,7 +741,7 @@ gHeaderBarCntnrVoice = $("gc-gaia-bar");
   gHeaderBar.style.left = "5em";
 iGheaderLink = document.createElement('a');
  iGheaderLink.innerHTML = "iGoogle";
- iGheaderLink.href = "/ig";
+ iGheaderLink.href = "http://www.google." + cGtld + "/ig";
  iGheaderLink.className = "gb1";
  iGheaderLink.setAttribute('style', 'float:left; position:relative; top:-1.55em;');
   //adds iGoogle link to left-side
@@ -751,7 +751,7 @@ gHdrUsrBarCntnr = $("guser");
 if ((!gHdrUsrBarCntnr) || (gHdrUsrBarCntnr && typeof gHdrUsrBar == "undefined")) {
 	signInLink = document.createElement('a');
 		 signInLink.innerHTML = "Sign in";
-	 signInLink.href = "https://www.google.com/accounts/ServiceLogin?continue=http://www.google.com/ig&followup=http://www.google.com/ig&service=ig&passive=true";
+	 signInLink.href = "https://www.google." + cGtld + "/accounts/ServiceLogin?continue=http://www.google." + cGtld + "/ig&followup=http://www.google." + cGtld + "/ig&service=ig&passive=true";
 	 signInLink.setAttribute('style', 'position:absolute; top:4px; right:8px; font-family:Trebuchet MS,Verdna;');
 	  //adds Sign in link to right-side of Firefox start page (when signed out), or not News (body.hp, body.serp & body.sp)
 	  if (document.body.className != "hp" && document.body.className != "serp" && document.body.className != "sp") gHeaderBarCntnr.appendChild(signInLink);

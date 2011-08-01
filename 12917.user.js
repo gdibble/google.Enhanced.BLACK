@@ -99,7 +99,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.2.1	Fixed Patents search results; Fixed Web Advanced Search
 	// v2.2.2	Updated Videos; Fixed Images logo; News logo & top ads; Updated Confucius Quotes module
 	// v2.3.0	Enhanced Trends; Optimized Brute Force globals; Updated Voice
-	// v2.4.0	Enhanced Trends; Disabled update-check in Opera; Optimized Brute Force functionality
+	// v2.4.0	Enhanced Labs; Disabled update-check in Opera; Optimized Brute Force functionality
 	// v2.4.1	Improved G-logo; Fixed Images txt & Shopping grid view price; Updated News AP layout
 
 

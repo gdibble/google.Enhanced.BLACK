@@ -1,7 +1,7 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.1.2
+	// @version		2.1.3
 	// @date		2009-07-04
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
@@ -15,7 +15,7 @@
 
 
 
-var scriptVersion = 1246693693557;   //alert(Date.now());
+var scriptVersion = 1246728643323;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -86,6 +86,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.1.0	Added some Google Voice Enhancements; Fixed Google international site logos
 	// v2.1.1	Improved international logo support
 	// v2.1.2	Fixed Images logo, Img Size Indicator & Alert; Minor update to Firefox start-page
+	// v2.1.3	Fixed Experimental; Improved Intl. support: Fixed UK Google homepage & search results
 
 
 // To Do:
@@ -136,7 +137,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* google bar linx */		"#gbar A.gb1, #gbar B.gb1, #gbar A.gb3   {position:relative; bottom:0.2em; font-weight:bold; font-size:1.15em;}" +
 	/* top logos */			"#logo SPAN, DIV#regular_logo, TABLE[align='center'] TBODY TR TD DIV#logo, #search .logo, #wrapper #header, TABLE[width='100%'][cellpadding='2'] TBODY TR TD[width='1%'][valign='top'], #gc-header #logo, #header #logo, TABLE[style='margin: 0px 0px -6px 0pt; padding: 0px; width: 100%;'] TD[style='width: 153px;'], TABLE[align='center'] TBODY TR TD[width='155'][rowspan='2'], TABLE[align='center'] TBODY TR[valign='middle'] TD[width='135'], BODY[bgcolor='#ffffff'][topmargin='3'] CENTER TABLE[width='725'] TBODY TR TD TABLE[cellspacing='1'] TBODY TR TD[height='1'][bgcolor='#666666'], BODY > TABLE[width='100%'][style='direction: ltr;'] > TBODY > TR > TD, BODY > TABLE[width='100%'] > TBODY > TR > TD[width='100%'][style='padding-left: 15px;'], BODY.siteowners > TABLE[width='96%'] > TBODY > TR > TD[width='1%'], BODY > CENTER > DIV > TABLE[width='739'] > TBODY > TR > TD[width='100%'], BODY[bgcolor='#ffffff'] > TABLE[cellpadding='5'][align='center'] > TBODY > TR[valign='middle'] > TD[width='1%'], TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='1%'][valign='top'], BODY.search > TABLE[width='95%'] > TBODY > tr[valign='top'] > TD[width='1%'], BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'], BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='2'] > TBODY > TR > TD[width='1%'], BODY[onload='sf()'] > CENTER > FORM > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD[width='100%'] > TABLE > TBODY > TR > TD > DIV[style='margin: 5px 0pt 4px 4px; background: transparent url(/images/firefox/sprite.png) no-repeat scroll 0pt -95px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; height: 23px; width: 80px;'], A#logo, A#glogo, BODY.answer_page TABLE.header_table > TBODY > TR > TD.header_logo_td, CENTER > H1#ps-logo, BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > CENTER > TABLE > TBODY TR > TD[align='left'] > TABLE > TBODY > TR > TD[valign='top'] > DIV, BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[valign='top'] > DIV, BODY > TABLE[width='100%'][cellspacing='2'][cellpadding='0'][border='0'][style='margin-top: 1em;'] > TBODY > TR > TD[width='1%'], BODY > DIV#wrapper > DIV#header_logo, BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#browse-header > TABLE > TBODY > TR:first-child > TD:first-child, BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#search-header, BODY.sp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#browse-header > TABLE > TBODY > TR:first-child > TD:first-child, BODY > CENTER > DIV#videoheader > TABLE.table-header > TBODY > TR > TD.td-logo, BODY#search-results-body > DIV#videoheader > TABLE.table-header > TBODY > TR > TD.td-logo, BODY > DIV > DIV#videoheader > TABLE > TBODY > TR > TD:first-child, BODY > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#page-header > TABLE > TBODY > TR > TD:first-child, BODY > FORM[name='f'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'][style='clear: left;'] > TBODY > TR > TD:first-child, BODY > DIV#videoheader > TABLE.table-header > TBODY > TR > TD:first-child, BODY[vlink='#551a8b'] > DIV#xjsd, BODY > FORM > TABLE#sft > TBODY > TR > TD[valign='top'].tc   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}" +
 	/* international logo hide */	"BODY > CENTER IMG[onload='window.lol&&lol()']#logo, BODY > CENTER DIV[onload='window.lol&&lol()']#logo   {visibility:hidden;}" +
-	/* new intl logo mover */	"BODY[vlink='#551a8b'] > DIV#xjsd   {position:absolute; top:100px; width:100% !important; background-position:center !important;}" +
+	/* new intl logo mover */	"BODY[vlink='#551a8b'] > DIV#xjsd   {position:absolute; top:100px; left:0; width:100% !important; background-position:center !important;}" +
 	/* search input */		"INPUT[type='text'], INPUT[name='q']   {background:#333 none !important; color:#fff; padding:2px; border:solid 1px #ccc; font-weight:bold; color:#ff0 !important;}" +
 	/* submit btns */		"INPUT[type='submit'], INPUT[value='Cancel'], INPUT[value='Save'], BUTTON, INPUT#stxemailsend, INPUT[value='Discard'], BUTTON[type='submit'], INPUT[value='Download'], INPUT[value='Add it now']   {background-color:#333; border:solid 1px #ccc; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px; color:#fff !important; cursor:pointer;}" +
 	/* submit btn hover */		"INPUT[type='submit']:hover, BUTTON[type='submit']:hover   {background-color:#36f; color:#fff;}" +
@@ -250,7 +251,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* bottom related selection */	"TABLE#brs.ts > TBODY > TR > TD > A > B   {color:#aaa !important;}" +
 	/* nav bar */			"#navbar   {position:relative; left:33%; width:400px;}" +
 	/* footer logo(s) */		"#navbar DIV,#navbar IMG, TABLE#nav SPAN#nf, TABLE#nav SPAN#nc, TABLE#nav SPAN.nr, TABLE#nav SPAN#nn, DIV#np, TABLE#nav > TBODY > TR[valign='top'] > TD.b > SPAN, TABLE#nav > TBODY > TR[valign='top'] > TD.cur > SPAN, TABLE#nav > TBODY > TR[valign='top'] > TD > A > SPAN.csb   {height:0px; background:none;}" +
-	/* footer bg */			"TABLE[class='ft t bb bt'], DIV.clr > DIV#bsf, DIV.clr > P.blk   {background-color:#000 !important; border-top:0 none; border-bottom:0 none;}" +
+	/* footer bg */			"TABLE[class='ft t bb bt'], DIV.clr > DIV#bsf, DIV.clr > P.blk, BODY#gsr > DIV > DIV#bsf   {background-color:#000 !important; border-top:0 none; border-bottom:0 none;}" +
 
 	// Advanced Search
 		/* header bar line */	"BODY > TABLE[width='100%'][cellspacing='2'][cellpadding='0'][border='0'][style='margin-top: 1em;'] > TBODY > TR > TD > TABLE[width='100%'][style='border-top: 1px solid rgb(51, 102, 204);']   {border-top:0 none !important;}" +
@@ -526,8 +527,9 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Experimental Enhancements
+	/* (this is the old version, expanded below in brute force enhancements) */
 	/* logo img */			"BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'] IMG[width='150'][height='55']   {display:none;}" +
-	/* group desc-txt */		"BODY > DIV#container > DIV#content > TABLE > TBODY > TR > TD   {color:#999 !important;}" +
+	/* content */			"BODY > DIV#container > DIV#content   {color:#999 !important;}" +
 
 
 // Support Enhancements
@@ -632,6 +634,21 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 		/* login invite bar */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#gc-signup-closed   {background-color:#333; border:0; color:#fff; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}", 0);
 	}
 
+
+// Experimental Enhancements
+	if (location.href.indexOf('.google.') > -1 && location.href.indexOf('/experimental/') > -1) {
+		/* Global font */	document.getElementById('bruteForce').sheet.insertRule("*   {font-family:Trebuchet MS, Verdna;}", 0);
+		/* page bg */		document.getElementById('bruteForce').sheet.insertRule("HTML,BODY   {background:#000 none !important; color:#ccc;}", 0);
+		/* link color */	document.getElementById('bruteForce').sheet.insertRule("A, #gbar A.gb1, #gbar A.gb2, #gbar A.gb3, SPAN.i, .linkon, #codesiteContent A, TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN, TABLE TBODY TR TD TABLE TBODY TR TD A   {color:#6495ed !important;}", 0);
+		/* visited linx */	document.getElementById('bruteForce').sheet.insertRule("A:visited   {color:#406b80 !important;}", 0);
+
+		/* logo img [hide] */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'] IMG[width='150'][height='55']   {display:none;}", 0);
+		/* logo img [insert] */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;']   {width:150px !important; height:55px !important; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important; font-size:0;}", 0);
+		/* page title */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#header > DIV > DIV.title   {color:#fff;}", 0);
+		/* header & try out */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#content > TABLE.expheader > TBODY > TR > TD, BODY > DIV#container > DIV#content > TABLE.expheader > TBODY > TR > TD > SPAN, BODY > DIV#container > DIV#content > TABLE > TBODY > TR > TD.expdesc > TABLE > TBODY > TR[valign='middle'] > TD[bgcolor='#ffffcc'][style='padding: 5px;'], BODY > DIV#container > DIV#content > TABLE > TBODY > TR > TD.expdesc > TABLE > TBODY > TR > TD.corners_yellow > SPAN   {background:#333 none !important; border:0; color:#fff;}", 0);
+		/* content */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#content   {color:#999 !important;}", 0);
+		/* footer */	document.getElementById('bruteForce').sheet.insertRule("BODY > DIV#container > DIV#footer   {display:none;}", 0);
+	}
 
 
 

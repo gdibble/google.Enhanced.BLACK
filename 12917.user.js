@@ -1,7 +1,7 @@
 // ==UserScript==
 	// @name		google Enhanced BLACK
 	// @description		This Google Black script enhances all Google service pages with an inverted color-scheme for reduced eye fatigue; it also removes ads & clutter and improves page layout and readability by widening search results
-	// @version		2.0.8
+	// @version		2.0.9
 	// @date		2009-07-01
 	// @source		http://userscripts.org/scripts/show/12917
 	// @identifier		http://userscripts.org/scripts/source/12917.user.js
@@ -13,7 +13,7 @@
 
 
 
-var scriptVersion = 1246435177370;   //alert(Date.now());
+var scriptVersion = 1246476124795;   //alert(Date.now());
 
 
 var scriptFileURL = "http://userscripts.org/scripts/source/12917.user.js";
@@ -80,6 +80,7 @@ var scriptHomepageURL = "http://userscripts.org/scripts/show/12917";
 	// v2.0.6	Fixed Web search result txt (thanks Makarielis & Justini) and News/Video headers
 	// v2.0.7	Fixed Logos; Search Suggest, Results & Footer, Pref-txt; Shopping desc; iG txt & icon
 	// v2.0.8	Improved Search Suggest bgs; Fixed Video header & footer; Google Search Sidebar headers
+	// v2.0.9	Fixed Images safe search dropdown menu; Fixed News left-menu & right-side video headers
 
 
 // To Do:
@@ -273,6 +274,10 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Images Results Enhancements
+	/* safe search dropdown */	"BODY > FORM > TABLE#sft > TBODY > TR > TD > TABLE.tb > TBODY > TR > TD.tc > FONT > DIV#ss-bar > DIV#ss-box   {background-color:#222;}" +
+	/* safe search dd link */	"BODY > FORM > TABLE#sft > TBODY > TR > TD > TABLE.tb > TBODY > TR > TD.tc > FONT > DIV#ss-bar > DIV#ss-box > A *   {display:inline; margin:0;}" +
+	/* safe search dd hover */	"BODY > FORM > TABLE#sft > TBODY > TR > TD > TABLE.tb > TBODY > TR > TD.tc > FONT > DIV#ss-bar > DIV#ss-box > A:hover > SPAN:nth-child(2)   {color:#fff !important;}" +
+	/* safe search dd selected */	"BODY > FORM > TABLE#sft > TBODY > TR > TD > TABLE.tb > TBODY > TR > TD.tc > FONT > DIV#ss-bar > DIV#ss-box > A.ss-selected, BODY > FORM > TABLE#sft > TBODY > TR > TD > TABLE.tb > TBODY > TR > TD.tc > FONT > DIV#ss-bar > DIV#ss-box > A.ss-selected > SPAN:nth-child(2)   {background-color:#444; color:#fff !important;}" +
 	/* sizes alert */		"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255, 255, 153);']   {padding:5px !important; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* sizes alert txt */		"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255, 255, 153);'] FONT   {color:#333;}" +
 	/* sizes alert highlight */	"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255, 255, 153);'] FONT B   {color:#000 !important;}" +
@@ -314,15 +319,16 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 	/* search logo adjustment */	"BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#search-header   {height:65px !important; background-position:0 10px !important;}" +
 	/* logo img link */		"TABLE[width='1%'] TBODY TR TD[valign='top'],TABLE[align='center'] TBODY TR TD TABLE TBODY TR TD[valign='bottom']   {height:65px; background:transparent url('" + googleLogoBLACK + "') no-repeat scroll 0% !important;}" +
 	/* news sources txt */		"BODY[marginwidth='0'][marginheight='3'][bgcolor='white'][rightmargin='0'][leftmargin='0'][topmargin='3'] > TABLE[cellspacing='0'][cellpadding='0'][border='0'][align='center'][style='clear: both;'] > TBODY > TR > TD[valign='top'][nowrap=''] > FORM[name='f'] > B > FONT[size='-1'][color='#aa0033'], BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#browse-header > TABLE > TBODY > TR > TD > FORM.search-form > DIV.search-label   {position:relative; top:5px; font-weight:normal; font-style:italic; color:#333 !important;}" +
-	/* header bars */		"BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > TABLE#main-table > TBODY > TR > TD > DIV.main > DIV#headline-wrapper > DIV.basic-title, BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered DIV.bt-border, BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > TABLE#main-table > TBODY > TR > TD > DIV.main > DIV#headline-wrapper TD, BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search-sub-header > DIV#_h, BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search-sub-header > DIV#_h DIV, BODY.sp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > TABLE#main-table > TBODY > TR > TD > DIV.main DIV#_h   {padding-right:0.4em; padding-left:0.4em; background-color:#333; border:0; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
+	/* header bars */		"BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > TABLE#main-table > TBODY > TR > TD > DIV.main > DIV#headline-wrapper > DIV.basic-title, BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered DIV.bt-border, BODY.hp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > TABLE#main-table > TBODY > TR > TD > DIV.main > DIV#headline-wrapper TD, BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search-sub-header > DIV#_h, BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search-sub-header > DIV#_h DIV, BODY.sp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > TABLE#main-table > TBODY > TR > TD > DIV.main DIV#_h, DIV.blended-section2 > TABLE.blended-section2 > TBODY > TR > TD DIV.basic-title   {padding-right:0.4em; padding-left:0.4em; background-color:#333; border:0; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* top red line */		"BODY[marginwidth='0'][marginheight='3'][bgcolor='white'][rightmargin='0'][leftmargin='0'][topmargin='3'] > TABLE#topSection > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='100%'][bgcolor='#aa0033'][colspan='2'], BODY[marginheight='2'][bgcolor='#ffffff'][topmargin='2'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='100%'][bgcolor='#aa0033'][colspan='2'], BODY[marginheight='0'][bgcolor='#ffffff'][topmargin='0'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='100%'][bgcolor='#aa0033'][colspan='2']   {display:none;}" +
 	/* notify box */		"DIV#notifybox   {color:#000; -moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* top stories dropdown */	"BODY[marginwidth='0'][marginheight='3'][bgcolor='white'][rightmargin='0'][leftmargin='0'][topmargin='3'] > TABLE#topSection > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='60%'][nowrap=''][bgcolor='#efefef'][style='padding-bottom: 0pt;'] > FONT.ks > FONT[size='-1'] > SELECT[name='ned']   {height:1.7em; background-color:#333; border: 1px solid #fff;}" +
 	/* right alert box */		"BODY[marginwidth='0'][marginheight='3'][bgcolor='white'][rightmargin='0'][leftmargin='0'][topmargin='3'] > TABLE#topSection > TBODY > TR > TD[valign='top'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'][valign='top'] > TBODY > TR > TD[width='42%'][valign='top'] > DIV#cust_result > TABLE[width='100%'][cellspacing='5'][cellpadding='4'][border='0'][bgcolor='#ffff99'][align='center'][style='border: 1px solid rgb(204, 204, 204);']   {-moz-border-radius-topright:14px; -moz-border-radius-topleft:14px; -moz-border-radius-bottomright:14px; -moz-border-radius-bottomleft:14px;}" +
 	/* more pop layer */		"SPAN#more, #gbar .gbard, #gbar .gb2   {background-color:#333 !important; border-right:solid 1px #a2bae7; border-bottom:solid 1px #a2bae7; color:#333 !important;}" +
 	/* top stories txt */		"TABLE[width='100%'] .ks   {color:#999 !important;}" +
-	/* left nav bg */		".leftnav TABLE TABLE TBODY TR TD[nowrap=''], DIV.browse-sidebar > DIV.wrapper > DIV#left-nav-sections TABLE.nav, DIV.browse-sidebar > DIV.wrapper > DIV#left-nav-sections TABLE.nav-items, DIV.browse-sidebar > DIV.wrapper > DIV#left-nav-sections > TABLE.nav-items > TBODY > TR > TD.clickable   {background-color:#000;}" +
+	/* left nav bg */		".leftnav TABLE TABLE TBODY TR TD[nowrap=''], DIV.browse-sidebar > DIV.wrapper > DIV#left-nav-sections TABLE.nav, DIV.browse-sidebar > DIV.wrapper > DIV#left-nav-sections TABLE.nav-items, DIV.browse-sidebar > DIV.wrapper > DIV#left-nav-sections > TABLE.nav-items > TBODY > TR > TD.clickable, DIV.browse-sidebar > DIV.wrapper > DIV#left-nav-sections > TABLE.nav-items > TBODY > TR.item > TD   {background-color:#000 !important;}" +
 	/* left nav frontpage link */	"DIV.sidebar > DIV.back-to-frontpage > A   {color:#6495ed !important;}" +
+	/* left nav selected bg */	"BODY > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered DIV.browse-sidebar > DIV.wrapper > DIV#left-nav-sections > TABLE.nav-items > TBODY > TR.selected > TD DIV.title   {color:#fff !important;}" +
 	/* left nav spacing */		".leftnav TABLE TABLE TBODY TR TD[bgcolor='#ffffff']   {display:none;}" +
 	/* left nav line */		"BODY[marginwidth='0'][marginheight='3'][bgcolor='white'][rightmargin='0'][leftmargin='0'][topmargin='3'] > TABLE#topSection > TBODY > TR > TD[width='1'][height='1'][bgcolor='#cccccc']   {width:2px; background-color:#333;}" +
 	/* left nav line alternate 1 */	"BODY[marginwidth='0'][marginheight='2'][bgcolor='#ffffff'][rightmargin='0'][leftmargin='0'][topmargin='2'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD.leftnav > DIV[style='border-right: 1px solid rgb(204, 204, 204);']   {border-right:2px solid #333 !important;}" +
@@ -586,7 +592,7 @@ var googleEnhancedBLACK; function enhanceGoogle() {googleEnhancedBLACK =
 
 
 // Script Update Message Box
-	/* layout */			"#gsscriptVersionMessage   {position:fixed; top:0px; right:1px; width:33em; height:6em; z-index:99; overflow:auto; padding:1em; background-color:#C00040; outline:#aaa solid 1px; font-family:verdana; font-weight:bold; font-size:0.9em; color:#fff !important; text-align:center; cursor:default;}";
+	/* layout */			"#gsscriptVersionMessage   {position:fixed; top:0px; right:1px; width:33em; height:5.3em; z-index:99; overflow:auto; padding:1em; background-color:#C00040; outline:#aaa solid 1px; font-family:verdana; font-weight:bold; font-size:0.9em; color:#fff !important; text-align:center; cursor:default;}";
 
 
 
@@ -719,16 +725,20 @@ function scriptShowUpdateMessage(scriptShowMessage, scriptNewVersion) {
 			messageDiv = createNode("div", {id: "gsscriptVersionMessage", title: "A new version of google Enhanced BLACK is available"});
 			messageDiv.innerHTML = "A new version of google Enhanced BLACK is available<br />" +
 				"<span style='font-weight:normal; color:#f77;'>Updated: " + scriptNewVersionDate + "</span><br /><br />" +
-				"<a style='position:absolute; bottom:0.6em; left:0.8em;' href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2654952' target='_blank'><img src='http://renovare.us/Portals/0/Skins/Renovare/images/nextsteps_donate.png' title='Burrito fund - Happy Belly make Happy Programmer' width=20 height=20 border=0 /></a>" +
-				"<a style='color:#fcc !important; font-size:1.1em;' href='" + scriptFileURL + "' title='Install the script update now'><blink>INSTALL UPDATE</blink></a>" +
+				"<a style='position:absolute; bottom:7px; left:13px;' href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2654952' target='_blank'><img src='http://images2.rdefined.com/d/89712-1/jar.gif' title=' Tip  Jar  ' border=0 /></a>" +
+				"<a style='color:#fcc !important; font-size:1.1em;' id='gsscriptVersionInstallUpdate' href='" + scriptFileURL + "' title='Install the script update now'><blink>INSTALL UPDATE</blink></a>" +
 				" &nbsp;&middot;&nbsp; " +
 				"<a style='color:#f99 !important;' href='" + scriptHomepageURL + "' target='_blank' title='Go to the google Enhanced BLACK UserScript page in a new tab'>Go to UserScript page</a>" +
 				" &nbsp;&middot;&nbsp; " +
 				"<a style='color:#fcc !important;' id='gsscriptVersionMessageHide' href='javascript:void(null)' title='Hide the notice for this session'>Hide notice</a>";
 			document.body.appendChild(messageDiv);
-			// Adds an event listener to the hide notice link
-			$("gsscriptVersionMessageHide").addEventListener("click", function(evt) {
+			// Adds event listeners to the hide update-notice upon Install or Hide
+			$("gsscriptVersionInstallUpdate").addEventListener("click", function(evt) {
 				sSt.gsscriptVersionNoticeHide = "1"; // Sets a sessionStorage variable to prevent the notice to be shown for this session
+				scriptShowUpdateMessage(false, null);
+			}, false);
+			$("gsscriptVersionMessageHide").addEventListener("click", function(evt) {
+				sSt.gsscriptVersionNoticeHide = "1";
 				scriptShowUpdateMessage(false, null);
 			}, false);
 		}

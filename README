@@ -1,4 +1,4 @@
-(C) 2006-2011 Gabriel Dibble <gdibble@gmail.com> + (CC) BY-SA (US 3.0) | READMEv9
+(C) 2006-2011 Gabriel Dibble <gdibble@gmail.com> + (CC) BY-SA (US 3.0), READMEv10
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#
 https://github.com/gdibble/google.Enhanced.BLACK is a free software project by
 Ripple FX  (RippleFxInc.com >>> http://userscripts.org/users/24894)
@@ -39,17 +39,13 @@ Along with the official source code (12917.user.js), you will find the Logo:
   google.Enhanced.BLACK.Logo-v1.0.48x48.png  -icon size PNG output
 
 
-
-
 #=#=#
-Coded using Linux tool set
-Logo graphic designed with GNU Image Manipulation Program
+Coded using all free software tool sets:
+SciTE editor on Gentoo Linux
+Logo design via GNU Image Manipulation Program
+
+  "Free like freedom of speech."
 
 
-  _long live free software_
-
-  "Think of 'free speech', not 'free beer'."
-
-
-Much respect: to userscripts.org, the development teams of all the browsers
+Much respect: to UserScripts.org, the development teams of all the browsers
 and add-ons noted on script homepage        & Google for supporting Liberty

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name	google Enhanced BLACK
 // @version	3.2.10
-// @date	1320113530780
+// @date	1320115479753
 // @description	Google page-enhancer turns all Google service pages BLACK: an inverted color scheme for reduced eye fatigue. It improves usability, page layout, widens search results and can remove clutter & improve security.
 // @license	(CC) BY-NC-SA 3.0 US; http://creativecommons.org/licenses/by-nc-sa/3.0/us/
 // @author	Gabriel Dibble <gdibble@gmail.com>
@@ -3712,7 +3712,7 @@ configureScript = function(e) {
 		maskLayer.addEventListener("click",hideLayers,false);
 
 		// Shortcuts
-		var gcFF_S = $e("gsconf_uFontFamily_Sel"),
+		gcFF_S = $e("gsconf_uFontFamily_Sel"),
 		gcCLC = $e("gsconf_uColorLinkCustom"),
 		gcCLVC = $e("gsconf_uColorLinkVisitedCustom"),
 		gcCITC = $e("gsconf_uColorInputTxtCustom"),

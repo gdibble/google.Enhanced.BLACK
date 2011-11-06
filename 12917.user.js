@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name	google Enhanced BLACK
-// @version	3.2.11
-// @date	1320307564872
+// @version	3.2.12
+// @date	1320560513776
 // @description	Google page-enhancer turns all Google service pages BLACK: an inverted color scheme for reduced eye fatigue. It improves usability, page layout, widens search results and can remove clutter & improve security.
 // @license	(CC) BY-NC-SA 3.0 US; http://creativecommons.org/licenses/by-nc-sa/3.0/us/
 // @author	Gabriel Dibble <gdibble@gmail.com>
@@ -10,7 +10,7 @@
 // @namespace	http://userscripts.org/users/24894/scripts
 // @source	http://userscripts.org/scripts/show/12917
 // @identifier	http://userscripts.org/scripts/source/12917.user.js
-// @require	http://usocheckup.redirectme.net/12917.js?method=update
+// @require	http://usocheckup.redirectme.net/12917.js?method=update&maxage=1
  // @include	htt*://*.google.*
  // @include	htt*://www.google.*/accounts*
  // @include	htt*://www.google.*/reader*
@@ -22,23 +22,31 @@
  // @include	htt*://*.appspot.*
 // ==/UserScript==
 
-// GENUINE FREEWARE <3
-// (CC) BY-NC-SA: This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License
+/*
+GENUINE FREEWARE <3
+(CC) BY-NC-SA: This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License
 
-// Change Log & To-Do Lists available @source (URI above)  [Reasonably] JSLint valid & 1TBS indent'd
-// Feel free to leave suggestions/criticism on the UserScript pg or via email; THANX! =)
+Change Log & To-Do Lists available @source (URI above)  [Reasonably] JSLint valid & 1TBS indent'd
+Feel free to leave suggestions/criticism on the UserScript pg or via email; THANX! =)
+*/
 
+
+// $hortcut$:
+var $e = function(id) {return document.getElementById(id);};
+var $t = function(TaG) {return document.getElementsByTagName(TaG);};
+var $c = function(TaG) {return document.createElement(TaG);};
+var $i = function(elm,str) {return elm.indexOf(str);};
 
 //Chrome Compat: define GM Functions
 if (typeof GM_deleteValue === "undefined") {
 	if (typeof unsafeWindow === "undefined") {
-		unsafeWindow = window;
+		var unsafeWindow = window;
 	}
 	if (typeof GM_addStyle !== "function") {
 		GM_addStyle = function(css) {
-			var style = document.createElement("style");
+			var style = $c("style");
 			style.textContent = css;
-			document.getElementsByTagName("head")[0].appendChild(style);
+			$t("head")[0].appendChild(style);
 		}
 	}
 	if (typeof GM_deleteValue !== "function") {
@@ -53,9 +61,9 @@ if (typeof GM_deleteValue === "undefined") {
 				return defaultValue;
 			}
 			var type = value[0];
-				 value = value.substring(1);
+				   value = value.substring(1);
 			switch (type) {
-				case "b": return value == "true";
+				case "b": return value === true;
 				case "n": return Number(value);
 				default:  return value;
 			}
@@ -80,13 +88,14 @@ if (typeof GM_deleteValue === "undefined") {
 } /* End Chrome Compat */
 
 
-var currentMk = "2.1",
+//internal.settings
+var currentMk = "2.2",
     uConfigMk = GM_getValue("uConfigMk",0),
     uFontFamily = GM_getValue("uFontFamily","trebuchet ms,sans-serif"),
-    uColorLink = GM_getValue("uColorLink","#36f"),
+    uColorLink = GM_getValue("uColorLink","#4D90FE"),
     uColorLinkVisited = GM_getValue("uColorLinkVisited","#6e37cc"),
     uColorInputTxt = GM_getValue("uColorInputTxt","#ff0"),
-    uColorButtonHover = GM_getValue("uColorButtonHover","#36f"),
+    uColorButtonHover = GM_getValue("uColorButtonHover","#4D90FE"),
     uLogoLuri = GM_getValue("uLogoLuri",""),
     uLogoSuri = GM_getValue("uLogoSuri",""),
     uHideLogos = GM_getValue("uHideLogos",false),
@@ -94,21 +103,19 @@ var currentMk = "2.1",
     uHideFooters = GM_getValue("uHideFooters",true),
     uRemoveST = GM_getValue("uRemoveST",true),
     uForceSSL = GM_getValue("uForceSSL",true),
-    gS = ".google.";
-
-
-// Shortcuts:
-var $e = function(id) {
-	return document.getElementById(id);
-};
-var $i = function(elm,str) {
-	return elm.indexOf(str);
-};
+    lH = location.href,
+    gS = ".google.",
+    Gtld = location.host.substring($i(location.host,gS)+8,location.host.length),
+    stYle = $c("style");
+	stYle.setAttribute("id","bruteForce");
+$t("head")[0].appendChild(stYle);
+// stylesheet Insert Rule
+var $S = function(style) {return $e("bruteForce").sheet.insertRule(style, 0);};
 
 
 // Force Secure Connection
 var FSC = function(aXn) {
-	var Gtld = location.host.substring($i(location.host,gS)+8,location.host.length),lH = location.href,iF,sL = [
+	var iF,sL = [
 		"www"+gS+"/",	// "/" at the end means no iG
 		gS+Gtld+"/advanced_search?",
 		"plus"+gS,
@@ -148,10 +155,10 @@ if (uForceSSL) {FSC();}
 
 // Browser Style [injector] - cross browser rounded corners
 var $R = function(typ) {
-	var newStyl,uA = navigator.userAgent.toLowerCase(),bP=($i(uA,"chrome") > -1)?"-webkit-":($i(uA,"konqueror") > -1)?"-khtml":($i(uA,"opera") > -1)?"":"-moz-";
+	var newStyl,uA = navigator.userAgent.toLowerCase(),bP=($i(uA,"chrome") > -1)?"-webkit-":($i(uA,"konqueror") > -1)?"-khtml":($i(uA,"opera") > -1) ? "" : "-moz-";
 	if ($i(typ,"radiusAll") > -1) {
 		newStyl = "border-radius";
-		if (bP != "-webkit-") {
+		if (bP !== "-webkit-") {
 			newStyl = bP+newStyl;
 		}
 	} else if ($i(typ,"radius") > -1) {
@@ -177,7 +184,7 @@ var $R = function(typ) {
 		}
 	} else {
 		newStyl = typ;
-		if (bP != "-webkit-") {
+		if (bP !== "-webkit-") {
 			newStyl = bP+newStyl;
 		}
 	}
@@ -214,7 +221,7 @@ if (typeof Array.isArray !== "function") {
 }
 // creates a new Node with the given attributes and properties
 var $n = function(type,attributes,props,evls) {
-	var N0D3 = document.createElement(type),attr,prop;
+	var N0D3 = $c(type),attr,prop;
 	if (attributes) {
 		for (attr in attributes) {
 			if (attributes.hasOwnProperty(attr)) {
@@ -248,11 +255,11 @@ var $x = function(p,context,docObj) {
 	if (!context) {
 		context = docObj;
 	}
-	var arr = [],xpr = docObj.evaluate(p,context,null,XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null),iD,iE = xpr.snapshotLength;
-	for (iD = 0; iD < iE; iD++) {
-		arr.push(xpr.snapshotItem(iD));
+	var arr = [],xpr = docObj.evaluate(p,context,null,XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null),i1,i2;
+	for (iD = 0; (i1 = xpr.snapshotLength); i1++) {
+		arr.push(xpr.snapshotItem(i1));
 	}	
-	iD = null; iE = null;
+	i1 = null; i2 = null;
 	return arr;
 };
 // Returns only the first element of the array returned by $x (or null if the array was empty)
@@ -264,8 +271,8 @@ var $x1 = function(p,context,docObj) {
 
 // Adaptive Resolution Support from 800x600 to 2560x1600 for Srch Results
 var Rw = function() {
-	var rV, dW = document.all?document.body.clientWidth:window.innerWidth;
-	if ($e('gSearchSidebar') === null)	{rV = 96;}
+	var rV, dW = document.all ? document.body.clientWidth : window.innerWidth;
+	if ($e("gSearchSidebar") === null)	{rV = 96;}
 	else if (dW >= 2532)			{rV = 73;}
 	else if (dW >= 1699)			{rV = 72;}
 	else if (dW >= 1308)			{rV = 71;}
@@ -292,7 +299,7 @@ var l0g = function(val) {
 			case "s": console.time("< Run Time");		l0g("T");	break;
 			case "T": console.log("> Timing started");			break;
 			case "e": console.timeEnd("< Run Time");			break;
-			default:  console.log((($i(val,"$ ")==0) ? "" : ">>> ")+val);	break;
+			default:  console.log((($i(val,"$ ") === 0) ? "" : ">>> ")+val);break;
 		}
 	} else if (GM_log) {
 		switch (val) {
@@ -305,14 +312,14 @@ var l0g = function(val) {
 };
 
 l0g("s");//timerInit  |  d3v: l0g(""+Date.now());
-l0g("$ enhance --Google --Black -q "+location.href);
+l0g("$ enhance --Google --BLACK -q "+location.href);
 
 var enhanceGoogle = function() {
-	var stYle = document.createElement("style"),Gtld = location.host.substring($i(location.host,gS)+8,location.host.length),lH = location.href,lc = uColorLink,vl = uColorLinkVisited,gL = $L(),gHpL = $L("H"),rW = Rw(),isiG=($i(lH,gS+Gtld+"/ig") > -1),$_$=
+	var lc = uColorLink,vl = uColorLinkVisited,gL = $L(),gHpL = $L("H"),rW = Rw(),isiG = ($i(lH,gS+Gtld+"/ig") > -1),$_$=
 
 // General Google pg
 /* Global font override */	"* {font-family:"+uFontFamily+";}"+
-/* pg bg -but- Not on Gmail */	(($i(lH,"mail"+gS) > -1)?"":"BODY {background:#000 none !important; color:#fff;}")+
+/* pg bg -but- Not on Gmail */	(($i(lH,"mail"+gS) > -1) ? "" : "BODY {background:#000 none !important; color:#fff;}")+
 /* link color */		"A,#gbar A.gb1,#gbar A.gb2,#gbar A.gb3,#guser A.gb3,#guser A.gb3 U,#guser A.gb4,SPAN.i,.linkon,#codesiteContent A,TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN,TABLE TBODY TR TD TABLE TBODY TR TD A,.lk,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section DIV#related TABLE.gf-table TH.sortable,SPAN.linkbtn,DIV#ss-status A.gb3,SPAN#rptgl SPAN,A SPAN.b,.mmttl SPAN,A > SPAN.navlink,SPAN > SPAN.link,DIV#rptgl > SPAN,DIV#tbt-expander DIV,#guser SPAN > SPAN,DIV#ss-bar DIV#ss-box > A,DIV#rpsp.rpop DIV.tl B,SPAN#zippyspan,.actbar-btn,.gtc-doclist-item-select > SPAN,.goog-tab-bar .goog-tab > DIV,UL.goog-tabpane-tabs > LI.goog-tabpane-tab,DIV.gwt-Label,#guser .gb2,DIV.n SPAN.b,.linkbtn,.blended-menu-option .blended-menu-option-selected,.blended-menu-option-not-selected,#gbar .gb3 U,#gbar .gb3 SMALL,.gbmt,#gbztms SPAN,.flt, .flt u, a.fl,#gbz .gbzt, #gbz .gbgt, #gbg .gbgt,#gbz .gbzt SPAN, #gbz .gbgt SPAN, #gbg .gbgt SPAN,.G-GL,.G-HU ,.G-HU DIV,.G-AR,.tk3N6e-e-vj,.gwt-InlineLabel,.gbml1 {color:"+lc+" !important;}"+
 /* visitedLinx color */		"A:visited {color:"+vl+" !important;}"+
 /* results visited linx */	"DIV#res A:visited {font-size:0.8em !important;}"+
@@ -343,25 +350,25 @@ var enhanceGoogle = function() {
 /* intl home locale txt */	"DIV#hplogo > DIV {top:82px !important; color:rgba(255,255,255,0.7) !important;}"+
 
 /*  CONDITIONAL-EVALUATION related to Homepage Special Logo [exception for g.Images-home]  */
-    (((($e('logo') && (($e('logo').alt == 'Google' || $e('logo').title == 'Google') || $i(lH,"images"+gS)>-1))) && $e("lga") == null)?
+    (((($e("logo") && (($e("logo").alt === "Google" || $e("logo").title === "Google") || $i(lH,"images"+gS)>-1))) && $e("lga") === null)?
 	/* insert hp-logo img */"BODY[vlink='#551a8b'] > DIV#xjsd,BODY > SPAN#main > CENTER > DIV#xjsd,BODY[vlink='#551a8b'] > CENTER > DIV#xjsd {height:131px !important; background:transparent url('"+gHpL+"') no-repeat scroll 0 !important;}"+
 	/* intl logo mover */	"BODY[vlink='#551a8b'] > DIV#xjsd,BODY > SPAN#main > CENTER > DIV#xjsd,BODY[vlink='#551a8b'] > CENTER > DIV#xjsd {position:absolute; top:52px; left:0; width:100% !important; background-position:center !important;}"
     :"")+
 
-	/* large logo hide */	(($e('logo') && $e('logo').alt!='Google' && $i(lH,"images"+gS) == -1)?"":"BODY > CENTER IMG[onload='window.lol && lol()']#logo,BODY > CENTER DIV[onload='window.lol && lol()']#logo,BODY > SPAN#main > CENTER > SPAN#body > CENTER > IMG#logo,BODY > SPAN#main > CENTER > SPAN#body > CENTER DIV#logo,BODY > CENTER > DIV#lga > IMG[width='276'] {visibility:hidden; min-height:117px;}")+
+	/* large logo hide */	(($e("logo") && $e("logo").alt !== "Google" && $i(lH,"images"+gS) === -1) ? "" : "BODY > CENTER IMG[onload='window.lol && lol()']#logo,BODY > CENTER DIV[onload='window.lol && lol()']#logo,BODY > SPAN#main > CENTER > SPAN#body > CENTER > IMG#logo,BODY > SPAN#main > CENTER > SPAN#body > CENTER DIV#logo,BODY > CENTER > DIV#lga > IMG[width='276'] {visibility:hidden; min-height:117px;}")+
 
 	/* featur logo hider */	"BODY > SPAN#main > CENTER > SPAN#body > CENTER > DIV#lga > A > IMG#logo {visibility:hidden;}"+
-	/* h.spcl logo hider */	(uLogoLuri != "none"?"BODY > SPAN#main > CENTER > SPAN#body > CENTER > A > IMG#logo {visibility:hidden;}":"")+
+	/* h.spcl logo hider */	(uLogoLuri !== "none" ? "BODY > SPAN#main > CENTER > SPAN#body > CENTER > A > IMG#logo {visibility:hidden;}" : "")+
 
 /* Evrythng home logo hider */	"DIV#lga > IMG#logo {visibility:hidden;}"+
 /* Neo home logo remover */	"DIV#lga > IMG#hplogo {display:none;}"+
 
 /* search input */		"INPUT[type='text'],INPUT[type='password'],INPUT[name='q'] {background:#333 none !important; background-color:rgba(0,0,0,0.6) !important; padding:2px; border:solid 1px #ccc; font-weight:bold; color:"+uColorInputTxt+" !important;}"+
 /* srch input b-brdr */		"FORM[name='f'] TABLE#search-input > TBODY > TR > TD.srchBoxCont,.srch-box-cont {border-bottom:0 none transparent;}"+
-/* hShare btn bgGrad */		".gbgsca,.gbgscb,.gbgsb {background-color:transparent !important; background-image:none !important; background:-moz-linear-gradient(none) !important;}"+
+/* hShare btn bgGrad */		".gbgsca,.gbgscb {background-color:transparent !important; background-image:none !important; background:-moz-linear-gradient(none) !important;}"+
 /* hShare btn height */		".gbgsc {padding-bottom:0.1em !important;}"+
-/* submit btns */		"INPUT[type='submit'],BUTTON[type='submit'],INPUT[value='Cancel'],INPUT[value='Save'],INPUT#stxemailsend,INPUT[value='Discard'],INPUT[value='Download'],INPUT[value='Add it now'],INPUT[type='button'][value='Save changes'],INPUT[type='reset'][value='Clear All'],INPUT[type='reset'][value='Reset'],INPUT[type='button'][value='Done'],INPUT[type='button'][value='Copy'],INPUT[type='button'][value='Move'],INPUT[type='button'][value='Delete'],INPUT[type='button'][value='Compare'],INPUT[type='button'][value='Check for Updates'],DIV.gac_bt > INPUT,INPUT#q-sub,INPUT.goog-button,.a-Wf-H-Hc-e,.gbgsc,#srreg .msf-button,#sropt .asf-button {background-color:#333 !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#555),to(#000)) !important; background-image:none !important; border:solid 1px #999 !important; "+$R('radiusAll')+":14px; color:#fff !important; cursor:pointer; opacity:0.8;}"+
-/* submit btn hover */		"INPUT[type='submit']:hover,BUTTON[type='submit']:hover,INPUT[type='reset'][value='Clear All']:hover,INPUT[type='button'][value='Done']:hover,INPUT[type='button'][value='Copy']:hover,INPUT[type='button'][value='Move']:hover,INPUT[type='button'][value='Delete']:hover,INPUT[type='button'][value='Compare']:hover,INPUT[type='reset'][value='Reset']:hover,INPUT[type='button'][value='Check for Updates']:hover,DIV.gac_bt > INPUT:first-child:hover,INPUT#q-sub:hover,INPUT.goog-button:hover,.gbgsc:hover,#srreg .msf-button:hover,#sropt .asf-button:hover {background-color:#36f !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#000),to(#36f)) !important; color:#fff;}"+
+/* submit btns */		"INPUT[type='submit'],INPUT[value='Cancel'],INPUT[value='Save'],INPUT#stxemailsend,INPUT[value='Discard'],INPUT[value='Download'],INPUT[value='Add it now'],INPUT[type='button'][value='Save changes'],INPUT[type='reset'][value='Clear All'],INPUT[type='reset'][value='Reset'],INPUT[type='button'][value='Done'],INPUT[type='button'][value='Copy'],INPUT[type='button'][value='Move'],INPUT[type='button'][value='Delete'],INPUT[type='button'][value='Compare'],INPUT[type='button'][value='Check for Updates'],DIV.gac_bt > INPUT,INPUT#q-sub,INPUT.goog-button,.a-Wf-H-Hc-e,#srreg .msf-button,#sropt .asf-button {background-color:#333 !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#555),to(#000)) !important; background-image:none !important; border:solid 1px #999 !important; "+$R('radiusAll')+":14px; color:#fff !important; cursor:pointer; opacity:0.8;}"+
+/* submit btn hover */		"INPUT[type='submit']:hover,BUTTON[type='submit']:hover,INPUT[type='reset'][value='Clear All']:hover,INPUT[type='button'][value='Done']:hover,INPUT[type='button'][value='Copy']:hover,INPUT[type='button'][value='Move']:hover,INPUT[type='button'][value='Delete']:hover,INPUT[type='button'][value='Compare']:hover,INPUT[type='reset'][value='Reset']:hover,INPUT[type='button'][value='Check for Updates']:hover,DIV.gac_bt > INPUT:first-child:hover,INPUT#q-sub:hover,INPUT.goog-button:hover,#srreg .msf-button:hover,#sropt .asf-button:hover {background-color:#36f !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#000),to(#36f)) !important; color:#fff;}"+
 /* go btns hover */		"INPUT#btnI:hover,INPUT[name='btnI']:hover,INPUT[value='Save']:hover,SPAN#button_0 BUTTON:hover,INPUT#stxemailsend:hover,INPUT[value='Submit Issue']:hover,INPUT[value='Download']:hover,INPUT[value='Add it now']:hover,INPUT[value='Add it now'],INPUT[value='Save Preferences']:hover,INPUT[value='Save Preferences ']:hover,INPUT#save:hover,BUTTON[name='ok']:hover,BUTTON[name='yes']:hover,BUTTON[accesskey='s']:hover,INPUT[value='Send Email']:hover,INPUT[type='button'][value='Save changes']:hover,DIV.gac_bt > INPUT:last-child:hover,INPUT[type='submit'].goog-button:hover {background-color:#090 !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#000),to(#090)) !important; color:#fff;}"+
 /* cancel btn hover */		"INPUT[value='Cancel']:hover,SPAN#button_1 BUTTON:hover,INPUT[value='Discard']:hover,INPUT[value='Delete Group']:hover,INPUT#cancel:hover,INPUT[value='Cancel']:hover,INPUT#cancel:hover,INPUT[value='Cancel']:hover,BUTTON[name='cancel']:hover,BUTTON[onclick='_EV_Blur(this);_EF_Dismiss(true)']:hover,BUTTON[name='no']:hover,.a-Wf-H-Hc-e:hover {background-color:#900 !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#000),to(#900)) !important; color:#fff !important;}"+
 /* srch tool bx */		".lst-td,.a-U-T,.sfbgg {width:100%; background-color:transparent;}"+
@@ -391,7 +398,7 @@ var enhanceGoogle = function() {
 /* mainbody txt */		"DIV.mainbody,TD.j,DIV.empty,DIV.empty DIV,BODY#gsr DIV,BODY#gsr TD {color:#999 !important;}"+
 /* bgPicker bg */		"BODY > DIV#pickerContainer,BODY > DIV#pickerContainer > DIV#pickerTitle,DIV#pickerContainer > DIV#onePickMsg {background-color:#000; border:0 none;}"+
 /* footer bg */			"CENTER#fctr {background-color:transparent !important;}"+
-/* footers */			(uHideFooters?"#footer,#footer_promos,#footerwrap,P FONT[size='-2'],TABLE[class='t n bt'][width='100%'][cellpadding='2'],DIV[align='center'][style='white-space: nowrap;'],FONT[class='p'][size='-1'],FONT[size='-1'][color='#6f6f6f'],DIV.div-copyright,SPAN.copyr,DIV.content DIV.footer,DIV#footarea,TABLE[width='99%'][cellpadding='3'][bgcolor='#c3d9ff'][align='center'][style='margin-bottom: 5px;'],CENTER > DIV[style='padding: 2px;'] > FONT[size='-1'],CENTER > CENTER > P > FONT[size='-1'],BODY.search > DIV[align='center'] > SMALL > FONT[size='-1'][face='Arial,sans-serif'],BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > CENTER > FONT[size='-1'],BODY > CENTER > TABLE[width='100%'][cellspacing='0'][cellpadding='2'][border='0'] *,DIV[class='padt10 padb10'] > TABLE[width='100%'] > TBODY > TR > TD[class='fontsize1 padt5'][align='center'],BODY[marginheight='3'][bgcolor='#ffffff'][dir='ltr'][topmargin='3'] > CENTER > FONT[size='-1'],BODY > DIV[style='width: 100%; clear: both;'] > FORM[name='langform'] > DIV[align='center'] > FONT[size='-1'] {display:none;}":"")+
+/* footers */			(uHideFooters?"#footer,#footer_promos,#footerwrap,P FONT[size='-2'],TABLE[class='t n bt'][width='100%'][cellpadding='2'],DIV[align='center'][style='white-space: nowrap;'],FONT[class='p'][size='-1'],FONT[size='-1'][color='#6f6f6f'],DIV.div-copyright,SPAN.copyr,DIV.content DIV.footer,DIV#footarea,TABLE[width='99%'][cellpadding='3'][bgcolor='#c3d9ff'][align='center'][style='margin-bottom: 5px;'],CENTER > DIV[style='padding: 2px;'] > FONT[size='-1'],CENTER > CENTER > P > FONT[size='-1'],BODY.search > DIV[align='center'] > SMALL > FONT[size='-1'][face='Arial,sans-serif'],BODY > TABLE[width='100%'][height='100%'][style='margin-bottom: 1px;'] > TBODY > TR > TD[valign='top'] > CENTER > FONT[size='-1'],BODY > CENTER > TABLE[width='100%'][cellspacing='0'][cellpadding='2'][border='0'] *,DIV[class='padt10 padb10'] > TABLE[width='100%'] > TBODY > TR > TD[class='fontsize1 padt5'][align='center'],BODY[marginheight='3'][bgcolor='#ffffff'][dir='ltr'][topmargin='3'] > CENTER > FONT[size='-1'],BODY > DIV[style='width: 100%; clear: both;'] > FORM[name='langform'] > DIV[align='center'] > FONT[size='-1'] {display:none;}" : "")+
 
 // Preferences
 	/* pre title line */	"BODY[vlink='#551a8b'][text='#000000'][link='#0000cc'][bgcolor='#ffffff'][alink='#ff0000'] > DIV[style='width: 100%; clear: both;'] > FORM > TABLE TBODY TR TD[bgcolor='#3366cc'],BODY> DIV[style='width: 100%; clear: both;'] > FORM > TABLE TBODY TR TD[bgcolor='#3366cc'] {display:none;}"+
@@ -512,7 +519,7 @@ var enhanceGoogle = function() {
 /* dd box bg */			"#po-barframe,#ss-barframe {visibility:hidden !important;}"+
 /* dd selected */		"#po-box A.po-selected,#ss-box A.ss-selected {color:#fff !important;}"+
 /* outer result cntnr */	"BODY#gsr DIV#cnt {max-width:100%;}"+
-/* remove sponsored linx */	(uHideAds?"DIV#tads,DIV#res DIV.ta,BODY#gsr > TABLE#mbEnd {display:none;}":"")+
+/* remove sponsored linx */	(uHideAds?"DIV#tads,DIV#res DIV.ta,BODY#gsr > TABLE#mbEnd {display:none;}" : "")+
 /* refine results txt */	"TABLE#po TBODY TR TD,TD#sff > DIV#bsb {color:#999 !important;}"+
 /* result-area txt */		"DIV#res P,DIV#res .j,DIV.sml,DIV.std,DIV#res OL LI,DIV#res OL LI DIV ,BODY > SPAN#main > DIV#cnt > DIV#res > SPAN#topstuff > DIV.e > DIV.std TD {color:#999 !important; clear:left;}"+
 /* description width */		"TD.j,OL > LI.g > DIV.s,#ires .s {width:100% !important; max-width:100% !important;}"+
@@ -527,7 +534,7 @@ var enhanceGoogle = function() {
 /* related srches topBx LH */	"BODY > DIV#cnt > DIV#tbt5 LI {line-height:1.2em;}"+
 /* results for top line */	"DIV#ires > OL > LI > HR[width='65%'][color='#c9d7f1'][size='1'][align='left'] {visibility:hidden;}"+
 /* results for headlineColor */	"DIV#ires > OL > LI > P.g > SPAN.med {color:#fff;}"+
-/* r-side ads */		(uHideAds?"#rhscol,#rhsline *,#rhs_block {display:none;}":"")+
+/* r-side ads */		(uHideAds?"#rhscol,#rhsline *,#rhs_block {display:none;}" : "")+
 /* footer logo(s) */		"#navbar DIV,#navbar IMG,TABLE#nav SPAN#nf,TABLE#nav SPAN#nc,TABLE#nav SPAN.nr,TABLE#nav SPAN#nn,DIV#np,TABLE#nav > TBODY > TR[valign='top'] > TD.b > SPAN,TABLE#nav > TBODY > TR[valign='top'] > TD.cur > SPAN,TABLE#nav > TBODY > TR[valign='top'] > TD > A > SPAN.csb {height:0px; background:none;}"+
 /* footer bg */			"TABLE[class='ft t bb bt'],DIV.clr > DIV#bsf,DIV.clr > P.blk,BODY#gsr > DIV > DIV#bsf {background-color:#000 !important; border-top:0 none; border-bottom:0 none;}"+
 
@@ -539,7 +546,7 @@ var enhanceGoogle = function() {
 	/* lower form */	"BODY > TABLE[width='100%'][cellspacing='0'][cellpadding='0'] > TBODY > TR > TD[align='center'] > TABLE[cellspacing='0'][cellpadding='0'][style='margin-top: 1em; width: 80%;'] > TBODY > TR > TD[align='left'] > DIV.outer-box > FORM[name='f'].block {border-color:#333; "+$R('border-radius-bottomright')+":14px; "+$R('border-radius-bottomleft')+":14px;}"+
 	/* related box */	"BODY > TABLE[width='100%'][cellspacing='0'][cellpadding='0'] > TBODY > TR > TD[align='center'] > TABLE[cellspacing='0'][cellpadding='0'][style='width: 80%;'] > TBODY > TR > TD[align='left'] > DIV#related.block {border-color:#333; "+$R('radiusAll')+":14px;}"+
 	/* form & pg txt */	"DIV.outer-box > FORM.block H3,DIV.outer-box > FORM.block LABEL,DIV.spec-engines > H3 {color:#999;}"+
-	/* footer */		(uHideFooters?"BODY > CENTER:last-child > FONT[size='-1'] {display:none;}":"")+
+	/* footer */		(uHideFooters?"BODY > CENTER:last-child > FONT[size='-1'] {display:none;}" : "")+
 
 // Updates
 	/* Top links box bg */	"#rhs_block {background-color:#000; opacity:0.75; "+$R('radiusAll')+":14px;}"+
@@ -553,7 +560,7 @@ var enhanceGoogle = function() {
 	/* top line */		"BODY[vlink='#551a8b'][link='#0000cc'][bgcolor='#ffffff'][alink='#ff0000'][onload='ht();'] TABLE.header TD,BODY[vlink='#551a8b'][link='#0000cc'][bgcolor='#ffffff'][alink='#ff0000'] > TABLE > TBODY > TR > TD > TABLE.header > TBODY > TR > TD[bgcolor='#e5ecf9'] {border-top:0 none;}"+
 	/* hdr bars */		"BODY[vlink='#551a8b'][link='#0000cc'][bgcolor='#ffffff'][alink='#ff0000'][onload='ht();'] H4,BODY[vlink='#551a8b'][link='#0000cc'][bgcolor='#ffffff'][alink='#ff0000'] H4 {background-color:#333; border:0; "+$R('radiusAll')+":14px;}"+
 	/* srch across box */	"BODY[vlink='#551a8b'][link='#0000cc'][bgcolor='#ffffff'][alink='#ff0000'][onload='ht();'] > TABLE[width='100%'][cellpadding='3'] > TBODY > TR[bgcolor='#ffffff'] > TD,BODY[vlink='#551a8b'][link='#0000cc'][bgcolor='#ffffff'][alink='#ff0000'] > TABLE[width='100%'][cellpadding='3'] > TBODY > TR[bgcolor='#ffffff'] > TD {background-color:#000;}"+
-	/* footer */		(uHideFooters?"BODY > FONT[size='-1'] > CENTER > P {display:none;}":"")+
+	/* footer */		(uHideFooters?"BODY > FONT[size='-1'] > CENTER > P {display:none;}" : "")+
 
 // Feedback
 	/* hdr bar */		"BODY > FORM > TABLE.qftbb > TBODY > TR > TD {background-color:#333; border:0; "+$R('radiusAll')+":14px;}"+
@@ -589,7 +596,7 @@ var enhanceGoogle = function() {
 /* sizes alert */		"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255, 255, 153);'],BODY > DIV#ImgCont > DIV#rstc > CENTER > SPAN {padding:2px 7px 2px 7px !important; "+$R('radiusAll')+":14px;}"+
 /* sizes alert txt */		"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255,255,153);'] FONT,BODY > DIV#ImgCont > DIV#rstc > CENTER > SPAN > FONT {color:#777;}"+
 /* sizes alert highlight */	"DIV[style='padding: 16px 0pt;'] CENTER SPAN[style='padding: 4px; background-color: rgb(255,255,153);'] FONT B,BODY > DIV#ImgCont > DIV#rstc > CENTER > SPAN > FONT > B {color:#000 !important;}"+
-/* ad bar */			(uHideAds?"DIV#ImgCont > TABLE[width='100%'][style='padding: 8px; background: rgb(255, 248, 221) none repeat scroll 0%; "+$R('background-clip')+": "+$R('initial')+"; "+$R('background-inline-policy')+": "+$R('initial')+"; margin-top: 10px;'],DIV#res > TABLE.ts {display:none;}":"")+
+/* ad bar */			(uHideAds?"DIV#ImgCont > TABLE[width='100%'][style='padding: 8px; background: rgb(255, 248, 221) none repeat scroll 0%; "+$R('background-clip')+": "+$R('initial')+"; "+$R('background-inline-policy')+": "+$R('initial')+"; margin-top: 10px;'],DIV#res > TABLE.ts {display:none;}" : "")+
 /* img size txt */		"DIV.std > .f,DIV.std > .m {color:#999 !important;}"+
 /* img source txt */		"DIV.std > .a {color:#090 !important;}"+
 /* g.image lbler */		"CENTER TABLE[cellpadding='10'][style='text-align: center;'] TBODY TR TD {background-color:#000;}"+
@@ -674,7 +681,7 @@ var enhanceGoogle = function() {
 /* srch hdr barL */		"TABLE TBODY TR TD[width='60%'] {background-color:#333; border:0; "+$R('border-radius-topleft')+":14px; "+$R('border-radius-bottomleft')+":14px;}"+
 /* srch hdr barL txt*/		"TABLE TBODY TR TD[width='60%'] FONT {color:#000;}"+
 /* srch hdr barR */		"TABLE TBODY TR TD[width='40%'] {background-color:#333; border:0; "+$R('border-radius-topright')+":14px; "+$R('border-radius-bottomright')+":14px;}"+
-/* results top ad */		(uHideAds?"TABLE#main-table DIV.top-ads {display:none;}":"")+
+/* results top ad */		(uHideAds?"TABLE#main-table DIV.top-ads {display:none;}" : "")+
 /* results area width */	"BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > TABLE#main-table > TBODY > TR > TD > TABLE.left > TBODY > TR > TD.search-middle,DIV#center_col > DIV#res > DIV#ires > OL > LI > TABLE.ts > TBODY > TR > TD.tsw {width:100%;}"+
 /* results area R-nav */	"BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > TABLE#main-table > TBODY > TR > TD > TABLE.left > TBODY > TR > TD.right-nav {display:none;}"+
 /* results nav r-side line */	"BODY.serp > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > TABLE#main-table > TBODY > TR > TD.nav > DIV.sidebar {border-color:#333;}"+
@@ -706,7 +713,7 @@ var enhanceGoogle = function() {
 // AP/AFP.Gnews
 	/* body txt */		"DIV DIV#hn-content DIV {color:#999 !important;}"+
 	/* article title */	"DIV DIV#hn-content DIV H1 {color:#fff;}"+
-	/* footer */		(uHideFooters?"DIV DIV#hn-footer {display:none;}":"")+
+	/* footer */		(uHideFooters?"DIV DIV#hn-footer {display:none;}" : "")+
 	/* /hostednews/ expanded below in its $S section */
 
 // Maps
@@ -731,7 +738,7 @@ var enhanceGoogle = function() {
 /* link to pnl txt */		"DIV#le TABLE.letbl TBODY TR TD {color:#999 !important;}"+
 /* pnl selection */		"DIV#page DIV#panel DIV.selected {background-color:#222 !important; color:#333; "+$R('border-radius-topleft')+":14px; "+$R('border-radius-bottomleft')+":14px;}"+
 /* results area */		"DIV#hp DIV,DIV#hp TABLE TR TD,DIV#panel DIV DIV,DIV#panel DIV TABLE TBODY TR TD,DIV#page DIV,DIV#page TABLE TBODY TR TD {color:#777 !important;}"+
-/* sponsored linx */		(uHideAds?"TABLE > TBODY > TR > TD > TABLE.geoads,TABLE > TBODY > TR > TD > DIV.adsmessage,#panel .ads,#contentads,#rhsads,#topads,#mclip .ad {display:none;}":"")+
+/* sponsored linx */		(uHideAds?"TABLE > TBODY > TR > TD > TABLE.geoads,TABLE > TBODY > TR > TD > DIV.adsmessage,#panel .ads,#contentads,#rhsads,#topads,#mclip .ad {display:none;}" : "")+
 /* srched term in title */	"TABLE.res TBODY TR TD DIV.name SPAN A SPAN B {color:#aaa !important;}"+
 /* phone numbers */		"TABLE.res TBODY TR TD DIV SPAN.tel {color:#090;}"+
 /* highlight */			"FONT[color='red'] {color:#f00;}"+
@@ -764,7 +771,7 @@ var enhanceGoogle = function() {
 /* settings outer box */	"FORM.settings-container-form > TABLE.roundedblock {"+$R('radiusAll')+":14px;}"+
 /* settings corner imgs */	"FORM.settings-container-form > TABLE.roundedblock TD {background-image:none;}"+
 /* templates pgTxt */		"#templates-main H3.templates-entry-name,#templates-main P.templates-entry-description,#pagination_numbers {color:#ccc !important;}"+
-/* footers */			(uHideFooters?"BODY > DIV.footer {display:none;}":"")+
+/* footers */			(uHideFooters?"BODY > DIV.footer {display:none;}" : "")+
 /* Docs expanded below in its $S section */
 
 // Product / Shopping srch
@@ -774,25 +781,25 @@ var enhanceGoogle = function() {
 /* adv srch logo adjust */	"BODY > FORM > DIV#advd-search-header > TABLE:first-child > TBODY > TR > TD[width='1%']:first-child > A {width:inherit !important;}"+
 /* hdr bar */			"TABLE[cellspacing='0'][cellpadding='0'][style='border-top: 1px solid rgb(68, 120, 212); background: rgb(234, 239, 250) none repeat scroll 0% 0%; width: 100%; "+$R('background-clip')+": "+$R('initial')+"; "+$R('background-origin')+": "+$R('initial')+"; "+$R('background-inline-policy')+": "+$R('initial')+";'],TABLE#ps-titlebar,BODY > DIV#ps-titlebar,BODY > FORM > DIV#advd-search-header H1,SPAN#taw > DIV[style='border:1px solid #ebeff9;padding:2px 2px 0 8px;margin:0 0 8px'] {padding:0 0.3em 0.1em 0.3em; background-color:#333 !important; border:0 none !important; "+$R('radiusAll')+":14px;}"+
 /* L-menu */			"#lhs-ref {padding-top:0.2em; background-color:#000; border-right:0 none;}"+
-/* sponsored linx */		(uHideAds?"DIV[style='padding-top: 11px;'] > DIV[style='font-size: small; background-color: rgb(255,249,221);'],BODY[vlink='#551a8b'][text='#000000'][marginheight='3'][link='#0000cc'][alink='#ff0000'][topmargin='3'] > TABLE[cellspacing='0'][cellpadding='0'][border='0'][bgcolor='#ffffff'][align='right'][style=''] {display:none;}":"")+
-/* top & bottom ads */		(uHideAds?"BODY > DIV#ads-top,BODY > DIV.list > DIV#ads-bot {display:none;}":"")+
+/* sponsored linx */		(uHideAds?"DIV[style='padding-top: 11px;'] > DIV[style='font-size: small; background-color: rgb(255,249,221);'],BODY[vlink='#551a8b'][text='#000000'][marginheight='3'][link='#0000cc'][alink='#ff0000'][topmargin='3'] > TABLE[cellspacing='0'][cellpadding='0'][border='0'][bgcolor='#ffffff'][align='right'][style=''] {display:none;}" : "")+
+/* top & bottom ads */		(uHideAds?"BODY > DIV#ads-top,BODY > DIV.list > DIV#ads-bot {display:none;}" : "")+
 /* results width aleviater */	"BODY > DIV.rhs,BODY > DIV.list {max-width:none; margin-right:0;}"+
 /* srch txt */			"TABLE.list FORM,TABLE.list SPAN.prod-detail,TABLE.list > TBODY > TR > TD.ol NOBR,TABLE.list > TBODY > TR > TD.ol SPAN,TD.bo > NOBR,BODY > DIV.list DIV,BODY > DIV.list P,BODY > DIV.grid DIV {color:#999 !important;}"+
 /* result prices */		"BODY > DIV.list > OL#results P.result-price,BODY > DIV.list > OL#results P.result-taxship,BODY > DIV.grid P.result-price,BODY > DIV.grid P.result-taxship {color:#fff !important;}"+
 /* srch desc */			"TABLE.list > TBODY > TR > TD.ol {color:#fff !important;}"+
-/* vertical ads */		(uHideAds?"TABLE#ps-vertical-ads,DIV#ads-rhs {display:none;}":"")+
+/* vertical ads */		(uHideAds?"TABLE#ps-vertical-ads,DIV#ads-rhs {display:none;}" : "")+
 /* adv.srch box */		"BODY > FORM > DIV.as-table-cont,BODY > FORM > DIV.as-table-cont TD,BODY > FORM[name='f'] > DIV#body-center > DIV.as-table-cont {border:0 none; color:#999 !important;}"+
 /* popular this week */		".GFPOL0QDFC {border-color:#333 !important;}"+
 /* zoom modal */		".GFPOL0QDNB {padding:0.5em; background-color:#333 !important; "+$R('radiusAll')+":14px;}"+
 /* footer srch refinement */	"DIV.main-top > DIV#attr-div > TABLE.attr-table,DIV.main-top > DIV#attr-div > TABLE.attr-table LI {color:#ccc;}"+
 /* footer logo(s) */		"TABLE DIV#nf,TABLE DIV#nc,TABLE DIV.nr,TABLE DIV#nn {height:0px; background:none;}"+
-/* footer disclaimer */		(uHideFooters?"TABLE[width='65%'][align='center'] > TBODY > TR > TD[align='center'] > SPAN.disclaimer {display:none;}":"")+
+/* footer disclaimer */		(uHideFooters?"TABLE[width='65%'][align='center'] > TBODY > TR > TD[align='center'] > SPAN.disclaimer {display:none;}" : "")+
 /* footer srch */		"BODY > TABLE[cellspacing='0'][cellpadding='3'][style='border-top: 1px solid rgb(68, 120, 212); border-bottom: 1px solid rgb(68, 120, 212); background: rgb(234, 239, 250) none repeat scroll 0% 0%; width: 100%; "+$R('background-clip')+": "+$R('initial')+"; "+$R('background-inline-policy')+": "+$R('initial')+";'],BODY > TABLE#ps-footer {background-color:#000 !important; border:0 none !important;}"+
-/* footer txt */		(uHideFooters?"BODY > TABLE[cellspacing='0'][cellpadding='3'][style='border-top: 1px solid rgb(68, 120, 212); border-bottom: 1px solid rgb(68, 120, 212); background: rgb(234, 239, 250) none repeat scroll 0% 0%; width: 100%; "+$R('background-clip')+": "+$R('initial')+"; "+$R('background-inline-policy')+": "+$R('initial')+";'] > TBODY > TR > TD[align='center'] > FONT[size='-1'],BODY[vlink='#551a8b'][text='#000000'][marginheight='3'][link='#0000cc'][alink='#ff0000'][topmargin='3'] > CENTER > FONT[size='-1'],BODY > TABLE#ps-footer > TBODY > TR > TD[align='center'] > FONT[size='-1'],BODY > P.as-footer {display:none;}":"")+
+/* footer txt */		(uHideFooters?"BODY > TABLE[cellspacing='0'][cellpadding='3'][style='border-top: 1px solid rgb(68, 120, 212); border-bottom: 1px solid rgb(68, 120, 212); background: rgb(234, 239, 250) none repeat scroll 0% 0%; width: 100%; "+$R('background-clip')+": "+$R('initial')+"; "+$R('background-inline-policy')+": "+$R('initial')+";'] > TBODY > TR > TD[align='center'] > FONT[size='-1'],BODY[vlink='#551a8b'][text='#000000'][marginheight='3'][link='#0000cc'][alink='#ff0000'][topmargin='3'] > CENTER > FONT[size='-1'],BODY > TABLE#ps-footer > TBODY > TR > TD[align='center'] > FONT[size='-1'],BODY > P.as-footer {display:none;}" : "")+
 /* footer pagination imgs */	"BODY > DIV.n > TABLE > TBODY > TR > TD > DIV#nl {background-image:none;}"+
 /* footer bg */			"BODY > DIV#ps-footer > DIV#ps-footer-bg {background-color:#000 !important;}"+
 /* footer disclaimer */		"BODY > DIV#ps-footer > P.ps-disclaimer {color:#777;}"+
-/* footer */			(uHideFooters?"BODY > DIV#hp-cont > P:last-child,BODY > FORM[name='f'] > DIV#body-center > P.copyright {display:none;}":"")+
+/* footer */			(uHideFooters?"BODY > DIV#hp-cont > P:last-child,BODY > FORM[name='f'] > DIV#body-center > P.copyright {display:none;}" : "")+
 /* Product srch / Shopping sub-pgs expanded below in its $S section */
 
 //Shopping List
@@ -850,7 +857,7 @@ var enhanceGoogle = function() {
 /* SscreenerAdd criteriaBx */	"BODY > DIV.g-doc > DIV.g-section DIV.criteria_wizard,BODY > DIV.g-doc > DIV.g-section DIV.criteria_wizard TABLE.searchtabs TD {background-color:#333 !important; border:0 none !important; "+$R('radiusAll')+":14px;}"+
 /* SscreenerAdd criteriaBxIn */	"BODY > DIV.g-doc > DIV.g-section DIV.criteria_wizard DIV.criteria_list_div,BODY > DIV.g-doc > DIV.g-section DIV.criteria_wizard DIV.criteria_list_div > DIV.criteriadiv {background-color:#000 !important; border:0 none !important; font-size:0.9em; "+$R('radiusAll')+":14px;}"+
 /* pg txt */			"BODY > DIV#body-wrapper > DIV.g-doc > DIV.g-section > DIV#rt-content > DIV,BODY > DIV#body-wrapper > DIV.g-doc > DIV.g-section > DIV#rt-content TD,BODY > DIV#body-wrapper > DIV.g-doc > DIV.g-section > DIV#rt-content TD.price > SPAN,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section DIV#rq-table DIV,BODY > DIV#body-wrapper > DIV.g-doc > DIV.g-section DIV#rq-table DIV,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section DIV#rq-table TD SPAN,BODY > DIV.g-doc > DIV.g-section DIV#rq-table TD SPAN,BODY > DIV#body-wrapper > DIV.g-doc > DIV.g-section DIV#rq-table TD SPAN,BODY > DIV#body-wrapper > DIV.g-doc > DIV.g-section DIV#rq-toggle SPAN,BODY > DIV.g-doc > DIV.g-section DIV#rq-toggle SPAN,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section DIV#rq-toggle SPAN,BODY > DIV#body-wrapper > DIV.g-doc > DIV.g-section UL#navmenu > LI.navsub DIV,BODY > DIV.g-doc > DIV.g-section UL#navmenu > LI.navsub DIV,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section UL#navmenu > LI.navsub DIV,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section DIV#price-panel SPAN.dis-large,BODY > DIV.g-doc DIV.g-section TD.price SPAN,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section DIV.g-c DIV,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section DIV.g-c DIV,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section TABLE.quotes TD,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section TABLE#cc-table TD SPAN,BODY > DIV.g-doc > DIV.g-section TABLE#cc-table TD SPAN,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section TABLE#cc-table TD,BODY > DIV.g-doc > DIV.g-section TABLE#cc-table TD,BODY > DIV.g-doc > DIV#body-wrapper > DIV.g-section TABLE#mgmt-table TD,BODY > DIV.g-doc > DIV.g-section TABLE#company_results > TBODY > TR > TD,BODY > DIV.g-doc > DIV.g-section TABLE#company_results > TBODY > TR > TD SPAN.chb,BODY > DIV.g-doc > DIV.g-section DIV.g-unit,BODY > DIV.g-doc DIV.g-section TABLE#historical_price > TBODY > TR > TD,BODY > DIV.g-doc DIV.g-section TABLE#fs-table TD,BODY > DIV.g-doc DIV.g-section DIV#news-main DIV,BODY > DIV.g-doc DIV.g-section DIV#need-sign-in,BODY > DIV.g-doc > DIV.g-section DIV#criteria TD,BODY DIV.g-doc DIV.g-section DIV.snippet,BODY DIV.g-doc DIV.g-section DIV.byline > SPAN.date,BODY DIV.g-doc DIV.g-section TABLE.quotes TD,BODY DIV.g-doc DIV.g-section TABLE#main.results TD,BODY DIV.g-doc DIV.g-section TABLE.topmovers TD,BODY DIV.g-doc DIV.g-section DIV.event,BODY DIV.g-doc DIV.g-section DIV.event > DIV.date,BODY DIV.g-doc DIV.g-section TABLE.gf-table > TBODY > TR > TD.pf-table-lp > SPAN > SPAN {color:#999 !important;}"+
-/* ads */			(uHideAds?"DIV#ad-label,DIV#ad-target,DIV.g-c > DIV#ad {display:none;}":"")+
+/* ads */			(uHideAds?"DIV#ad-label,DIV#ad-target,DIV.g-c > DIV#ad {display:none;}" : "")+
 
 
 // Dictionary
@@ -859,7 +866,7 @@ var enhanceGoogle = function() {
 /* body cntnr */		"BODY > DIV#cnt > DIV.dct-srch-otr DIV {color:#999 !important;}"+
 /* definition txt */		"BODY > DIV#cnt > DIV.dct-srch-otr H2.wd,BODY > DIV#cnt > DIV.dct-srch-otr DIV.dct-eh SPAN,BODY > DIV#cnt > DIV.dct-srch-otr LI.dct-er SPAN {color:#fff;}"+
 /* hdrs */			"BODY > DIV#cnt > DIV.dct-srch-otr H3 {background-color:#333; border:0 none !important; color:#000; "+$R('radiusAll')+":14px;}"+
-/* footer */			(uHideFooters?"BODY > DIV#cnt > CENTERborder-top: 1px solid rgb(204, 204, 240); padding: 15px 2px 2px; > DIV[style='border-top: 1px solid rgb(204,204,240); padding: 15px 2px 2px;'] {display:none;}":"")+
+/* footer */			(uHideFooters?"BODY > DIV#cnt > CENTERborder-top: 1px solid rgb(204, 204, 240); padding: 15px 2px 2px; > DIV[style='border-top: 1px solid rgb(204,204,240); padding: 15px 2px 2px;'] {display:none;}" : "")+
 /* Dictionary expanded below in its $S section */
 
 // Calendar
@@ -897,7 +904,7 @@ var enhanceGoogle = function() {
 /* number corners */		"DIV[class='padl0 padr0'] > DIV > TABLE {display:none;}"+
 /* suggested for you bg */	"TABLE[width='450'][style='border-top: 1px solid rgb(119,153,221);'] > TBODY > TR > TD > TABLE > TBODY TR TD[width='40%'][valign='top'] {background-color:#000;}"+
 /* srch pg txt */		"BODY > DIV#res > TABLE#gdr > TBODY > TR > TD DIV {color:#999 !important;}"+
-/* sponsored links */		(uHideAds?"BODY > TABLE#rhsc,#rhsa {display:none;}":"")+
+/* sponsored links */		(uHideAds?"BODY > TABLE#rhsc,#rhsa {display:none;}" : "")+
 
 // Advanced srch
 	/* logo img */		"BODY[marginheight='3'][bgcolor='#ffffff'][topmargin='3'] > TABLE[width='100%'][cellpadding='0'][border='0'] > TBODY > TR > TD[valign='middle'].tc > A#logo > IMG {display:none;}"+
@@ -926,7 +933,7 @@ var enhanceGoogle = function() {
 	/* r-side bg */		"BODY > TABLE.wdth100 > TBODY > TR > TD[style='background-color: rgb(232, 238, 247);'] {background-color:#333 !important;}"+
 	/* recent activity */	"BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > DIV.padl1ex > TABLE.padt10 > TBODY > TR > TD> TABLE > TBODY > TR#stats > TD[width='500'] * {color:#000 !important;}"+
 	/* activity box */	"BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > DIV.padl1ex > TABLE.padt10 > TBODY > TR > TD> TABLE > TBODY > TR#stats > TD[width='500'] TD[bgcolor='#e8eef7'],BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > DIV.padl1ex > TABLE.padt10 > TBODY > TR > TD> TABLE > TBODY > TR#stats > TD[width='500'] TD[bgcolor='#e8eef7'] > DIV,BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > DIV.padl1ex > TABLE.padt10 > TBODY > TR > TD> TABLE > TBODY > TR#stats > TD[width='500'] > DIV.wdth100 > DIV[style='border-top: 15px solid white; border-bottom: 10px solid white;'],BODY[marginheight='3'][bgcolor='white'][topmargin='3'] > DIV.padl1ex > TABLE.padt10 > TBODY > TR > TD> TABLE > TBODY > TR#stats > TD[width='500'] TABLE#stat_ftr > TBODY > TR > TD,DIV.wdth100 TABLE > TBODY > TR TD,DIV.wdth100 DIV {border:0 none #000 !important; background-color:#000; color:#fff !important;}"+
-	/* foot block */	(uHideFooters?"BODY > DIV[style='background-color: rgb(232, 238, 247);'] > DIV[class='padt10 padb10'] {display:none;}":"")+
+	/* foot block */	(uHideFooters?"BODY > DIV[style='background-color: rgb(232, 238, 247);'] > DIV[class='padt10 padb10'] {display:none;}" : "")+
 
 // Create
 	/* step num */		"DIV[style='padding: 10px 158px;'] > TABLE > TBODY > TR > TD[width='16'][height='18'][align='center'] {color:#999 !important;}"+
@@ -960,12 +967,12 @@ var enhanceGoogle = function() {
 /* buy alternate row */		"DIV#summary_content > TABLE > TBODY > TR.seller-row-alt {background-color:#181818;}"+
 /* view block */		"BODY > DIV#rhswrapper > TABLE#rhssection,BODY > DIV#rhswrapper > TABLE#rhssection TD {border:0 none; background-color:#000;}"+
 /* rate book block */		"BODY > DIV[style='border: 1px solid rgb(167,167,114); margin: 20px; padding: 20px; background-color: rgb(255,255,217); width: 50%;'],BODY > FORM[name='edit_annotations'] DIV {border:0 none !important; background-color:#000 !important; color:#999 !important;}"+
-/* right-side ads */		(uHideAds?"DIV#rhswrapper > TABLE#rhssection > TBODY > TR > TD {display:none;}":"")+
+/* right-side ads */		(uHideAds?"DIV#rhswrapper > TABLE#rhssection > TBODY > TR > TD {display:none;}" : "")+
 /* right-side viewToggleCell */	"DIV#rhswrapper > TABLE#rhssection > TBODY > TR > TD#viewmodetogglecell {display:inherit;}"+
 /* hover layer */		".thumbohover {background-color:#333 !important; "+$R('radiusAll')+":14px;}"+
 /* hover layer date */		".thumbohover .thdate {color:#0c0;}"+
 /* bottom srch bg */		"BODY > DIV > DIV[style='border-top: 1px solid rgb(107, 144, 218); border-bottom: 1px solid rgb(107, 144, 218); padding: 16px; background: rgb(229, 236, 249) none repeat scroll 0%; font-size: 83%; "+$R('background-clip')+": "+$R('initial')+"; "+$R('background-inline-policy')+": "+$R('initial')+";'],BODY > DIV[align='center'][style='padding: 0pt 8px;'] > DIV#banner {background-color:#000 !important; border:0 none !important;}"+
-/* footer */			(uHideFooters?"BODY > DIV[align='center'][style='padding: 0pt 8px;'] > DIV#footer_table > SPAN:last-child {display:none;}":"")+
+/* footer */			(uHideFooters?"BODY > DIV[align='center'][style='padding: 0pt 8px;'] > DIV#footer_table > SPAN:last-child {display:none;}" : "")+
 /* Books expanded below in its $S section */
 
 // Scholar
@@ -983,7 +990,7 @@ var enhanceGoogle = function() {
 /* bottom srch box */		"BODY > CENTER > TABLE[width='100%'] > TBODY > TR > TD.k,BODY > CENTER > TABLE[width='100%'] > TBODY > TR > TD[bgcolor='#dcf6db'] {background-color:#000;}"+
 /* bottom srch pg nums W */	"BODY > DIV.n > TABLE[width='1%'] {width:inherit !important; border-spacing:1em;}"+
 /* bottom srch pg nums */	"BODY > DIV.n > TABLE[width='1%'] > TBODY > TR > TD IMG {display:none;}"+
-/* footer */			(uHideFooters?"BODY > FORM[name='f'] > CENTER:last-child > FONT[size='-1'],BODY > FORM[name='prefform'] > CENTER > P:last-child > FONT[size='-1'] {display:none;}":"")+
+/* footer */			(uHideFooters?"BODY > FORM[name='f'] > CENTER:last-child > FONT[size='-1'],BODY > FORM[name='prefform'] > CENTER > P:last-child > FONT[size='-1'] {display:none;}" : "")+
 /* Scholar: Support expanded below in its $S section */
 
 // Blogs
@@ -996,7 +1003,7 @@ var enhanceGoogle = function() {
 /* pg txt */			"TABLE#buzzlistTable TR.clusterGroup DIV.entryText SPAN,TABLE#buzzlistTable TR.clusterGroup DIV.entryText DIV {color:#999 !important;}"+
 /* bottom srch bg */		"BODY > DIV#f > CENTER > TABLE > TBODY > TR > TD.bts {background-color:#000;}"+
 /* bottom srch borders */	"BODY > DIV#f > CENTER > TABLE > TBODY > TR > TD.btb {display:none;}"+
-/* footer */			(uHideFooters?"BODY > CENTER > CENTER > FONT[size='-2']:last-child,BODY > DIV#f > CENTER:last-child > FONT[size='-2'] {display:none;}":"")+
+/* footer */			(uHideFooters?"BODY > CENTER > CENTER > FONT[size='-2']:last-child,BODY > DIV#f > CENTER:last-child > FONT[size='-2'] {display:none;}" : "")+
 /* Blogs expanded below in its $S section */
 
 // Code
@@ -1066,7 +1073,7 @@ var enhanceGoogle = function() {
 /* menu active */		"BODY > TABLE#viewport_table > TBODY > TR > TD#menu_td > DIV#menu_container > DIV#menu DIV.menu_content > DIV > DIV.sidebarnav > SPAN.nolink {color:#fff;}"+
 /* hdrs */			"BODY > TABLE#viewport_table > TBODY > TR > TD#viewport_td H3 {border:0; background-color:#222 !important; color:#ccc; "+$R('radiusAll')+":14px;}"+
 /* page txt */			"BODY > TABLE#viewport_table > TBODY > TR > TD#viewport_td > DIV.vertical_module_list_row TD,BODY > TABLE#viewport_table > TBODY > TR > TD#viewport_td DD,BODY > DIV.scontentarea DIV P,BODY > DIV.scontentarea > SPAN.big {color:#ccc !important;}"+
-/* footer */			(uHideFooters?"BODY > DIV#footer_table > SPAN,BODY > DIV > DIV#footer_table > SPAN,BODY > DIV[align='center'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD.k {display:none;}":"")+
+/* footer */			(uHideFooters?"BODY > DIV#footer_table > SPAN,BODY > DIV > DIV#footer_table > SPAN,BODY > DIV[align='center'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD.k {display:none;}" : "")+
 /* Patents & Advanced srch expanded below in its $S section */
 
 // Toolbar
@@ -1098,7 +1105,7 @@ var enhanceGoogle = function() {
 /* left menu border */		"BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc > DIV > DIV.wb   {"+$R('radiusAll')+":14px;}"+
 /* left menu hdr */		"BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc DIV.vb   {"+$R('border-radius-topright')+":14px; "+$R('border-radius-topleft')+":14px;}"+
 /* left menu lower-block */	"BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc TABLE.vb,BODY.e > DIV.h > TABLE.p > TBODY > TR > TD > DIV.jc > DIV.rc > DIV TABLE.rb{display:none;}"+
-/* left menu C-footer */	(uHideFooters?"BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc > DIV.bf {display:none;}":"")+
+/* left menu C-footer */	(uHideFooters?"BODY.e > DIV.h > TABLE.p > TBODY > TR[valign='top'] > TD[align='left'] > DIV.jc > DIV.bf {display:none;}" : "")+
 /* lbls block hdr */		"BODY.e > DIV.h > TABLE.p > TBODY > TR > TD > DIV.jc > DIV.rc > DIV[class='sc rb'] {"+$R('border-radius-topright')+":14px; "+$R('border-radius-topleft')+":14px;}"+
 /* lbls lower block */		"BODY.e > DIV.h > TABLE.p > TBODY > TR > TD > DIV.jc > DIV.rc > DIV[class='wc sb'] {border-bottom:2px solid #b5edbc; "+$R('border-radius-bottomright')+":14px; "+$R('border-radius-bottomleft')+":14px;}"+
 /* tip bar */			"BODY.e TD.cb > SPAN.eb {"+$R('radiusAll')+":14px;}"+
@@ -1120,7 +1127,7 @@ var enhanceGoogle = function() {
 /* pg txt */			"BODY > DIV#whole > DIV#main > DIV,BODY > DIV#whole > DIV#main > DIV DIV,BODY > DIV#whole > FORM#text_form TD,BODY > DIV#content DIV,BODY > DIV#content TABLE > TBODY > TR > TD,BODY[marginheight='3'][topmargin='3'] > DIV.section,BODY[marginheight='3'][topmargin='3'] > DIV.section LI {color:#ccc !important;}"+
 /* result txt */		"DIV#whole .almost_half_cell #result_box,DIV#whole .almost_half_cell #result_box * {background-color:#000 !important; color:#fff !important;}"+
 /* boxes */			"BODY > DIV#whole > DIV#main >  DIV#alang,BODY[marginheight='3'][topmargin='3'] > DIV.section > TABLE > TBODY > TR > TD.main,BODY[marginheight='3'][topmargin='3'] > DIV.section > DIV#toolbar_float,BODY > DIV#content > DIV.section > TABLE > TBODY > TR > TD.main,#gt-top-promo {padding-top:0.7em; padding-bottom:0.5em; background-color:#191919; border:0 none; color:#ccc !important;padding-left:1em; "+$R('radiusAll')+":14px;}"+
-/* footer */			(uHideFooters?"BODY > DIV#whole > DIV#foot,BODY > DIV#whole > DIV.footer,BODY DIV.tab_footer,BODY > DIV.tab_footer {display:none;}":"")+
+/* footer */			(uHideFooters?"BODY > DIV#whole > DIV#foot,BODY > DIV#whole > DIV.footer,BODY DIV.tab_footer,BODY > DIV.tab_footer {display:none;}" : "")+
 /* Tookit */
 	/* left nav bg */	"BODY > DIV#main > DIV#nav DIV {background-color:#333 !important;}"+
 /* Translate expanded below in its $S section */
@@ -1129,7 +1136,7 @@ var enhanceGoogle = function() {
 /* pg txt */			"DIV.vcard DIV,UL.g-section > LI > B {color:#999 !important;}"+
 /* about box */			"DIV.g-section > UL.g-section {background-color:#000;}"+
 /* about tab */			"DIV.g-section > UL.g-section LI#about_tab {background-color:#000; "+$R('border-radius-topright')+":8px; "+$R('border-radius-topleft')+":8px;}"+
-/* footer logo */		(uHideFooters?"DIV.ll_footer IMG.logo {display:none;}":"")+
+/* footer logo */		(uHideFooters?"DIV.ll_footer IMG.logo {display:none;}" : "")+
 /* srch logo img [hide] */	"BODY.ll_page_body > DIV > DIV.profile-results-header-search > FORM[name='profilesearch'] > IMG.logo {display:none;}"+
 /* srch logo img [ins] */	"BODY.ll_page_body > DIV > DIV.profile-results-header-search > FORM[name='profilesearch'] {padding:0px 0 17px 150px; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}"+
 /* srch header */		"BODY.ll_page_body > DIV > TABLE.profile-results-header-ribbon {border:0 none; background-color:#333 !important; color:#fff; padding-left:0.7em; "+$R('radiusAll')+":14px;}"+
@@ -1162,15 +1169,13 @@ var enhanceGoogle = function() {
 /* layout */			"#gsscriptVersionMessage {position:fixed; top:0px; right:1px; width:420px; height:76px; z-index:1001; overflow:auto; padding:10px; background-color:#C00040; font-family:Trebuchet MS,Verdana; font-weight:bold; font-size:14px; color:#fff !important; text-align:center; cursor:default; "+$R('border-radius-bottomleft')+":28px;}";
 
 
-//Additional CSS for sIR-function
-stYle.setAttribute('id','bruteForce');
-document.getElementsByTagName('head')[0].appendChild(stYle);
 
-// Site-specific gl0bals
+
+// Site-specific Gl0bal$
 var $G = function() {
 	/* Global font */	$S("* {font-family:"+uFontFamily+";}");
 	/* pg bg */		$S("HTML,BODY {background:#000 none !important; color:#fff;}");
-	/* link color */	$S("A,#gbar A.gb1,#gbar A.gb2,#gbar A.gb3,#gbar A.gb3 U,A.gb4,SPAN.i,.linkon,#codesiteContent A,TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN,TABLE TBODY TR TD TABLE TBODY TR TD A,SPAN#show-new,SPAN#show-all,SPAN.link,SPAN[dir='ltr'] > FONT[color='blue'],FONT[color='blue'][dir='ltr'],.gc-control,.goog-flat-menu-button,.gsc-tabHeader.gsc-tabhInactive,.goog-tab-bar-top .goog-tab,DIV.search-options-header-link,.gtc-doclist-item-select > SPAN,.goog-tab-bar .goog-tab > DIV,UL.goog-tabpane-tabs > LI.goog-tabpane-tab,DIV.gwt-Label,#guser .gb2,DIV.n SPAN.b,SPAN.ae-action,.linkbtn,.CSS_PROFILES_UPDATE_BUTTONS SPAN,.CSS_UPDATES_UCW_SHOW_PEOPLE_LIST_LINK,.CSS_UPDATES_UCW_SHOW_COMMENTS_LINK,.CSS_PROFILES_FOLLOWING_COUNT,SPAN.gl > A.l > SPAN,#gbar .gb3 U,#gbar .gb3 SMALL,.gbmt,#gbztms SPAN,.flt, .flt u, a.fl,#gbz .gbzt, #gbz .gbgt, #gbg .gbgt,#gbz .gbzt SPAN, #gbz .gbgt SPAN, #gbg .gbgt SPAN,.G-GL,.G-HU,.G-HU DIV,.tk3N6e-e-vj,.gwt-InlineLabel,.gbml1 {color:"+lc+" !important;}");
+	/* link color */	$S("A,#gbar A.gb1,#gbar A.gb2,#gbar A.gb3,#gbar A.gb3 U,A.gb4,SPAN.i,.linkon,#codesiteContent A,TABLE.mmhdr TBODY TR TD.mmttlinactive SPAN,TABLE TBODY TR TD TABLE TBODY TR TD A,SPAN#show-new,SPAN#show-all,SPAN.link,SPAN[dir='ltr'] > FONT[color='blue'],FONT[color='blue'][dir='ltr'],.gc-control,.goog-flat-menu-button,.gsc-tabHeader.gsc-tabhInactive,.goog-tab-bar-top .goog-tab,DIV.search-options-header-link,.gtc-doclist-item-select > SPAN,.goog-tab-bar .goog-tab > DIV,UL.goog-tabpane-tabs > LI.goog-tabpane-tab,DIV.gwt-Label,#guser .gb2,DIV.n SPAN.b,SPAN.ae-action,.linkbtn,.CSS_PROFILES_UPDATE_BUTTONS SPAN,.CSS_UPDATES_UCW_SHOW_PEOPLE_LIST_LINK,.CSS_UPDATES_UCW_SHOW_COMMENTS_LINK,.CSS_PROFILES_FOLLOWING_COUNT,SPAN.gl > A.l > SPAN,#gbar .gb3 U,#gbar .gb3 SMALL,.gbmt,#gbztms SPAN,.flt, .flt u, a.fl,#gbz .gbzt, #gbz .gbgt, #gbg .gbgt,#gbz .gbzt SPAN, #gbz .gbgt SPAN, #gbg .gbgt SPAN,.G-GL,.G-HU,.G-HU DIV,.tk3N6e-e-vj,.gwt-InlineLabel,.gbml1,.problem-header {color:"+lc+" !important;}");
 	/* visitedLinx color */	$S("A:visited {color:"+vl+" !important;}");
 	/* resultsvisitedlnx */	$S("DIV#res A:visited {font-size:0.8em !important;}");
 	/* logo srchR Ladj */	$S(".tsf-p {padding-left:150px;");
@@ -1186,7 +1191,7 @@ var $G = function() {
 	/* Gbar prof dd name */	$S(".gbpc .gbps {color:#888 !important;}");
 	/* Gbar dd hover bg */	$S(".gbmt:hover {background-color:#555 !important;}");
 	/* Gbar actv siteTab */	$S("#gbar A[class='gb1 gbz0l'],.gbz0l .gbts {color:#ccc !important;}");
-	/* Gbar bg */		$S("#guser,#guser *,#gbar,#gbar *,#ghead,#gog,.lhcl_onebar,.lhshdr,.rshdr,.tpblk,.tphdr,#tbbcc,#rgsh_s,#gc-header,#gbh, .gbh,.a-Vm-R,.sfbg,TD.lst-td,#search .skunk-head,#search .cntrl,#search .q_d_container,.a-Eo-T,#appbar,.lst-t,.lst-d,#gb {background-color:transparent !important; color:#ccc;}");
+	/* Gbar bg */		$S("#guser,#guser *,#gbar,#gbar *,#ghead,#gog,.lhcl_onebar,.lhshdr,.rshdr,.tpblk,.tphdr,#tbbcc,#rgsh_s,#gc-header,#gbh, .gbh,.a-Vm-R,.sfbg,TD.lst-td,#search .skunk-head,#search .cntrl,#search .q_d_container,.a-Eo-T,#appbar,.lst-t,#gb {background-color:transparent !important; color:#ccc;}");
 	/* Gbar Maps sBxBrdr */	$S("#search .q_d_container {border-bottom:1px solid #fff !important;}");
 	/* Gbar settng dd bg */	$S("DIV#gbg {background-color:#000 !important;}");
 	/* Gbar txt */		$S("#gbar SPAN {color:#999;}");
@@ -1197,20 +1202,24 @@ var $G = function() {
 	/* srch input brdr */	$S("FORM[name='f'] TABLE#search-input > TBODY > TR > TD.srchBoxCont,#guser,#guser *,#gbar,#gbar *,#ghead,#gog,.lhcl_onebar,.lhshdr,.rshdr,.tpblk,.tphdr,#tbbcc,#rgsh_s,#gc-header,#gbh, .gbh,.a-Vm-R,.sfbg,TD.lst-td,#search .skunk-head,#search .cntrl,#search .a-Eo-T,#appbar,.lst-t,#lst-ib INPUT {border:0 none transparent !important;}");
 	/* srch input Lbrdr */	$S("#lst-ib {border-left:1px solid #fff;}");
 	/* srch input adj-D */	$S(".tsf-p > DIV[style='padding-bottom:2px;padding-top:1px'] {padding-top:13px !important;}");
-	/* hShare btn bgGrad */	$S(".gbgsca,.gbgscb,.gbgsb {background-color:transparent !important; background-image:none !important; background:-moz-linear-gradient(none) !important;}");
+	/* srchBx bg */		$S(".lst-d {background-color:transparent !important;}");
+	/* srchBx inner brdr */	$S(".lst-tbb,.lst-d-f,.lst-i-b,.tsf-p TABLE,.tsf-p TD,#search .q-shadow {border:0 none !important;}");
+	/* srchBx activ brdr */	$S("#qbc > INPUT[class='lst qbhi']:focus,.search-input:focus,#search .q_d_container:focus,.tsf-p TD.lst-td {border-color:"+lc+" "+lc+" "+lc+" "+lc+" !important; border-style:solid !important; border-width:1px !important;}");
+	/* hShare btn bgGrad */	$S(".gbgsca,.gbgscb {background-color:transparent !important; background-image:none !important; background:-moz-linear-gradient(none) !important;}");
 	/* hShare btn height */	$S(".gbgsc {padding-bottom:0.1em !important;}");
-	/* submit btns */	$S("INPUT[type='button'],.yt-button-primary,.manager-page .goog-flat-button, .manager-page .goog-menu-button,BUTTON.search-button,BUTTON#createBtn,BUTTON#cancelBtn,INPUT[type='button'][value='Save changes'],INPUT[type='reset'][value='Clear All'],INPUT[type='reset'][value='Reset'],INPUT[type='button'][value='Done'],INPUT[type='button'][value='Copy'],INPUT[type='button'][value='Move'],INPUT[type='button'][value='Delete'],INPUT[type='button'][value='Compare'],.modal-dialog-buttons BUTTON,.goog-custom-button,BUTTON.gwt-Button,INPUT[type='reset'][value='Cancel'],INPUT[type='button'][value='Check for Updates'],.a-Wf-H-Hc-e,.GCSW23WBCC .GCSW23WBPR .gwt-TabBarItem,.gbgsc,#srreg .msf-button,#sropt .asf-button {background:#333 none !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#555),to(#000)) !important; border:solid 1px #999 !important; color:#fff !important; cursor:pointer; "+$R('radiusAll')+":14px !important; opacity:0.8;}");
-	/* submit btn hover */	$S("INPUT[type='submit']:hover,BUTTON[type='submit']:hover,INPUT[type='button']:hover,.manager-page .goog-flat-button-hover, .manager-page .goog-menu-button-hover,BUTTON.search-button:hover,INPUT[type='reset'][value='Clear All']:hover,INPUT[type='button'][value='Done']:hover,INPUT[type='button'][value='Copy']:hover,INPUT[type='button'][value='Move']:hover,INPUT[type='button'][value='Delete']:hover,INPUT[type='button'][value='Compare']:hover,.goog-custom-button:hover,BUTTON#send-button:hover,INPUT[type='button'][value='Check for Updates']:hover,.gbgsc:hover,#srreg .msf-button:hover,#sropt .asf-button:hover {background-color:#36f !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#000),to(#36f)) !important; color:#fff;}");
+	/* submit btns */	$S("INPUT[type='button'],.yt-button-primary,.manager-page .goog-flat-button, .manager-page .goog-menu-button,BUTTON#createBtn,BUTTON#cancelBtn,INPUT[type='button'][value='Save changes'],INPUT[type='reset'][value='Clear All'],INPUT[type='reset'][value='Reset'],INPUT[type='button'][value='Done'],INPUT[type='button'][value='Copy'],INPUT[type='button'][value='Move'],INPUT[type='button'][value='Delete'],INPUT[type='button'][value='Compare'],.modal-dialog-buttons BUTTON,.goog-custom-button,BUTTON.gwt-Button,INPUT[type='reset'][value='Cancel'],INPUT[type='button'][value='Check for Updates'],.a-Wf-H-Hc-e,.GCSW23WBCC .GCSW23WBPR .gwt-TabBarItem,#srreg .msf-button,#sropt .asf-button {background:#333 none !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#555),to(#000)) !important; border:solid 1px #999 !important; color:#fff !important; cursor:pointer; "+$R('radiusAll')+":14px !important; opacity:0.8;}");
+	/* submit btn hover */	$S("INPUT[type='submit']:hover,BUTTON[type='submit']:hover,INPUT[type='button']:hover,.manager-page .goog-flat-button-hover, .manager-page .goog-menu-button-hover,BUTTON.search-button:hover,INPUT[type='reset'][value='Clear All']:hover,INPUT[type='button'][value='Done']:hover,INPUT[type='button'][value='Copy']:hover,INPUT[type='button'][value='Move']:hover,INPUT[type='button'][value='Delete']:hover,INPUT[type='button'][value='Compare']:hover,.goog-custom-button:hover,BUTTON#send-button:hover,INPUT[type='button'][value='Check for Updates']:hover,#srreg .msf-button:hover,#sropt .asf-button:hover {background-color:#36f !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#000),to(#36f)) !important; color:#fff;}");
 	/* go btns hover */	$S("INPUT#btnI:hover,INPUT[name='btnI']:hover,INPUT[value='Save']:hover,SPAN#button_0 BUTTON:hover,INPUT#stxemailsend:hover,INPUT[value='Submit Issue']:hover,INPUT[value='Download']:hover,INPUT[value='Add it now']:hover,INPUT[value='Add it now'],INPUT[value='Save Preferences']:hover,INPUT[value='Save Preferences ']:hover,INPUT#save:hover,BUTTON[name='ok']:hover,BUTTON[name='yes']:hover,BUTTON[accesskey='s']:hover,BUTTON#createBtn:hover,INPUT[type='submit'][value='Create an Application']:hover,INPUT[value='Send Email']:hover,INPUT[type='button'][value='Save changes']:hover,INPUT[type='reset'][value='Reset']:hover {background-color:#090 !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#000),to(#090)) !important; color:#fff;}");
 	/* cancel btn hover */	$S("INPUT[value='Cancel']:hover,SPAN#button_1 BUTTON:hover,INPUT[value='Discard']:hover,INPUT[value='Delete Group']:hover,INPUT#cancel:hover,INPUT[value='Cancel']:hover,INPUT#cancel:hover,INPUT[value='Cancel']:hover,BUTTON[name='cancel']:hover,BUTTON[onclick='_EV_Blur(this);_EF_Dismiss(true)']:hover,BUTTON#cancelBtn:hover,BUTTON[name='no']:hover,BUTTON#cancel-button:hover,INPUT[type='reset'][value='Cancel']:hover,.a-Wf-H-Hc-e:hover {background-color:#900 !important; background:"+$R('gradLinear')+"0% 0%,0% 100%,from(#000),to(#900)) !important; color:#fff !important;}");
-	/* nBtn bg */		$S(".jhp input[type='submit'],#indi_search_themes,#indi_nav_prev,#indi_nav_next,#change_theme,.toggleLeftNavButton,.gbml1-hvr,.jhp input[type='submit'],.search-inputs .submit,.fjfe-searchbox-button,.lsb,.goog-flat-menu-button,.navbuttonouter,.goog-imageless-button,.jfk-button,.e-b-ca,.aa-R-Na button {background:none #333 !important;}");
-	/* nBtn brdr */		$S(".jhp input[type='submit'],#indi_nav_prev,#indi_nav_next,#change_theme,.toggleLeftNavButton,.jhp input[type='submit'],.search-inputs .submit,.fjfe-searchbox-button,.lsb,.goog-flat-menu-button,.navbuttonouter,.goog-imageless-button,.jfk-button,.e-b-ca,.aa-R-Na button {border:1px solid #444 !important; color:#777 !important;}");
-	/* nBtn brdrHv */	$S(".goog-button-base-inner-box,.goog-button-base-inner-box,.goog-button-base:hover,.jhp input[type='submit']:hover,#indi_nav_prev:hover,#indi_nav_next:hover,#change_theme:hover,.toggleLeftNavButton:hover,.jhp input[type='submit']:hover,.search-inputs .submit:hover,.fjfe-searchbox-button:hover,.lsb:hover,.gbml1-hvr,.goog-flat-menu-button:hover,.navbuttonouter:hover,.goog-imageless-button:hover,.jfk-button:hover,.e-b-ca:hover,.aa-R-Na button {border:1px solid #555 !important; color:#ccc !important;}");
+	/* nBtn bg */		$S(".gbgsb,.gbgsc,.lst-b,.ab_button,.selected,.jhp input[type='submit'],#indi_search_themes,#indi_nav_prev,#indi_nav_next,#change_theme,.toggleLeftNavButton,.gbml1-hvr,.jhp input[type='submit'],.search-inputs .submit,.fjfe-searchbox-button,.lsb,.goog-flat-menu-button,.navbuttonouter,.goog-imageless-button,.jfk-button,.e-b-ca,.aa-R-Na button {background:none #333 !important;}");
+	/* nBtn brdr */		$S(".gbgsc,.lst-b,.ab_button,.selected,.jhp input[type='submit'],#indi_nav_prev,#indi_nav_next,#change_theme,.toggleLeftNavButton,.jhp input[type='submit'],.search-inputs .submit,.fjfe-searchbox-button,.lsb,.goog-flat-menu-button,.navbuttonouter,.goog-imageless-button,.jfk-button,.e-b-ca,.aa-R-Na button {border:1px solid #444 !important; color:#777 !important;}");
+	/* nBtn brdrHv */	$S(".gbgsc:hover,.lst-b:hover,.ab_button:hover,.selected:hover,.goog-button-base-inner-box,.goog-button-base-inner-box,.goog-button-base:hover,.jhp input[type='submit']:hover,#indi_nav_prev:hover,#indi_nav_next:hover,#change_theme:hover,.toggleLeftNavButton:hover,.jhp input[type='submit']:hover,.search-inputs .submit:hover,.fjfe-searchbox-button:hover,.lsb:hover,.gbml1-hvr,.goog-flat-menu-button:hover,.navbuttonouter:hover,.goog-imageless-button:hover,.jfk-button:hover,.e-b-ca:hover,.aa-R-Na button {border:1px solid #555 !important; color:#ccc !important;}");
 	/* nBtn send txt */	$S(".aa-R-Na .a-wc-na {color:#ccc !important;}");
 	/* nBtn cancel */	$S(".d-Zb-tt-ac > DIV > DIV:first-child,.nx > DIV:last-child,.f-G-b-C > DIV:last-child,.aa-R-Na button[name='cancel'] {color:#a00 !important;}");
 	/* nBtn cancelHv */	$S(".d-Zb-tt-ac > DIV > DIV:first-child:hover,.aa-R-Na button[name='cancel']:hover {color:#f00 !important;}");
 	/* nBtn disabled */	$S(".aa-R-Na .a-wc-na[disabled] {background:none #151515 !important; color:#555 !important;}");
 	/* nBtn bg fixes */	$S(".kpbb {background:none transparent !important; border:0 none !important;}");
+	/* nHdr btn fix */	$S("#page-header .jfk-button {padding:6px 8px 6px 0;}");
 	/* srch tool bx */	$S("TD[class='lst-td lst-td-xbtn'],.a-U-T,.sfbgg,#kd-googlebar {width:100%; background-color:transparent;}");
 	/* srch tool bx brdr */	$S(".lst-td DIV.lst-b,.a-U-T,.a-p-T,.sfbgg,#kd-googlebar,.kd-appbar {border:0 none;}");
 	/* srch clear X */	$S("#xbtn {margin:0 7px 0 7px;}");
@@ -1218,8 +1227,8 @@ var $G = function() {
 	/* srch btn height */	$S("#sblsbb INPUT {font-size:1em;}");
 	/* srchHelp btnsOR */	$S("BUTTON.wci,BUTTON.w4,BUTTON.w40,BUTTON.w5,BUTTON.w50 {display:inline !important; background:"+$R('gradLinear')+"0% 0%,0% 0%,from(transparent),to(transparent)) !important;}");
 	/* btn bgs */		$S(".button_wrapper,.lsbb,DIV.q-outer,DIV.q-inner,.srchButtonRightShadow,.srchButtonBorder,.a-cd-e-R,.tsf-p .lsbb,.search-button-div {background:transparent none !important; border:0 none !important;}");
+	/* nav brdrs */		$S(".lnsep {border:0 none;}");
 	/* srch btn spacing */	$S("DIV.skunk-head > DIV.cntrl > TABLE.cntrltable > TBODY > TR > TD > DIV.q-outer > DIV.q-inner > INPUT#q-sub,INPUT#srchButton,.a-cd-e-R {margin-left:0.5em !important;}");
-	/* srch box brdrs */	$S(".tsf-p TABLE,.tsf-p TD,#search .q-shadow {border:0 none !important;}");
 	/* gCstmBtn children */	$S(".goog-custom-button-inner-box,.goog-custom-button-outer-box {border:0 none;}");
 	/* div btn outer */	$S(".goog-button-base-outer-box {border-top-color:#555 !important; border-bottom-color:#333 !important; cursor:pointer;}");
 	/* div btn inner */	$S(".goog-button-base-inner-box {border-left-color:#555 !important; border-right-color:#333 !important; background-color:#555 !important;}");
@@ -1236,7 +1245,7 @@ var $G = function() {
 	/* dd box bg */		$S("#po-barframe,#ss-barframe {visibility:hidden !important;}");
 	/* dd selected */	$S("#po-box A.po-selected,#ss-box A.ss-selected {color:#fff !important;}");
 	/* page film */		$S(".aa-R-jc {background-color:#000 !important;}");
-	/* modal box */		$S(".qm,.modal-dialog,.gwt-DialogBox,.aa-R,.product-dialog,.mole {background-color:#222 !important; border:0 none !important; color:#999; "+$R('radiusAll')+":14px;}");
+	/* modal box */		$S(".problem-kd-bubble,.qm,.modal-dialog,.gwt-DialogBox,.aa-R,.product-dialog,.mole {background-color:#222 !important; border:0 none !important; color:#999; "+$R('radiusAll')+":14px;}");
 	/* modal title */	$S(".modal-dialog-title,.dialogTopCenterInner > .Caption,.aa-R-Y {background-color:transparent !important; color:#fff !important; "+$R('border-radius-topright')+":14px; "+$R('border-radius-topleft')+":14px;}");
 	/* modal content */	$S(".aa-R-Na,.aa-R-r,.f-ba-mg,.f-ad,.f-Bk-Xa,.f-Xe,.Qo,.m-o-q-ba,.m-o-q-ba-r,.product-dialog-title,.product-dialog-content,.mole-title,BODY > .modal-dialog .modal-dialog-content,BODY > .modal-dialog .modal-dialog-buttons,.profile-preview-inner .preview-header-line,.dialogMiddleCenter .content-panel-container {background-color:transparent !important; border:0 none !important; color:#fff;}");
 	/* modal content txt */	$S("BODY#body > DIV.modal-dialog > DIV.modal-dialog-content SPAN,BODY#body > DIV.modal-dialog > DIV.modal-dialog-content P {color:#999;}");
@@ -1244,8 +1253,6 @@ var $G = function() {
 	/* modal content s-S */	$S("BODY#body > DIV.modal-dialog > DIV.modal-dialog-content .selected,BODY#body > DIV.modal-dialog > DIV.modal-dialog-content .selected SPAN,.profile-preview-inner {background:none #555; border:0 none; color:#000;}");
 	/* modal bottom */	$S(".f-Xe,BODY > .modal-dialog .modal-dialog-buttons,.dialogMiddleCenter .content-panel-container {"+$R('border-radius-bottomright')+":14px; "+$R('border-radius-bottomleft')+":14px;}");
 	/* 404 error hdr */	$S("BODY[text='#000000'][bgcolor='#ffffff'] TABLE[width='100%'] > TBODY > TR > TD[bgcolor='#3366cc']:first-child {background-color:#000;}");
-	/* results prev arw */	$S(".vspii {background:none transparent !important; border-color:#222 !important;}");
-	/* results prev win */	$S("#nycp {background-color:transparent !important; border-left-color:#222 !important;}");
 	/* EvrythngPnl bg */	$S("#leftnav, #tbd,#atd,#tsf,#hidden_modes,#hmp {background-color:transparent !important;}");
 	/* EvrythngCenterCol */	$S("#center_col {margin-right:0; border-left:1px solid #111 !important;}");
 	/* EvrythngMenuH-div */	$S("DIV#ms > A#showmodes,DIV#leftnav > H2 {border-color:#111 !important;}");
@@ -1262,13 +1269,13 @@ var $G = function() {
 	/* G+ ddTxt */		$S("#gbd1, #gbd1 .gbmc {color:#999;}");
 	/* unTrk inChkbx */	$S("SUP.rM {color:#550505 !important; cursor:help;}");
 	/* unTrk incChkbxUul */	$S("A SUP.rM {border-bottom:7px solid #000;}");
-	l0g("Site-specific gl0bals added");
+	l0g("Site-specific Gl0bal$ added");
 };
 
 if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) || $i(lH,"/ServiceLoginAuth") > -1) || $i(lH,"/accounts/Login") > -1)) || $i(lH,"https%3A%2F%2Fwww.google.com%2Fvoice%2Faccount%2Fsignin%2F") > -1) || $i(lH,"/logout.html") > -1) {
 	// Glogin pgs
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* hdr bar */		$S(".google-header-bar {background:none transparent; border-bottom:1px solid #151515;}");
 	/* logo img [rem] */	$S("BODY[onload='gaia_setFocus();'] > DIV#main > DIV.header > A > IMG,BODY[onload='gaia_setFocus();'] > DIV#main > DIV#maincontent > TABLE > TBODY > TR > TD > DIV#rhs > DIV#rhs_login_signup_box > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD > DIV.loginBox > TABLE#gaia_table > TBODY > TR> TD > TABLE > TBODY > TR > TD > IMG,BODY[onload='gaia_setFocus();'].compact > H1 > IMG:first-child,BODY[onload='gaia_setFocus();'].compact > DIV#main > DIV.rightside > FORM#gaia_loginform > DIV#gaia_loginbox > TABLE.form-noindent > TBODY > TR > TD > DIV.loginBox > TABLE#gaia_table > TBODY > TR > TD > TABLE > TBODY > TR > TD> IMG:first-child,BODY > DIV#main > DIV.header > IMG.logo,DIV.loginBox > TABLE#gaia_table > TBODY > TR > TD > TABLE > TBODY > TR > TD:first-child,BODY > DIV#main > DIV > DIV.logo > A > IMG.logo,BODY > DIV#main > TABLE[width='100%'][cellpadding='2'] > TBODY > TR > TD[width='150'][style='padding-right: 10px;'][rowspan='2'] > A > IMG,BODY > DIV#header > DIV#logo > A > IMG,BODY > DIV#main:first-child > DIV.header:first-child > A > IMG.logo {display:none;}");
@@ -1367,7 +1374,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+"org/") > -1) {
 	// .ORG
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* body bg */		$S("BODY > DIV#container {background-color:#000;}");
 	/* logo img [rem] */	$S("BODY > DIV#container > TABLE#layout > TBODY > TR:first-child > TD#header > DIV > DIV.divider > A > IMG,BODY > DIV#container > TABLE#layout > TBODY > TR:first-child > TD#header > DIV > DIV.divider > TABLE > TBODY > TR:first-child > TD:first-child > A > IMG {display:none;}");
@@ -1386,7 +1393,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if (isiG) {
 	// iGoogle
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo replce */	$S(".standard_logo {height:44px; background:transparent url('"+gL+"') no-repeat scroll -5px -11px !important;}");
 	/* srch btn spacng */	$S(".gseain INPUT[type='submit'],INPUT[name='btnG'],INPUT[name='btnI'] {margin-top:5px; margin-right:30px; margin-left:30px;}");
@@ -1431,7 +1438,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 	/* module border */	$S(".G-BQ,.G-CQ,.G-AQ,.G-BQ,.kdOuterchrome,.modboxin,.modboxin_s,.modtitle {border:0 none !important; border-top:0 none !important;}");
 	/* module areaCntnr */	$S(".titleBox,TABLE > TBODY > TR > TD#col2 {background-color:#333; border:0 none !important;}");
 	/* module areaHdrRnd */	$S("TABLE > TBODY > TR > TD#col2 > #rcbg {display:none;}");
-	/* module area bg */	$S("#indi,#modules {background-color:#000 !important; "+$R('border-radius-topleft')+":20px;}");
+	/* module area bg */	$S(".G-PS,#indi,#modules {background-color:#000 !important; "+$R('border-radius-topleft')+":20px;}");
 	/* module area btmSp */	$S("#modules > .yui-b {margin-bottom:-0.3em; padding-top:0.2em;}");
 	/* module titleRndng */	$S("B.rnd_modtitle {display:none;}");
 	/* module title bg */	$S(".G-HR,.titleBox,.modtitle {"+$R('border-radius-topleft')+":14px; "+$R('border-radius-topright')+":14px; background-color:#333 !important;}");
@@ -1448,7 +1455,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS)>-1 && $i(lH,"/advanced_image_search") > -1) {
 	// Images: Adv srch
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > TABLE > TBODY > TR > TD[width='1%'] > A > IMG[width='150'],BODY > FORM TABLE > TBODY > TR > TD[width='1%'][rowspan='2'] > A#logo > SPAN {display:none;}");
 	/* logo img [ins] */	$S("BODY > TABLE > TBODY > TR > TD[width='1%'],BODY > FORM TABLE > TBODY > TR > TD[width='1%'][rowspan='2'] {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -1467,7 +1474,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/imgres?imgurl=") > -1) {
 	// Images Zoom-[R]Sidebar
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* zoomed img brdr */	$S("#il_fi {border:5px solid #000; "+$R('radiusAll')+":14px;}");
 	/* close img lnk */	$S(".close_lk {margin-top:-18px; margin-left:-31px; background:transparent;}");
@@ -1484,7 +1491,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,"images"+gS)>-1 || $i(lH,gS+Gtld+"/images") > -1 || $i(lH,gS+Gtld+"/imghp") > -1 || ($i(lH,gS+Gtld+"/search?") > -1 && $i(lH,"tbm=isch") > -1)) {
 	// Images
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* home logo [ins] */	$S("BODY > CENTER > DIV#lga {width:281px !important; height:131px !important; background:transparent url('"+gHpL+"') no-repeat scroll top center !important;}");
 	/* home logo [rem] */	$S("BODY > CENTER > DIV#lga > IMG#hplogo {display:none;}");
@@ -1499,8 +1506,9 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 	/* side srch box */	$S("FORM[name='search'] > DIV#search_box {background-color:#222; border:0 none; "+$R('radiusAll')+":14px;}");
 	/* srch btn brdrs */	$S(".lsbb,.ds {border:0 none !important;}");
 	/* input Wfix */	$S("TABLE#sftab TR TD.lst-td:first-child {width:0 !important;}");
-	/* input Bfix */	$S("TABLE#sftab TR TD.lst-td INPUT {margin-top:6px; border:1px solid #fff !important;}");
+	/* input Bfix */	$S("TABLE#sftab TR TD.lst-td INPUT {margin-top:6px;}");
 	/* zoom bx */		$S(".rg_hv {padding:11px; background:#222 !important; "+$R('radiusAll')+":14px;}");
+	/* nav brdrs */		$S(".lnsep {border:0 none;}");
 	/* page bars */		$S(".rgsh {background-color:transparent;}");
 	/* results # imgs */	$S(".csb {height:0; background:none transparent;}");
 	/* footer */		if (uHideFooters) {$S("#foot #fll,BODY > CENTER > #footer > #fctr,.hife-hr,#hife-ft > DIV[style='text-align: center; margin: 0pt 0pt 8px;'],BODY > DIV#container > DIV#footer {display:none;}");}
@@ -1512,7 +1520,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/advanced_search?") > -1) {
 	// Web: Adv srch
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("TD[width='1%']:first-child > A > IMG[width='150'],BODY > FORM[name='f'] > TABLE[width='99%'][cellspacing='2'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:first-child > A#logo > SPAN {display:none;}");
 	/* logo img [ins] */	$S("BODY > FORM[name='f'] > TABLE[width='99%'][cellspacing='2'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:first-child > A#logo > SPAN,TD[width='1%']:first-child {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -1532,10 +1540,10 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 
 	l0g("$S Web: Adv srch done");
 
-} else if ((lH == "http://www"+gS+Gtld+"/" || lH == "https://www"+gS+Gtld+"/") || ($i(lH,gS)>-1 && ($i(lH,"/webhp") > -1 || $i(lH,Gtld+"/search?") > -1 || $i(lH,Gtld+"/webhp?") > -1 || $i(lH,Gtld+"#sclient=?") > -1)) || ($i(lH,"www"+gS+Gtld+"/#") > -1) || ($i(lH,"encrypted"+gS+Gtld+"/") > -1)) {
+} else if ((lH === "http://www"+gS+Gtld+"/" || lH === "https://www"+gS+Gtld+"/") || ($i(lH,gS)>-1 && ($i(lH,"/webhp") > -1 || $i(lH,Gtld+"/search?") > -1 || $i(lH,Gtld+"/webhp?") > -1 || $i(lH,Gtld+"#sclient=?") > -1)) || ($i(lH,"www"+gS+Gtld+"/#") > -1) || ($i(lH,"encrypted"+gS+Gtld+"/") > -1)) {
 	// Web Srch & Home 
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* Home logo [hide] */	$S("BODY > CENTER > DIV#lga > IMG,SPAN#body > CENTER > DIV#lga > IMG {visibility:hidden;}");
 	/* Home logo [ins] */	$S("BODY > CENTER > DIV#lga,SPAN#body > CENTER > DIV#lga {padding-top:20px; background:transparent url('"+gHpL+"') no-repeat scroll center center !important;}");
@@ -1549,6 +1557,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 	/* results desc */	$S(".s {color:#999;}");
 	/* results desc */	$S(".vsc:hover .s {color:#aaa !important;}");
 	/* results desc pop */	$S(".s EM {color:#fff !important;}");
+	/* results Pic brdrs */	$S("DIV[style='display:inline-block;max-width:75px;border:solid 1px #2200c1;padding:1px'] {border-color:"+lc+" !important;}");
 	/* lower nav imgs */	$S("TABLE#nav .csb, TABLE#nav .ss {background-image:none;}");
 	/* footer bar */	$S("#footer > DIV {border-color:#222 !important;}");
 
@@ -1561,9 +1570,10 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 
 	/* cnt outer pos */	$S("#cnt {margin:0; max-width:100%;}");
 
-	if ($e('center_col') && $e('center_col') == null && $i(lH,Gtld+"/webhp?") == -1) {
+	if ($e("center_col")) {
 		/* resultW [DYNMC] */	$S("DIV#res {width:"+rW+"% !important;}");
 	}
+	/* preview Expandr */	$S("#cnt #center_col, #cnt #foot, #cnt .ab_center_col {width:inherit; margin-right:2em;}");
 
 	/* inner res */		$S("#ires {width:100%;}");
 	
@@ -1575,6 +1585,10 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 
 	// Latest Results pnl
 	/* item border */	$S("TABLE.ts .rt1,TABLE.ts .rt2 {background:#000 none !important;}");
+
+	/* results prev arw */	$S(".vspii {background:none transparent !important; border-color:#222 !important;}");
+	/* results prevCntnr */	$S("#nyc {background-color:rgba(0,0,0,0.7) !important;}");
+	/* results prevWin */	$S("#nycp {background-color:transparent !important; border-left:0 none;}");
 
 	// Keyboard Shortcuts Experiment
 	/* keyboardLegend bg */	$S("BODY DIV#cnt TABLE.mbEnd,BODY DIV#cnt TABLE.mbEnd TD,TABLE.mbEnd,TABLE.mbEnd TD,#mbEnd {border:0 none !important; background-color:#000 !important;}");
@@ -1598,7 +1612,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS)>-1 && $i(lH,"/swr?") > -1) {
 	//Web: Srch Within
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > FORM > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:first-child > A[href='/'] > IMG {visibility:hidden;}");
 	/* logo img [ins] */	$S("BODY > FORM > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR:first-child > TD:first-child {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -1611,7 +1625,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS)>-1 && ($i(lH,Gtld+"/cse") > -1 || $i(lH,Gtld+"/custom") > -1)) {
 	// Custom Srch Engine
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV#content TD[style='padding-right: 25px; padding-top: 8px;'] > A > IMG,BODY > DIV#parent > DIV#header > DIV#title:first-child > TABLE:first-child > TBODY > TR:first-child > TD[valign='middle']:first-child > A#logo > IMG,BODY > DIV#parent > DIV#header > TABLE:first-child > TBODY > TR:first-child > TD:first-child > A > IMG,BODY > DIV#content > DIV[style='padding: 10px;']:first-child > A > IMG,BODY > DIV[align='left']:first-child > TABLE:first-child > TBODY > TR > TD[width='1'] > IMG,IMG[src='/images/poweredby_transparent/poweredby_FFFFFF.gif'] {display:none;}");
 	/* logo img [ins] */	$S("BODY > DIV#content TD[style='padding-right: 25px; padding-top: 8px;'],BODY > DIV#parent > DIV#header > DIV#title:first-child > TABLE:first-child > TBODY > TR:first-child > TD[valign='middle']:first-child,BODY > DIV#parent > DIV#header > TABLE:first-child > TBODY > TR:first-child > TD:first-child,BODY > DIV#content > DIV[style='padding: 10px;']:first-child,BODY > DIV[align='left']:first-child > TABLE:first-child > TBODY > TR > TD[width='1'] {padding-left:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}");
@@ -1632,7 +1646,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/insights/search/") > -1) {
 	// Insights for Srch
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [replce] */	$S("BODY > DIV#main > TABLE[style='float: left;'] > TBODY > TR:first-child > TD:first-child > A > DIV {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}");
 	/* head srch box */	$S("DIV#controlPanel TABLE.fullPanelRow {background-color:#181818; border:0 none; "+$R('radiusAll')+":14px;}");
@@ -1653,7 +1667,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/landing/searchtips/") > -1) {
 	// Explore Gsrch
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV.g-doc-800 > DIV.header > A[href='/'] > IMG.logo {display:none;}");
 	/* logo img [ins] */	$S("BODY > DIV.g-doc-800 > DIV.header {height:50px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}");
@@ -1665,7 +1679,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/help/features.html") > -1) {
 	// Srch Features
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV.g-doc:first-child > DIV.g-section > DIV.g-unit:first-child > A:first-child > IMG {display:none;}");
 	/* logo img [ins] */	$S("BODY > DIV.g-doc:first-child > DIV.g-section > DIV.g-unit:first-child {height:50px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}");
@@ -1682,7 +1696,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,"directory"+gS)>-1 || $i(lH,gS+Gtld+"/Top/") > -1) {
 	// Directory
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* Home logo [hide] */	$S("BODY > CENTER:first-child > CENTER:first-child > IMG[width='276'] {visibility:hidden;}");
 	/* Home logo [ins] */	$S("BODY > CENTER:first-child > CENTER:first-child {padding-top:20px; background:transparent url('"+gHpL+"') no-repeat scroll center top !important;}");
@@ -1700,7 +1714,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS)>-1 && ($i(lH,Gtld+"/unclesam") > -1 || $i(lH,Gtld+"/linux") > -1 || $i(lH,Gtld+"/bsd") > -1 || $i(lH,Gtld+"/mac/") > -1 || $i(lH,Gtld+"/microsoft.html") > -1)) {
 	// Other Srchs
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > TABLE.tb > TBODY > TR > TD.tc > A > IMG,BODY[vlink='#551a8b'] > CENTER:first-child > IMG[width='304'],BODY > FORM[name='gs'] > DIV#logo > H1 > A > IMG[width='143'] {visibility:hidden;}");
 	/* Hlogo img [ins] */	$S("BODY > TABLE.tb > TBODY > TR > TD.tc,BODY[vlink='#551a8b'] > CENTER:first-child {width:310px; height:130px; background:transparent url('"+gHpL+"') no-repeat scroll top center !important;}");
@@ -1716,7 +1730,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS)>-1 && $i(lH,"/support/") > -1) {
 	// Support
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("TABLE.header > TBODY > TR > TD.logo > A > IMG.logo,BODY > DIV#wmfroot > DIV.wharootCSS > FORM#whasf > A:first-child > IMG.whaclgoCSS {display:none;}");
 	/* logo img [ins] */	$S("TABLE.header > TBODY > TR > TD.logo,BODY > DIV#wmfroot > DIV.wharootCSS > FORM#whasf {height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -1767,7 +1781,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ((($i(lH,"news"+gS)>-1 || $i(lH,"/news") > -1) || $i(lH,"/image?") > -1) || $i(lH,"/advanced_news_search") > -1) {
 	// News
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* hdr iGLnk */		$S("BODY > DIV#gbar > NOBR > A.gb1:last-child,BODY.serp > DIV#gbar > NOBR > A.gb1:last-child,BODY.sp > DIV#gbar > NOBR > A.gb1:last-child {top:-1.25em !important;}");
 	/* logo img [hide] */	$S("BODY#advanced-search DIV#logo > A > IMG,BODY > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#page-header > TABLE > TBODY > TR:first-child > TD:first-child > A > IMG,BODY > DIV#main-wrapper > DIV#main > DIV.background > DIV.centered > DIV.search > DIV#page-header > DIV.lt > A > IMG[width='170'] {display:none;}");
@@ -1808,7 +1822,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS)>-1 && $i(lH,"/hostednews/") > -1) {
 	// News: /hostednews/
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("FORM.search-form > SPAN.hn-attr > IMG {display:none;}");
 	/* logo img [ins] */	$S("FORM.search-form > SPAN.hn-attr {float:left; position:relative; top:-7px; padding-right:1em; width:150px !important; height:45px !important; background:transparent url('"+gL+"') no-repeat scroll center left !important; font-size:0;}");
@@ -1821,7 +1835,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,"video"+gS)>-1) {
 	// Videos
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* home logo [hide] */	$S("BODY > CENTER > IMG[width='276'],BODY > CENTER > IMG[width='193'] {visibility:hidden;}");
 	/* home logo [ins] */	$S("BODY > CENTER {background:transparent url('"+gHpL+"') no-repeat scroll center 30px !important;}");
@@ -1847,8 +1861,9 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,"maps"+gS)>-1) {
 	// Maps
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
+	/* logo [ins] */	$S(".skunk-head A#logo {width:140px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important; font-size:0;}");
 	/* srch bx Bbrdr */	$S("#search .q_d_container {border:1px solid #fff !important;}");
 	/* hdr R btns */	$S(".kd-button {background-color:transparent !important; background-image:none !important; background:-moz-linear-gradient(none) !important; border-color:#333;}");
 	/* L-pnl bg */		$S(".kui #panel .ddr_steps tr.selected, .kui .altroute-current, .kui .ts_step_selected, .kui .selected .ddw-dl, .kui #panel .ddwpt .selected td, .kui .ddr_steps .selected .dir-step-grad td,#page > #panel,#page > DIV > #panel,#topbar-startcol,#panelarrow2,.res .onmouseout {background-color:transparent !important;}");
@@ -1866,6 +1881,8 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 	/* lat/lon txt */	$S("#ftr_lltt {color:#000 !important; opacity:0.7; "+$R('radiusAll')+":14px;}");
 	/* hdrs / boxes*/	$S(".bar,.ddwpt,.altroute_current,.altroute_hover,.dir_altroute_hover,#panel .selected,#panel .dir-stephover,.db,.sdb,.db .w,.sdb .w,.rmi-dialog-title {background-color:#222 !important; color:#fff !important; "+$R('radiusAll')+":14px;}");
 	/* no borders */	$S(".bar,.ddwpt,.altroute_current,.dir_altroute,.altroute_hover,.dir_altroute_hover,.dir_altroute_inner,#dir_altroutes,#tr_altroutes,.db,.sdb {border:0 none !important;}");
+	/* prob list bar */	$S(".problem-list,.problem-header-block,.problem-header-block-open,.problem-mouseover {background-color:#151515 !important; border:0 none !important}");
+	/* prob listing brdr */	$S(".problem-listing {border-color:#000 !important;}");
 	/* modal hdr/ftr bg */	$S("DIV.sdb DIV.ml-header,DIV.sdb DIV.ml-footer {background-color:#222;}");
 	/* footer linx */	$S("DIV.pp-footer > DIV.pp-footer-links {background-color:#000; border:0 none;}");
 
@@ -1875,7 +1892,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/contacts") > -1) {
 	// Contacts
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* head block: node1 */	$S(".manager-page .stand-alone {background-color:#000; border:0 none;}");
 	/* logo img [replce] */	$S("DIV.cmgr-logo {width:180px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 20px 0 !important; font-size:0;}");
@@ -1901,7 +1918,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,"//docs"+gS+Gtld)>-1 || $i(lH,gS+Gtld+"/google-d-s/") > -1) {
 	// Docs
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* hdr */		$S("#masthead {background-color:transparent !important; border-bottom:1px solid #151515;}");
 	/* srch form pos */	$S("FORM#searchForm {margin:8px 0 0 0;}");
@@ -1921,7 +1938,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 	/* tmplt gal hdrB */	$S("#templates-header-tabs {background-color:#222; border-bottom:0 none;}");
 	/* tmplt gal btnSel */	$S("#templates-header-tabs .templates-list-selected {background-color:#000; border:0 none; color:#ccc; "+$R('border-radius-topright')+":14px; "+$R('border-radius-topleft')+":14px;}");
 
-	/* txt fix-override */	if ($i(lH,gS+Gtld+"/google-d-s/") == -1) {$S("HTML,BODY {color:inherit !important;}");}
+	/* txt fix-override */	if ($i(lH,gS+Gtld+"/google-d-s/") === -1) {$S("HTML,BODY {color:inherit !important;}");}
 
 	/* doc logo [hide] */	$S("BODY > DIV#masthead > TABLE.searchbar > TBODY > TR#logo-section > TD.searchbar-logo > DIV > A[href='.'] > IMG,BODY#editPage > TABLE#encloser > TBODY > TR#navigation > TD > TABLE[width='100%'] > TBODY > TR[style='height: 40px;'] > TD[style='padding-left: 2px;'] > A[href='./'] > IMG[height='30'],BODY > DIV.g-doc:first-child > DIV.header:first-child > A > IMG,#logo-section > .searchbar-logo A IMG {display:none;}");
 	/* logo [ins] */	$S("BODY#editPage > TABLE#encloser > TBODY > TR#navigation > TD > TABLE[width='100%'] > TBODY > TR[style='height: 40px;'] > TD[style='padding-left: 2px;'],BODY > TABLE > TBODY > TR:first-child > TD#logo,BODY > DIV.g-doc:first-child > DIV.header:first-child,#logo-section > .searchbar-logo {width:150px !important; height:55px !important; background:transparent url('"+gL+"') 0 -10px no-repeat scroll !important; font-size:0;}");
@@ -1957,7 +1974,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,"checkout"+gS)>-1) {
 	// Checkout
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	if ($i(lH,Gtld+"/sell/") > -1 || $i(lH,Gtld+"/sell2/") > -1) {
 		//Merchant Tools
@@ -2013,7 +2030,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/checkout/") > -1) {
 	//Checkout Home
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [rem] */	$S("BODY > DIV.g-doc:first-child > DIV.header > A > IMG {visibility:hidden;}");
 	/* logo img [ins] */	$S("BODY > DIV.g-doc:first-child > DIV.header,BODY > TABLE.tb > TBODY > TR > TD.tc > A#logo > SPAN {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}");
@@ -2030,7 +2047,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld)>-1 && $i(lH,"/prdhp?") > -1) {
 	// Product / Shopping Srch Home
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("DIV#hp-cont > H1#hp-logo > IMG,DIV#hp-cont > H1#hp-logo > IMG {visibility:hidden;}");
 	/* logo img [rem] */	$S("A#glogo > IMG[width='150'][height='105'],CENTER > H1#ps-logo > IMG,BODY > FORM[name='f'] > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'][style='clear: left;'] > TBODY > TR > TD:first-child > A#glogo > IMG,BODY > DIV#hp-cont > H1#hp-logo > IMG,BODY > DIV#srp-header > FORM[name='f'] > TABLE:first-child > TBODY > TR > TD:first-child > A#glogo > IMG,BODY > FORM > DIV#advd-search-header > TABLE:first-child > TBODY > TR > TD[width='1%']:first-child > A#advd-logo > IMG,BODY DIV#srp-header > FORM[name='f'] > TABLE > TBODY > TR > TD > A#srp-logo > IMG,BODY DIV#srp-header > FORM[name='f'] > TABLE > TBODY > TR > TD > A#srp-logo > IMG,BODY > DIV#srp-header > FORM[name='f'],BODY DIV#hp-cont > H1#hp-logo > IMG,BODY > DIV.srch-block > TABLE:first-child > TBODY > TR:first-child > TD:first-child > A:first-child > IMG:first-child {display:none;}");
@@ -2046,7 +2063,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/products") > -1) {
 	// Product / Shopping Srch Results
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* home logo [ins] */	$S("BODY > DIV#hp-cont > H1#hp-logo,BODY DIV#hp-cont > H1#hp-logo {background:transparent url('"+gHpL+"') no-repeat scroll center 0 !important;}");
 	/* logo img [hide] */	$S("BODY > TABLE[width='100%']:first-child > TBODY > TR:first-child > TD[width='1%']:first-child > A[href='/products'] > IMG,BODY > DIV#hp-cont > H1#hp-logo > IMG,BODY DIV#hp-cont > H1#hp-logo > IMG {visibility:hidden;}");
@@ -2133,7 +2150,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,"picasa"+gS)>-1) {
 	// Picasa supportingPgs
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* promo top bar */	$S("BODY > TABLE[width='100%'] > TBODY > TR > TD[bgcolor='#e6f0ff'][align='center'] {background-color:#333; "+$R('radiusAll')+":14px;}");
 	/* r-side box */	$S("#download TD[bgcolor='#cadef4'][style='border: 1px solid rgb(166, 191, 201);'] {background-color:#333 !important; border:0 none !important; "+$R('radiusAll')+":14px;}");
@@ -2145,7 +2162,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/finance") > -1) {
 	// Finance
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S(".fjfe-logo > A > IMG,BODY DIV.g-doc DIV.g-section > DIV.g-unit > DIV.sfe-logo > A > IMG {display:none;}");
 	/* logo img [ins] */	$S(".fjfe-logo {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 -10px !important; font-size:0;}");
@@ -2180,7 +2197,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,"spreadsheets"+gS)>-1) {
 	// Spreadsheets
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* body bg */		$S("BODY > DIV.ss-form-container {background-color:#222; "+$R('radiusAll')+":14px;}");
 
@@ -2190,7 +2207,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS)>-1 && ($i(lH,"/notebook/") > -1 || $i(lH,"/googlenotebook/") > -1)) {
 	// Notebook
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY.e > DIV.h TABLE#gn_ph > TBODY > TR:first-child > TD[align='right']:first-child > A > IMG {visibility:hidden;}");
 	/* logo img [ins] */	$S("BODY.e > DIV.h TABLE#gn_ph > TBODY > TR:first-child > TD[align='right']:first-child {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 20px 0 !important; font-size:0;}");
@@ -2208,7 +2225,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 	/* faq list txt */	$S("OL.answers LI UL.response LI,OL.response LI {color:#999 !important;}");
 
 	/* logo img [hide] */	$S("BODY > TABLE[width='100%']:first-child > TBODY > TR[valign='middle']:first-child > TD[width='1%']:first-child > A > IMG {display:none;}");
-	/* logo img [ins] */	$S("BODY > TABLE[width='100%']:first-child > TBODY > TR[valign='middle']:first-child > TD[width='1%']:first-child {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important; font-size:0;}");
+	/* logo img [ins] */	$S("BODY > TABLE[width='100%']:first-child > TBODY > TR[valign='middle']:first-child > TD[width='1%']:first-child {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important; font-size:0;}");
 	/* hdr bg */		$S("BODY > TABLE[width='100%']:first-child > TBODY > TR[valign='middle']:first-child > TD > TABLE[width='100%'][bgcolor='#c3d9ff'] TD.bubble {background-color:#000;}");
 	/* hdr corner */	$S("BODY > TABLE[width='100%']:first-child > TBODY > TR[valign='middle']:first-child > TD > TABLE[width='100%'][bgcolor='#c3d9ff']  TD.bubble IMG {display:none;}");
 	/* menu R-border */	$S("BODY > TABLE[width='100%'] > TBODY > TR > TD[width='1'][background='http://www.google.com/images/dot2.gif'] {border-left:1px solid #333; background-image:none;}");
@@ -2221,10 +2238,10 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 // Translate
 
 	if ($i(lH,"/translate_n?") > -1 || $i(lH,"/translate?") > -1) { //Top Frame
-		/* gl0bals */		$G();
+		/* Gl0bal$ */		$G();
 
 		/* logo img [hide] */	$S("BODY > DIV[style='padding: 8px; white-space: nowrap;'] > DIV[style='float: left; font-size: 12px;'] > A > IMG,BODY > DIV[style='padding: 6px 8px; white-space: nowrap;'] > DIV[style='float: left;'] > A > IMG,BODY > DIV:first-child > DIV:first-child > A:first-child > IMG:first-child {display:none;}");
-		/* logo img [ins] */	$S("BODY > DIV[style='padding: 8px; white-space: nowrap;'],BODY > DIV[style='padding: 6px 8px; white-space: nowrap;'],BODY > DIV:first-child > DIV:first-child {padding-left:160px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important; font-size:0;}");
+		/* logo img [ins] */	$S("BODY > DIV[style='padding: 8px; white-space: nowrap;'],BODY > DIV[style='padding: 6px 8px; white-space: nowrap;'],BODY > DIV:first-child > DIV:first-child {padding-left:160px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important; font-size:0;}");
 		/* view options */	$S("BODY > DIV[style='padding: 1px 8px; float: right; clear: right; font-size: 12px;'] {position:absolute; top:2em; right:2em;}");
 	 
 		l0g("$S Translate done");
@@ -2232,10 +2249,10 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 	} else if ($i(lH,"/toolkit/") > -1) {
 		//T.Toolkit
 
-		/* gl0bals */		$G();
+		/* Gl0bal$ */		$G();
 
 		/* logo img [hide] */	$S("BODY > DIV#logo > A > DIV.gtc-logo {background-image:none;}");
-		/* logo img [ins] */	$S("BODY > DIV#logo {height:55px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important;}");
+		/* logo img [ins] */	$S("BODY > DIV#logo {height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important;}");
 		/* control bg */	$S("BODY > DIV#main > DIV.gtc-doclist-view > DIV.gtc-doclist-toolbar,BODY > DIV#main > DIV.gtc-doclist-view > DIV.gtc-doclist-selectbar {background-color:#333;}");
 		/* control L-line */	$S("BODY > DIV#main > DIV.gtc-doclist-view {border-color:#333;}");
 		/* tbl-hdr */		$S(".gtc-doclist-listview .gtc-list-header TR {background-color:#222;}");
@@ -2268,7 +2285,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 	} else {
 		//Other T.pgs
 
-		/* gl0bals */		$G();
+		/* Gl0bal$ */		$G();
 
 		/* logo img [rem] */	$S("BODY > DIV#whole > DIV[style='margin: 10px 0pt 5px;'] > A > IMG[height='40'],BODY > DIV[style='margin: 10px 0pt 5px;'] > A > IMG[height='40'] {display:none;}");
 		/* translating bar */	$S("#process_div {background-color:#222;}");
@@ -2297,7 +2314,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/profiles") > -1 || $i(lH,"profiles"+gS+Gtld)>-1) {
 	// Profiles
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV.g-doc-800 > DIV.g-tpl-160 > DIV.g-first > A > IMG.logo,BODY > DIV > DIV.ll_editor_heading > IMG.logo,BODY > A#g > IMG[alt='Google'] {display:none;}");
 	/* logo img [ins] */	$S("BODY > DIV.g-doc-800 > DIV.g-tpl-160 > DIV.g-first,BODY > DIV > DIV.ll_editor_heading,BODY > A#g {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -2322,7 +2339,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,"plus"+gS)>-1) {
 	// G+
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo [rem] */	$S(".a-U-Pg-T > A.a-b-h-Jb > IMG {display:none;}");
 	/* logo img [ins] */	$S(".a-U-Pg-T {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -2374,6 +2391,8 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 	/* commentHdr bg */	$S(".a-f-i-WXPuNd {background-color:transparent !important;}");
 	/* comment cntnr */	$S(".v-J-n-m {background-color:#222; border:0 none; "+$R('radiusAll')+":14px;}");
 	/* block div lines */	$S(".n-Cg-Ob,.a-f-iROAtd,.a-j-lc-Rd-R,.a-kh-fs-Hc-R,.a-Lc-Sr,.a-St-R,.Sa-E-p-T,.a-p-M-T-Gp-xc,.pqwPhd,.a-f-i,.a-f-i.a-f-i-Rh {border-color:#222;}");
+	/* YT play bx */	$S(".zSjKV {background-color:#000 !important; background-color:rgba(0,0,0,0.8) !important;}");
+	/* YT play bx brdr */	$S(".zSjKV {border-color:#222 !important; "+$R('border-radius-topleft')+":14px !important; "+$R('border-radius-bottomleft')+":14px !important;}");
 	/* footer */		if (uHideFooters) {$S(".a-Xa-p-T-vj-oc,.a-Xa-p-T-ud-oc,.a-H-Bd-iz,.Sa-E-Xa-T {display:none;}");}
 
 	l0g("$S G+ done");
@@ -2381,7 +2400,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/intl/") > -1 && $i(lH,"/+/learnmore/") > -1) {
 	// G+ Info Site & Discussion Forum(wrapped Grps frame)
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* header */		$S("#header-bar {background-color:#333; border:0 none;}");
 	/* footer */		if (uHideFooters) {$S("P#footer {display:none;}");}
@@ -2391,7 +2410,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,"services"+gS)>-1 && $i(lH,"/fb/forms/googleplus/") > -1) {
 	// G+ service-forms
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [rem] */	$S("BODY.compact > H1 > A > IMG[alt='Google+'] {display:none;}");
 	/* logo img [ins] */	$S("BODY.compact > H1 {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}");
@@ -2411,7 +2430,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 } else if ($i(lH,gS+Gtld+"/reader/") > -1) {
 	// Reader
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* top linx */		$S("DIV#gbar > NOBR {top:-2px;}");
 	/* logo img [replce] */	$S("A#logo-container > H1#logo {z-index:1000; width:145px !important; height:50px !important; background:transparent url('"+gL+"') no-repeat scroll 0 -10px !important; font-size:0;}");
@@ -2447,6 +2466,18 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 	/* rndBoxes */		$S("DIV.setting-body,DIV.fr-modal-dialog {color:#000; "+$R('border-radius-topright')+":14px; "+$R('border-radius-bottomright')+":14px; "+$R('border-radius-bottomleft')+":14px;}");
 	/* browse top */	$S("DIV.tab-group-contents {padding:0;}");
 	/* cmodial dlg */	$S("DIV.fr-modal-dialog {"+$R('border-radius-topleft')+":14px;}");
+	/* unread name */	$S(".scroll-tree li a .name-unread {color:#555;}");
+	/* area bgs */		$S("#viewer-container, #viewer-header {background-color:#000 !important;}");
+	/* hdr txt */		$S("#nav a .text {color:#555;}");
+	/* hover bg */		$S(".selector:hover {background-color:#555;}");
+	/* hover text */	$S(".selector:hover a .text, .scroll-tree li a:hover DIV {color:#fff !important;}");
+	/* icon bg */		$S(".scroll-tree .icon {background-color:#333 !important;}");
+	/* invert RSS icon */	$S(".scroll-tree .sub-icon {background-position: -63px -118px;}");
+	/* arrow to + icon */	$S(".scroll-tree .collapsed .toggle {background-position: -23px -58px !important;}");
+	/* arrow to - icon */	$S(".scroll-tree .expanded .toggle {background-position: 0 -58px !important;}");
+	/* left brdr clr */	$S(".lhn-section-secondary li a, .scroll-tree .lhn-section-primary, #sub-tree-header, #lhn-selectors .selector, #overview-selector {border-color:#000 !important;}");
+	/* list view bg */	$S("#entries.list .read .collapsed,#entries.list .entry .collapsed {background-color:#000 !important;}");
+	/* list view txt */	$S("#entries .collapsed .entry-title {color:#555;}");
 	/* footer */		if (uHideFooters) {$S("DIV#footer > DIV.copyright {display:none;}");}
 
 	l0g("$S Reader done");
@@ -2464,7 +2495,7 @@ if (($i(lH,gS)>-1 && (((($i(lH,"/Login?") > -1 || $i(lH,"/ServiceLogin?") > -1) 
 
 // Calendar
 else if ($i(lH,gS+Gtld+"/calendar/") > -1) {
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV#calcontent > DIV#topBar > DIV.noprint > TABLE > TBODY > TR > TD.logoparent > IMG#mainlogo {display:none;}");
 	/* logo img [ins] */	$S("BODY > DIV#calcontent > DIV#topBar > DIV.noprint > TABLE > TBODY > TR > TD.logoparent {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}");
@@ -2481,8 +2512,9 @@ else if ($i(lH,gS+Gtld+"/calendar/") > -1) {
 	/* r-side TasksListN */	$S("DIV.sng-content {background-color:#fff;}");
 	/* r-side TasksSpcr */	$S("DIV.snt-wrapper > DIV.snt-spacer,DIV.snt-wrapper .snt-container {background-color:#000 !important;}");
 	/* r-side TasksSpcrH */	$S("DIV.snt-wrapper .snt-focus {background-color:#e8eef7 !important;}");
-	/* item bubble */	$S("DIV.bubble > TABLE.bubble-table {background-color:#333; "+$R('radiusAll')+":14px;}");
-	/* item bubbleCrnrBg */	$S("DIV.bubble > TABLE.bubble-table > TBODY > TR > TD DIV.bubble-sprite {background:transparent none !important;}");
+	/* item bubble */	$S(".bubblemain,DIV.bubble > TABLE.bubble-table {background-color:#111; "+$R('radiusAll')+":14px;}");
+	/* item bubbleCrnrBg */	$S(".bubble,DIV.bubble > TABLE.bubble-table > TBODY > TR > TD DIV.bubble-sprite {background:transparent none !important;}");
+	/* item bubbleCrnrBr */	$S(".bubble {border:0 none !important;}");
 	/* item bubbleCellBg */	$S(".qab-container,DIV.bubble > TABLE.bubble-table > TBODY > TR > TD.bubble-cell-main > DIV.bubble-top,DIV.bubble > TABLE.bubble-table > TBODY > TR > TD > DIV.bubble-bottom,DIV.bubble > TABLE.bubble-table > TBODY > TR > TD.bubble-mid,DIV.bubble > TABLE.bubble-table > TBODY > TR > TD.bubble-mid TH,DIV.bubble > TABLE.bubble-table > TBODY > TR > TD.bubble-mid TD,DIV.bubble > TABLE.bubble-table > TBODY > TR > TD.bubble-mid DIV {background-color:#333 !important; border:0 none; color:#ccc !important;}");
 	/* createEventPgBody */	$S("FORM#masterForm > DIV.eventpg {background-color:#000;}");
 	/* createEventAlrtBx */	$S("DIV.eventpg > DIV.pb-frame {color:#000; "+$R('radiusAll')+":14px;}");
@@ -2574,7 +2606,7 @@ else if ($i(lH,gS+Gtld+"/calendar/") > -1) {
 
 // Groups
 else if ($i(lH,"groups"+gS)>-1) {
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [rem] */	$S("BODY > TABLE > TBODY > TR[valign='bottom'] > TD[width='195'][valign='top'] > A[href='/'] > IMG,BODY > DIV.gtopbar > TABLE > TBODY > TR > TD.maincell > TABLE > TBODY > TR > TD[width='140'] > A[href='/'] > IMG,BODY > DIV.gtopbar > TABLE > TBODY > TR > TD.maincell > TABLE > TBODY > TR > TD > A > IMG,TABLE[width='100%'] > TBODY > TR > TD[valign='top'] > DIV > A > IMG[width='185'],BODY > DIV.wdth100 > TABLE.wdth100 TD.maincell TD[width='140'] > A > IMG[width='140'] {display:none;}");
 	/* logo img [hide] */	$S("BODY > TABLE[width='100%'] > TBODY > TR[valign='bottom'] > TD[valign='top'] > A[href='/'] > IMG[width='185'],BODY > TABLE#title-t > TBODY > TR > TD.tc > A#logo > IMG,BODY > TABLE#sft.tb > TBODY > TR:first-child > TD.tc > A#logo > IMG[width='185'],BODY > DIV.clear > DIV.gtopbar > TABLE > TBODY > TR > TD.maincell > TABLE > TBODY > TR > TD[width='140'] IMG[width='140'] {visibility:hidden;}");
@@ -2638,7 +2670,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,"books"+gS)>-1) {
 	// Books
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [rem] */	$S("BODY > FORM[action='/books'] > TABLE > TBODY > TR > TD[width='1%'] > A > IMG[width='174'][height='40'],BODY > DIV[style='margin: 3px 8px;'] > TABLE[style='margin: 7px 0pt 10px; clear: both;'] > TBODY > TR:first-child > TD[valign='top'][rowspan='2']:first-child > A > IMG,BODY > DIV.header > A[href='/books/'] > IMG,BODY > TABLE#top_search_box > TBODY > TR:first-child > TD[style='padding-bottom: 4px; padding-top: 1px;']:first-child > A > IMG[height='40'] {display:none;}");
 	/* logo img [hide] */	$S("BODY > DIV#top_search_bar > A:first-child > IMG#logo,DIV#gb-top-search-box TD.logo > A.logo-link > IMG,#gb-top-search-box > TABLE:first-child > TBODY > TR > TD:first-child > A.logo-link > IMG {visibility:hidden;}");
@@ -2673,7 +2705,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 }else if ($i(lH,gS+Gtld+"/googlebooks/") > -1) {
 	// GoogleBooks
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [replac] */	$S("BODY > TABLE.tb > TBODY > TR > TD.tc > A#logo > SPAN {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}");
 	/* logo txt fix */	$S("BODY > TABLE.tb > TBODY > TR > TD.tc > A#logo {font-size:0;}");
@@ -2686,7 +2718,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,"scholar"+gS)>-1 && ($i(lH,"/scholar") > -1)) {
 	// Scholar
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [rem] */	$S("BODY > DIV.g-doc:first-child > DIV.header > A > IMG,BODY > FORM[name='gs'] > TABLE#scife_hdr > TBODY > TR:first-child > TD[valign='top']:first-child > A > IMG,DIV#scife_hdr > DIV:first-child > A > IMG[width='194'] {display:none;}");
 	/* logo img [hide] */	$S("BODY > CENTER > TABLE:first-child > TBODY > TR:first-child > TD:first-child > IMG[width='276'],BODY > FORM > TABLE[width='99%'][cellspacing='2'] > TBODY > TR > TD[width='1%'] > A > IMG[width='189'],BODY > FORM[name='prefform'] > CENTER > TABLE > TBODY > TR > TD[width='1%'] > A > IMG,BODY > FORM > DIV#scife_hdr > DIV[width='189'] > A > IMG[width='189'],BODY > TABLE[width='100%'][style='clear: both; margin: 7px 3px;'] > TBODY > TR > TD[valign='top'] > A > IMG,BODY > FORM[name='f'] > TABLE > TBODY > TR > TD[width='1%'] > A > IMG[width='194'] {visibility:hidden;}");
@@ -2714,7 +2746,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 	if ($i(lH,"/advanced_blog_search") > -1) {
 		//Adv Srch
 
-		/* gl0bals */		$G();
+		/* Gl0bal$ */		$G();
 
 		/* logo img [hide] */	$S("BODY > DIV#h > TABLE > TBODY > TR > TD:first-child > A > IMG.l {display:none;}");
 		/* logo img [ins] */	$S("BODY > DIV#h > TABLE > TBODY > TR > TD:first-child {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -2729,7 +2761,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 	} else { 
 		//Srch Results
 
-		/* gl0bals */		$G();
+		/* Gl0bal$ */		$G();
 
 		/* logo img [rem] */	$S("BODY > DIV > TABLE#srch_box_t > TBODY > TR > TD:first-child > A > IMG[height='40'],BODY > DIV#h > TABLE:first-child > TBODY > TR > TD:first-child > A > IMG {display:none;}");
 		/* logo img [hide] */	$S("BODY > DIV#h > TABLE:first-child > TBODY > TR > TD:first-child > A > IMG,BODY > CENTER > IMG[width='293'][height='40'],BODY > CENTER > IMG[width='167'],#hplogo {visibility:hidden;}");
@@ -2754,7 +2786,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if (($i(lH,"http://www"+gS+Gtld+"/googlevoice") > -1) || ($i(lH,"https://www"+gS+Gtld+"/voice") > -1) || ($i(lH,"https://services"+gS+Gtld+"/fb/forms/googlevoiceinvite/") > -1)) {
 	// Voice
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV.g-doc-800 > DIV.header > A > IMG[alt='Google Voice'],BODY.compact > H1 > A > IMG[alt='Google Voice'],BODY.gc > DIV > DIV#gc-header > DIV.g-unit > DIV > DIV.g-section > DIV.g-unit > A[href='/voice'] > IMG#gc-header-logo,IMG#gc-header-logo,BODY > DIV.gc-mid > DIV[style='padding: 20px 0pt 6px;'] > A > IMG {display:none;}");
 	/* logo img [ins] */	$S("BODY > DIV.g-doc-800 > DIV.header,BODY.compact > H1,BODY.gc > DIV > DIV#gc-header > DIV.g-unit > DIV > DIV.g-section > DIV.g-unit:first-child,BODY.gc > DIV > DIV.gc-forward-logo,BODY > DIV.gc-mid > DIV[style='padding: 20px 0pt 6px;'] {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -2786,10 +2818,10 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/patents") > -1) {
 	// Patents
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* Spcl HomeLogoHide */
-	pHl = document.getElementsByTagName("img")[0];
+	pHl = $t("img")[0];
 	if ($i(pHl.src,"patent_search_logo_lg.gif") > -1) {
 		pHl.style.visibility = "hidden";
 	}
@@ -2810,7 +2842,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/advanced_patent_search") > -1) {
 	// Patents: Adv Srch
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > FORM[name='f'] > TABLE:first-child > TBODY > TR > TD:first-child > A > IMG {display:none;}");
 	/* logo img [ins] */	$S("BODY > FORM[name='f'] > TABLE:first-child > TBODY > TR > TD:first-child {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -2827,7 +2859,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/trends") > -1) {
 	// Trends
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > CENTER > IMG[alt='Google Trends']:first-child,BODY.product > H1 > A[href='/trends/'] > IMG,BODY > FORM[name='search'] > TABLE > TBODY > TR > TD[width='1'][rowspan='2'] > A[href='/trends'] > IMG,BODY > DIV.g-doc > DIV#trends-page > FORM#trends-search > DIV#trends-header > DIV.g-section:first-child > DIV.g-unit:first-child > DIV.g-section:first-child > DIV.g-unit:first-child > A > IMG {display:none;}");
 	/* logo img [ins] */	$S("BODY.product > H1,BODY > FORM[name='search'] > TABLE > TBODY > TR > TD[width='1'][rowspan='2'],BODY > DIV.g-doc > DIV#trends-page > FORM#trends-search > DIV#trends-header > DIV.g-section:first-child > DIV.g-unit:first-child > DIV.g-section:first-child > DIV.g-unit:first-child {width:150px; height:55px; background:transparent url('"+gL+"') no-repeat scroll top center !important; font-size:0;}");
@@ -2848,7 +2880,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,".googlelabs.") > -1 || $i(lH,"//labs"+gS)>-1) {
 	// Labs
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV#g-hdr > FORM > TABLE#g-hdr-table > TBODY > TR > TD#g-hdr-logo-col > H1 > A > IMG {display:none;}");
 	/* logo img [ins] */	$S("BODY > DIV#g-hdr > FORM > TABLE#g-hdr-table > TBODY > TR > TD#g-hdr-logo-col,BODY > DIV[style='margin: 3px 5px;'] > TABLE#controls > TBODY > TR:first-child > TD[valign='top']:first-child {width:150px; height:55px; background:transparent url('"+gL+ "') no-repeat scroll top center !important; font-size:0;}");
@@ -2883,7 +2915,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/powermeter/") > -1) {
 	// Power Meter
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [rem] */	$S("BODY > H1 > A > IMG {display:none;}");
 	/* logo img [ins] */	$S("BODY > H1 {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -2898,7 +2930,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/experimental/") > -1) {
 	// Experimental
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'] IMG[width='150'][height='55'] {display:none;}");
 	/* logo img [ins] */	$S("BODY > DIV#container > DIV#header > DIV[style='float: left; width: 155px;'] {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -2916,7 +2948,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 	if ($i(lH,"/mail/help/") > -1 && ($i(lH,".html") > -1 || $i(lH,"/tasks/") > -1)) {
 		//supportingPgs
 
-		/* gl0bals */		$G();
+		/* Gl0bal$ */		$G();
 
 		/* hdrs */		$S("BODY > DIV.g-doc > DIV.g-section > DIV.g-unit > H1,DIV.nav-horz {position:relative; top:1em; padding-top:0; padding-left:0.5em; background-color:#333; border:0 none; color:#fff; "+$R('radiusAll')+":14px;}");
 		/* tips body */		$S("DIV.box-1 > DIV.box-2 {background-color:#222; "+$R('border-radius-bottomright')+":14px; "+$R('border-radius-bottomleft')+":14px;}");
@@ -2929,7 +2961,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 	} else if ($i(lH,"/mail/h/") > -1) {
 		//[basic HTML view] Activity Info
 
-		/* gl0bals */		$G();
+		/* Gl0bal$ */		$G();
 
 		/* view type hdrs */	$S("TABLE.bn > TBODY> TR > TD#bm {border:0 none; background-color:#181818; "+$R('radiusAll')+":14px;}");
 		/* logo img */		$S("BODY[bgcolor='#ffffff'] > TABLE[width='100%'] > TBODY > TR:first-child > TD[width='143'] > H1 > A > IMG {display:none;}");
@@ -2968,7 +3000,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 	 
 		l0g("$S Gmail [basic HTML view] Activity Info done");
 	
-	} else if ($i(lH,"/mail/") > -1 && !$e("lpt") == null) {
+	} else if ($i(lH,"/mail/") > -1 && $e("lpt") !== null) {
 		//Standard dynamic webmail
 
 		/* fix bg */	$S("BODY {background:#fff none !important; color:#000;}");
@@ -2980,11 +3012,11 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,"code"+gS)>-1 || $i(lH,".googlecode.") > -1) {
 	// Code
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* headMenuBg */	$S(".menuDiv,.menuDiv .menuItem,.menuDiv HR {background-color:#444 !important; border:0 none !important; "+$R('radiusAll')+":14px;}");
 	/* logo img [hide] */	$S("BODY > DIV#gc-container > DIV#gc-header > DIV#logo > A > IMG,BODY > TABLE[style='margin: 20px 0px 0px; padding: 0px; width: 100%;'] > TBODY > TR[style='height: 58px;'] > TD[style='width: 55px; text-align: center;'] > A > IMG[width='161'] {display:none;}");
-	/* logo img [ins] */	$S("BODY > DIV#gc-container > DIV#gc-header > DIV#logo,BODY > TABLE[style='margin: 20px 0px 0px; padding: 0px; width: 100%;'] > TBODY > TR[style='height: 58px;'] > TD[style='width: 55px; text-align: center;'] {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important; font-size:0;}");
+	/* logo img [ins] */	$S("BODY > DIV#gc-container > DIV#gc-header > DIV#logo,BODY > TABLE[style='margin: 20px 0px 0px; padding: 0px; width: 100%;'] > TBODY > TR[style='height: 58px;'] > TD[style='width: 55px; text-align: center;'] {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important; font-size:0;}");
 	/* cntnr bgs */		$S("TABLE.gsc-search-box > TBODY > TR > TD,#maincol,#wikipage,#wikimaincol {background-color:transparent;}");
 	/* round corners */	$S("BODY .round1,BODY .round2,BODY .round4 {visibility:hidden;}");
 	/* notify boxes */	$S(".notice,.error {"+$R('radiusAll')+":14px;}");
@@ -3032,7 +3064,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,"knol"+gS)>-1) {
 	// Knol
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* site body */		$S(".knol-doc-welcome,#knol-doc {background-color:#000 !important;}");
 	/* head bar */		$S("#knol-doc-hd,#knol-header,#knol-static-doc-hd {background-color:#000;}");
@@ -3089,8 +3121,8 @@ else if ($i(lH,"groups"+gS)>-1) {
 	// Sites
 
 				//No [live] Sites
-				if ($i(lH,"/site/") == -1 || ($i(lH,"/site/") > -1 && $e("sites-page-info-bar")!=null) || $i(lH,"/site/sites/") > -1 || $i(lH,"/system/app/pages/") > -1) {
-	/* gl0bals */			$G();
+				if ($i(lH,"/site/") === -1 || ($i(lH,"/site/") > -1 && $e("sites-page-info-bar") !== null) || $i(lH,"/site/sites/") > -1 || $i(lH,"/system/app/pages/") > -1) {
+	/* Gl0bal$ */			$G();
 				}
 
 	/* hdr bar bgs */	$S("#sites-dash-sandbar,.sites-dash-appbar,DIV.sites-header-divider,DIV.sites-header-divider > DIV.sites-account {background-color:#000 !important; color:#fff !important;}");
@@ -3141,10 +3173,10 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS)>-1 && ($i(lH,Gtld+"/options/") > -1 || ($i(lH,"/intl/") > -1 && $i(lH,"/options/") > -1))) {
 	// More Products
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV#id > H1#logo > A > IMG,BODY.search > TABLE[width='95%'] > TBODY > TR > TD[width='1%'] > A[href='/'] > IMG[width='143'] {display:none;}");
-	/* logo img [ins] */	$S("BODY > DIV#id > H1#logo,BODY.search > TABLE[width='95%'] > TBODY > TR > TD[width='1%'] {width:150px !important; height:60px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important; font-size:0;}");
+	/* logo img [ins] */	$S("BODY > DIV#id > H1#logo,BODY.search > TABLE[width='95%'] > TBODY > TR > TD[width='1%'] {width:150px !important; height:60px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important; font-size:0;}");
 	/* hdr line */		$S("BODY.search > TABLE > TBODY > TR > TD > TABLE[width='100%']:first-child > TBODY > TR > TD[style='background-color: rgb(51, 102, 204);'] {display:none;}");
 	/* hdr */		$S("H2,BODY.search > TABLE > TBODY > TR > TD > TABLE[width='100%'] > TBODY > TR > TD[style='background-color: rgb(229, 236, 249);'],BODY.search > TABLE[width='95%'] TD[style='background-color: rgb(216, 228, 241);'] {background-color:#333 !important; border:0 !important; "+$R('radiusAll')+":14px;}");
 	/* tblBg */		$S("BODY.search > TABLE[width='95%'] > TBODY > TR > TD,BODY.search > TABLE[width='95%'] > TBODY > TR > TD > DIV.content > TABLE > TBODY > TR > TD,BODY.search TABLE.sidebarborder > TBODY > TR > TD[bgcolor='#cccccc'],TABLE.sidebar {background-color:#000 !important;}");
@@ -3161,10 +3193,10 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS)>-1 && ($i(lH,"/history") > -1 || $i(lH,"/bookmarks/") > -1)) {
 	// Web History & Bookmarks
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > TABLE[width='100%'] > TBODY > TR > TD[width='3'][valign='top']:first-child > A.lg > IMG {display:none;}");
-	/* logo img [ins] */	$S("BODY > TABLE[width='100%'] > TBODY > TR > TD[width='3'][valign='top']:first-child,BODY > TABLE[class='noborder center elem'][style='width: 750px; margin-left: auto; margin-right: auto;'] > TBODY > TR:first-child > TD:first-child {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important; font-size:0;}");
+	/* logo img [ins] */	$S("BODY > TABLE[width='100%'] > TBODY > TR > TD[width='3'][valign='top']:first-child,BODY > TABLE[class='noborder center elem'][style='width: 750px; margin-left: auto; margin-right: auto;'] > TBODY > TR:first-child > TD:first-child {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important; font-size:0;}");
 	/* hdr line */		$S("BODY > TABLE[width='100%'] > TBODY > TR:first-child > TD[height='1'][bgcolor='#3366cc'][colspan='2'] {display:none;}");
 	/* hdr */		$S("BODY > TABLE[width='100%'] > TBODY > TR > TD[bgcolor='#e5ecf9'] {background-color:#333; border:0; color:#000; "+$R('radiusAll')+":14px;}");
 	/* menu item */		$S("TR.off TD,TR.off2 TD {background-color:#333;}");
@@ -3196,7 +3228,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/accounts/") > -1) {
 	// My Account
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV.header > A > IMG,BODY > TABLE[width='95%'] > TBODY > TR:first-child > TD[width='1%'] > A > IMG[width='143'] {display:none;}");
 	/* logo img [ins] */	$S("BODY > DIV.header,BODY > TABLE[width='95%'] > TBODY > TR:first-child > TD[width='1%'] {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -3218,7 +3250,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 	// Dashboard
 
 	/* logo img [hide] */	$S("BODY > DIV > DIV.gwt-HTML > A > IMG,IMG.G1am5bcvA {display:none;}");
-	/* logo img [ins] */	$S("BODY > DIV > DIV.gwt-HTML:first-child {position:relative; bottom:13px; width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important; font-size:0;}");
+	/* logo img [ins] */	$S("BODY > DIV > DIV.gwt-HTML:first-child {position:relative; bottom:13px; width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important; font-size:0;}");
 	/* hdr */		$S("BODY > DIV > DIV > DIV.gwt-Label {background-color:#333; border:0 none; color:#000; "+$R('radiusAll')+":14px;}");
 	/* action boxes */	$S("BODY > DIV > DIV > DIV > DIV > DIV > DIV > DIV {background-color:#000 !important;}");
 	/* footer */		if (uHideFooters) {$S("BODY > DIV > DIV.G1am5bcvE {display:none;}");}
@@ -3229,10 +3261,10 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/alerts") > -1) {
 	// Alerts
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY TABLE:first-child > TBODY > TR > TD[width='150'][rowspan='3'] > A > IMG[height='40'],BODY > FORM > TABLE[style='margin: 2em 1em;'] > TBODY > TR:first-child > TD:first-child > DIV.logo-div > A > IMG {visibility:hidden;}");
-	/* logo img [ins] */	$S("BODY TABLE:first-child > TBODY > TR > TD[width='150'][rowspan='3'],BODY > FORM > TABLE[style='margin: 2em 1em;'] > TBODY > TR:first-child > TD:first-child > DIV.logo-div {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important; font-size:0;}");
+	/* logo img [ins] */	$S("BODY TABLE:first-child > TBODY > TR > TD[width='150'][rowspan='3'],BODY > FORM > TABLE[style='margin: 2em 1em;'] > TBODY > TR:first-child > TD:first-child > DIV.logo-div {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important; font-size:0;}");
 	/* logo T-spaces */	$S("BODY > FORM > TABLE[style='margin: 2em 1em;'] > TBODY > TR:first-child > TD:first-child > DIV.logo-div {position:relative; bottom:15px;}");
 	/* head blank bar */	$S("BODY > TABLE > TBODY > TR > TD > TABLE[cellpadding='3'] > TBODY > TR > TD[width='100%'][valign='top'] > TABLE[bgcolor='#e0e5ff'] {display:none;}");
 	/* create box cntnr */	$S("TABLE[width='320'][cellpadding='1'] > TBODY > TR:first-child > TD[bgcolor='#3366cc'] {background-color:#000;}");
@@ -3255,7 +3287,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,".googleratings.") > -1) {
 	// Ratings
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY.body > FORM#ctlform > TABLE[width='100%'] > TBODY > TR:first-child > TD[width='1']:first-child > A > IMG[height='59'],BODY > FORM[name='ctlform']:first-child > TABLE[width='100%'] > TBODY > TR:first-child > TD[width='1%'] > A > IMG[width='143'] {display:none;}");
 	/* logo img [ins] */	$S("BODY.body > FORM#ctlform > TABLE[width='100%'] > TBODY > TR:first-child > TD[width='1']:first-child,BODY > FORM[name='ctlform']:first-child > TABLE[width='100%'] > TBODY > TR:first-child > TD[width='1%'] {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 -5px !important; font-size:0;}");
@@ -3277,7 +3309,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,"appengine"+gS)>-1) {
 	// App Engine
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [replce] */	$S("DIV#hd > DIV.g-unit:first-child > P > A#ae-logo {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
 	/* head bg */		$S("DIV#hd {background-color:#000 !important;}");
@@ -3301,7 +3333,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,"productideas.appspot.") > -1) {
 	// Product Ideas
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("DIV.moderator-icon-panel > DIV.gwt-Hyperlink > A[href='#0'] > IMG {display:none;}");
 	/* logo img [ins] */	$S("DIV.moderator-icon-panel > DIV.gwt-Hyperlink {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -3328,10 +3360,10 @@ else if ($i(lH,"groups"+gS)>-1) {
 	l0g("$S Product Ideas done");
 
 
-} else if ($i(lH,gS)>-1 && ((($i(lH,"about") > -1 || $i(lH,"help") > -1 || $i(lH,"privacy") > -1 || $i(lH,Gtld+"/sitemap") > -1 || $i(lH,"dmca") > -1) && $i(lH,".html") > -1) || ($e('container')!=null && $e('left-col')!=null && $e('content')!=null))) {
+} else if ($i(lH,gS)>-1 && ((($i(lH,"about") > -1 || $i(lH,"help") > -1 || $i(lH,"privacy") > -1 || $i(lH,Gtld+"/sitemap") > -1 || $i(lH,"dmca") > -1) && $i(lH,".html") > -1) || ($e('container') !== null && $e('left-col') !== null && $e('content') !== null))) {
 	// About Google
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV.about:first-child > DIV.header:first-child > H1 > A[href='/'] > IMG,BODY > H1:first-child > A > IMG {display:none;}");
 	/* logo srch [hide] */	$S("BODY.search > TABLE[width='95%'][cellspacing='2']:first-child > TBODY > TR:first-child > TD:first-child > A[href='/'] > IMG[width='143'],BODY > DIV#container > TABLE#header > TBODY > TR > TD#logo > A > IMG,BODY > TABLE[width='650'][align='left'] > TBODY > TR:first-child > TD[width='1%'] > A > IMG[width='143'] {visibility:hidden;}");
@@ -3358,7 +3390,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/services/hp/") > -1) {
 	// Make Google Your Homepg
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV.g-doc-800 > DIV.header > A[href='/'] > IMG {display:none;}");
 	/* logo img [ins] */	$S("BODY > DIV.g-doc-800 > DIV.header {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important; font-size:0;}");
@@ -3374,11 +3406,11 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS)>-1 && ($i(lH,Gtld+"/ig/add?") > -1 || $i(lH,Gtld+"/ig/adde?") > -1)) {
 	// Add to Google (RSS)
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [rem] */	$S("BODY > TABLE:first-child > TBODY > TR > TD[width='1%'][valign='top'] > A > IMG {display:none;}");
 	/* logo img [hide] */	$S("BODY > FORM#submit_button > TABLE[width='700'] > TBODY > TR > TD#logo > IMG {visibility:hidden;}");
-	/* logo img [ins] */	$S("BODY > TABLE:first-child > TBODY > TR > TD[width='1%'][valign='top'],BODY > FORM#submit_button > TABLE[width='700'] > TBODY > TR > TD#logo {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important; font-size:0;}");
+	/* logo img [ins] */	$S("BODY > TABLE:first-child > TBODY > TR > TD[width='1%'][valign='top'],BODY > FORM#submit_button > TABLE[width='700'] > TBODY > TR > TD#logo {width:150px !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important; font-size:0;}");
 	/* hdr bgs */		$S("TR[bgcolor='#e5ecf9'],TR[bgcolor='#3366cc'] {background-color:#000;}");
 	/* hdrs */		$S("TR[bgcolor='#e5ecf9'] > TD[style='padding-left: 4px; padding-bottom: 3px; padding-top: 2px; font-family: arial,sans-serif;'] {background-color:#333; border:0 none; color:#fff; "+$R('radiusAll')+":14px;}");
 	/* button sides */	$S("TD[style='background: transparent url(/ig/images/button-left.gif) repeat scroll 0% 0%; width: 8px; height: 40px; "+$R('background-clip')+": border; "+$R('background-origin')+": padding; "+$R('background-inline-policy')+": continuous;'],TD[style='background: transparent url(/ig/images/button-right.gif) repeat scroll 0% 0%; width: 8px; height: 40px; "+$R('background-clip')+": border; "+$R('background-origin')+": padding; "+$R('background-inline-policy')+": continuous;'] {background-image:none !important;}");
@@ -3391,10 +3423,10 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/instant/") > -1) {
 	// Instant (info-pg)
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV#g-doc > DIV.header > A > IMG {display:none;}");
-	/* logo img [ins] */	$S("BODY > DIV#g-doc > DIV.header {padding-left:160px; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important;}");
+	/* logo img [ins] */	$S("BODY > DIV#g-doc > DIV.header {padding-left:160px; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important;}");
 	/* hdr txt */		$S("BODY > DIV#g-doc > DIV.header > H1 {color:#fff;}");
 	/* try it btn */	$S(".g-button,.g-button-basic {background-color:transparent; border:0 none;}");
 	/* did you know box */	$S("DIV#dyk {background:#333 none !important; border:0 none; "+$R('radiusAll')+":14px;}");
@@ -3406,10 +3438,10 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if (($i(lH,"tools"+gS)>-1 && $i(lH,"/firefox/toolbar/") > -1) || ($i(lH,gS)>-1 && ($i(lH,"/toolbar/ff/") > -1 || $i(lH,"/toolbar/ie/") > -1))) {
 	// Toolbar
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > DIV > DIV.header > A > IMG.logo {display:none;}");
-	/* logo img [ins] */	$S("BODY > DIV > DIV.header {width:100% !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll top left !important;}");
+	/* logo img [ins] */	$S("BODY > DIV > DIV.header {width:100% !important; height:55px !important; background:transparent url('"+gL+"') no-repeat scroll 0 0 !important;}");
 	/* boxes */		$S("DIV.g-button,DIV.box-out,DIV.box-out > DIV.box-in {background:#333 none !important; border:0 none; "+$R('radiusAll')+":14px;}");
 	/* footer */		if (uHideFooters) {$S("BODY > DIV.g-doc-800 > DIV.footer {display:none;}");}
  
@@ -3419,7 +3451,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS)>-1 && ($i(lH,Gtld+"/chrome") > -1 || $i(lH,"/landing/chrome/beta/") > -1)) {
 	// Chrome Browser
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* hdr bar */		$S("#c-header {background-color:transparent;}");
 	/* rndBoxes */		$S(".ty-body,#eulabox,.blue,.features-3blurbs .more-info3 .col,.g-button,.g-button-basic {background:#333 none !important; border:0 none; "+$R('radiusAll')+":14px;}");
@@ -3432,7 +3464,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,"pack"+gS)>-1) {
 	// Pack
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [hide] */	$S("BODY > CENTER > TABLE[width='730'][style='margin-bottom: 10px;'] > TBODY > TR:last-child > TD:first-child > A > IMG[style='border-style: none;'] {display:none;}");
 	/* logo img [ins] */	$S("BODY > CENTER > TABLE[width='730'][style='margin-bottom: 10px;'] > TBODY > TR:last-child > TD:first-child {width:150px !important; height:50px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}");
@@ -3445,7 +3477,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,"answers"+gS)>-1) {
 	// Answers
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [rem] */	$S("TABLE.top > TBODY > TR:first-child > TD:first-child > IMG[src='answers/answers-logo-sm.gif'],BODY[bgcolor='#ffffff'] > TABLE[width='100%'][cellpadding='2']:first-child > TBODY > TR:first-child > TD[width='1%']:first-child > A > IMG[width='143'] {display:none;}");
 	/* logo img [ins] */	$S("TABLE.top > TBODY > TR:first-child > TD:first-child,BODY[bgcolor='#ffffff'] > TABLE[width='100%'][cellpadding='2']:first-child > TBODY > TR:first-child > TD[width='1%']:first-child {width:150px !important; height:50px !important; background:transparent url('"+gL+"') no-repeat scroll 0 !important;}");
@@ -3467,7 +3499,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/worldcup") > -1) {
 	// World Cup
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* logo img [rem] */	$S("BODY > H1 > A[href='/'] > IMG[alt='Google'],BODY > H1 > A[href='/'] > IMG[alt='iGoogle'],BODY > H1 > A[href='/chrome'] > IMG[alt='Google Chrome'] {display:none;}");
 	/* logo img [ins] */	$S("BODY > H1 {height:50px !important; padding-left:160px; background:transparent url('"+gL+"') no-repeat scroll 0 !important; color:#fff;}");
@@ -3480,7 +3512,7 @@ else if ($i(lH,"groups"+gS)>-1) {
 } else if ($i(lH,gS+Gtld+"/firefox") > -1) {
 	// Firefox Start
 
-	/* gl0bals */		$G();
+	/* Gl0bal$ */		$G();
 
 	/* srch outer */	$S("FORM[name='f'] > TABLE#frame {margin-top:50px; padding-left:20px; background-color:#fff; "+$R('radiusAll')+":14px;}");
 	/* srch inner */	$S("FORM[name='f'] > TABLE#frame > TBODY > TR > TD > TABLE[width='100%'][cellspacing='0'][cellpadding='0'][border='0'] > TBODY > TR > TD[width='100%'] > TABLE[cellspacing='0'][cellpadding='0'] {margin:20px; padding: 0 13px 13px 20px; background-color:#000; "+$R('radiusAll')+":14px;}");
@@ -3493,16 +3525,18 @@ else if ($i(lH,"groups"+gS)>-1) {
 }
 
 // Cascaded New Styles
-if (typeof GM_addStyle != "undefined") {
-	GM_addStyle($_$);
-} else {
-	heads = document.getElementsByTagName("head");
-	if (heads.length > 0) {
-		var n0de = $n("style",{type:"text/css"},{innerHTML:$_$});
-		heads[0].appendChild(n0de);
+if ($i(lH,"mail"+gS) === -1) {
+	if (typeof GM_addStyle !== "undefined") {
+		GM_addStyle($_$);
+	} else {
+		heads = $t("head");
+		if (heads.length > 0) {
+			var n0de = $n("style",{type:"text/css"},{innerHTML:$_$});
+			heads[0].appendChild(n0de);
+		}
 	}
+	l0g("$_$ GLOBALS cascaded");
 }
-l0g("$_$ GLOBALS cascaded");
 
 
 if ($e("mngb") || ($e("gb") && $e("gb").parentNode.className === "google-one-wrapper")) {
@@ -3573,20 +3607,19 @@ if ($e("mngb") || ($e("gb") && $e("gb").parentNode.className === "google-one-wra
 			if (((!gHdrUsrBarCntnr) || (gHdrUsrBarCntnr && typeof gHdrUsrBar === "undefined")) && (!gHdrUsrBarCntnr && gHdrUsrBarCntnr.getElementsByTagName("a")[2])) {
 				signInLink = $n("a",{href:"https://www"+gS+Gtld+"/accounts/ServiceLogin?continue=http://www"+gS+Gtld+"/ig&followup=http://www"+gS+Gtld+"/ig&service=ig&passive=true",style:"position:absolute; top:4px; right:8px; font-family:"+uFontFamily+";"},{innerHTML:"Sign in"});
 				//adds Sign in link to right-side of Firefox start page (when signed out),or not News (body.hp,body.serp & body.sp)
-				if (document.body.className != "hp" && document.body.className != "serp" && document.body.className != "sp" && document.body.className != "gecko loading loaded") {
+				if (document.body.className !== "hp" && document.body.className !== "serp" && document.body.className !== "sp" && document.body.className !== "gecko loading loaded") {
 					gHeaderBarCntnr.appendChild(signInLink);
 				}
 			}
 			//header-menu right-side adjustments
 			if (gHdrUsrBarCntnr && typeof gHdrUsrBar === "object" && gHdrUsrBar.hasChildNodes()) {
-				var iA;
-				for (iA = 0; iA < gHdrUsrBar.getElementsByTagName("a").length; iA++) {
-					if (gHdrUsrBar.getElementsByTagName("a")[iA].innerHTML === "iGoogle") {
-						//removes iGoogle link from right-side (when signed in)
-						gHdrUsrBar.getElementsByTagName("a")[iA].style.display = "none";
+				var gbAs = gHdrUsrBar.getElementsByTagName("a"),i3,i4;
+				for (i3 = 0; (i4 = gbAs[i3]); i3++) {
+					if (i4.innerHTML === "iGoogle") {
+						i4.style.display = "none"; //removes iGoogle link from right-side (when signed in)
 					}
 				}
-				iA = null;
+				i3 = null; i4 = null;
 			}
 			//if exists,shift Account name over (when signed in)
 			if (gHdrUsrBar.getElementsByTagName("b")[0]) {
@@ -3600,26 +3633,21 @@ if ($e("mngb") || ($e("gb") && $e("gb").parentNode.className === "google-one-wra
 
 // Remove Right-side Ads
 if (uHideAds) {
-	var iFs = document.getElementsByTagName("iframe"),iFsL = iFs.length,iB;
-	for (iB = 0; iB < iFsL; iB++) {
-		if ($i(iFs[iB].src,"pagead2.googlesyndication.com/pagead/ads")!=-1) {
-			iFs[iB].height = 0;iFs[iB].width = 0;
+	var iFs = $t("iframe"),i5,i6;
+	for (i5 = 0; (i6 = iFs[i5]); i5++) {
+		if ($i(i6.src,"pagead2.googlesyndication.com/pagead/ads") !== -1) {
+			i6.height = 0;
+			i6.width = 0;
 		}
 	}
-	iB = null;
 	if (iFs.length > 0) {
 		l0g("Ads hidden");
 	}
+	iFs = null; i5 = null; i6 = null;
 }
 
 };
 // ^end of enhanceGoogle()
-
-
-
-
-// stylesheet Insert Rule
-var $S = function(style) {$e("bruteForce").sheet.insertRule(style,0);};
 
 
 
@@ -3631,21 +3659,26 @@ try {
 	var noSetVal = true;
 }
 
-//var ssW=(typeof unsafeWindow == "undefined")?window:unsafeWindow;
-//if (ssW !== window && typeof noSetVal == "undefined") { // << thnx a.r >>
-if(typeof noSetVal=="undefined"){
+if(typeof noSetVal === "undefined") {
 
-// user_CONF1G_uration
-var gcFF_S,gcCLC,gcCLVC,gcCITC,gcCBHC,gcLLuC,gcLSuC,cfgWinFont,_cfgC,setDialogInputState,hideLayers;
-var uCFG = function(e) {
+	// user_CONF1G_uration
+	var gcFF_S,gcCLC,gcCLVC,gcCITC,gcCBHC,gcLLuC,gcLSuC,cfgWinFont,_cfgC,maskLayer,dialogLayer;
+
+	// Exits the configuration by hiding the layers
+	var hideLayers = function(evt) {
+		dialogLayer.style.display = "none";
+		maskLayer.style.display = "none";
+	};
+	
+	var uCFG = function(e) {
 
 	//helper sub-functions
 
 	// Creates the configuration layers
-	var createLayers = function() {
-		var stYL3 = document.createElement('style');
-		stYL3.setAttribute('id','c0nf1g');
-		document.getElementsByTagName('head')[0].appendChild(stYL3);
+	createLayers = function() {
+		var stYL3 = $c("style");
+		stYL3.setAttribute("id","c0nf1g");
+		$t("head")[0].appendChild(stYL3);
 
 		// Script Configuration Modal
 		$S("#gsmaskLayer {position:fixed; left:0px; top:0px; width:100%; height:100%; background-color:black; opacity:0.75; z-index:100;}");
@@ -3681,66 +3714,66 @@ var uCFG = function(e) {
 				"<div class='aR'>"+
 				"<span class='l'>Page Font:</span>"+
 				 "<select id='gsconf_uFontFamily_Sel' size='1'>"+
-				  "<option id='gsconf_uFontFamily' value='arial,helvetica,sans-serif'"+(uFontFamily == "arial,helvetica,sans-serif"?" selected='selected'":"")+">San Serif</option>"+
-				  "<option id='gsconf_uFontFamily' value='times new roman,serif'"+(uFontFamily == "times new roman,serif"?" selected='selected'":"")+">Serif</option>"+
-				  "<option id='gsconf_uFontFamily' value='arial black,sans-serif'"+(uFontFamily == "arial black,sans-serif"?" selected='selected'":"")+ ">Wide</option>"+
-				  "<option id='gsconf_uFontFamily' value='arial narrow,sans-serif'"+(uFontFamily == "arial narrow,sans-serif"?" selected='selected'":"")+ ">Narrow</option>"+
-				  "<option id='gsconf_uFontFamily' value='comic sans ms,sans-serif'"+(uFontFamily == "comic sans ms,sans-serif"?" selected='selected'":"")+ ">Comic Sans MS</option>"+
-				  "<option id='gsconf_uFontFamily' value='courier new,monospace'"+(uFontFamily == "courier new,monospace"?" selected='selected'":"")+ ">Courier New</option>"+
-				  "<option id='gsconf_uFontFamily' value='garamond,serif'"+(uFontFamily == "garamond,serif"?" selected='selected'":"")+ ">Garamond</option>"+
-				  "<option id='gsconf_uFontFamily' value='georgia,serif'"+(uFontFamily == "georgia,serif"?" selected='selected'":"")+">Georgia</option>"+
-				  "<option id='gsconf_uFontFamily' value='tahoma,sans-serif'"+(uFontFamily == "tahoma,sans-serif"?" selected='selected'":"")+ ">Tahoma</option>"+
-				  "<option id='gsconf_uFontFamily' value='trebuchet ms,sans-serif'"+(uFontFamily == "trebuchet ms,sans-serif"?" selected='selected'":"")+ ">Trebuchet MS</option>"+
-				  "<option id='gsconf_uFontFamily' value='verdana,sans-serif'"+(uFontFamily == "verdana,sans-serif"?" selected='selected'":"")+">Verdana</option>"+
+				  "<option id='gsconf_uFontFamily' value='arial,helvetica,sans-serif'"+(uFontFamily === "arial,helvetica,sans-serif" ? " selected='selected'" : "")+">San Serif</option>"+
+				  "<option id='gsconf_uFontFamily' value='times new roman,serif'"+(uFontFamily === "times new roman,serif" ? " selected='selected'" : "")+">Serif</option>"+
+				  "<option id='gsconf_uFontFamily' value='arial black,sans-serif'"+(uFontFamily === "arial black,sans-serif" ? " selected='selected'" : "")+ ">Wide</option>"+
+				  "<option id='gsconf_uFontFamily' value='arial narrow,sans-serif'"+(uFontFamily === "arial narrow,sans-serif" ? " selected='selected'" : "")+ ">Narrow</option>"+
+				  "<option id='gsconf_uFontFamily' value='comic sans ms,sans-serif'"+(uFontFamily === "comic sans ms,sans-serif" ? " selected='selected'" : "")+ ">Comic Sans MS</option>"+
+				  "<option id='gsconf_uFontFamily' value='courier new,monospace'"+(uFontFamily === "courier new,monospace" ? " selected='selected'" : "")+ ">Courier New</option>"+
+				  "<option id='gsconf_uFontFamily' value='garamond,serif'"+(uFontFamily === "garamond,serif" ? " selected='selected'" : "")+ ">Garamond</option>"+
+				  "<option id='gsconf_uFontFamily' value='georgia,serif'"+(uFontFamily === "georgia,serif" ? " selected='selected'" : "")+">Georgia</option>"+
+				  "<option id='gsconf_uFontFamily' value='tahoma,sans-serif'"+(uFontFamily === "tahoma,sans-serif" ? " selected='selected'" : "")+ ">Tahoma</option>"+
+				  "<option id='gsconf_uFontFamily' value='trebuchet ms,sans-serif'"+(uFontFamily === "trebuchet ms,sans-serif" ? " selected='selected'" : "")+ ">Trebuchet MS</option>"+
+				  "<option id='gsconf_uFontFamily' value='verdana,sans-serif'"+(uFontFamily === "verdana,sans-serif" ? " selected='selected'" : "")+">Verdana</option>"+
 				 "</select><br />"+
 				"<span class='l'>Link Color:</span>"+
-				 "<label for='gsconf_uColorLinkStandard_Rad' title='The new standard'><input type='radio' id='gsconf_uColorLinkStandard_Rad' name='gsconf_uColorLink'"+(uColorLink == "#36f"?" checked='checked'":"")+ ">Standard&nbsp;</label>"+
-				 "<label for='gsconf_uColorLinkClassic_Rad' title='The oldschool'><input type='radio' id='gsconf_uColorLinkClassic_Rad' name='gsconf_uColorLink'"+(uColorLink == "#6495ed"?" checked='checked'":"")+">classic&nbsp;</label>"+
-				 "<label for='gsconf_uColorLinkCustom_Rad' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)'><input type='radio' id='gsconf_uColorLinkCustom_Rad' name='gsconf_uColorLink'"+(uColorLink != "#36f" && uColorLink != "#6495ed"?" checked='checked'":"")+">custom&nbsp;</label>"+
+				 "<label for='gsconf_uColorLinkStandard_Rad' title='The new standard'><input type='radio' id='gsconf_uColorLinkStandard_Rad' name='gsconf_uColorLink'"+(uColorLink === "#4D90FE" ? " checked='checked'" : "")+ ">Standard&nbsp;</label>"+
+				 "<label for='gsconf_uColorLinkClassic_Rad' title='The oldschool'><input type='radio' id='gsconf_uColorLinkClassic_Rad' name='gsconf_uColorLink'"+(uColorLink === "#36f" ? " checked='checked'" : "")+">classic&nbsp;</label>"+
+				 "<label for='gsconf_uColorLinkCustom_Rad' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)'><input type='radio' id='gsconf_uColorLinkCustom_Rad' name='gsconf_uColorLink'"+(uColorLink !== "#4D90FE" && uColorLink !== "#36f" ? " checked='checked'" : "")+">custom&nbsp;</label>"+
 				 "<input type='text' id='gsconf_uColorLinkCustom' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)' style='background-color:"+uColorLink+" !important;' size='7' value='"+uColorLink+"'>"+
 				"<div class='cL'></div>"+
 				"<span class='l'>Visited Link Color:</span>"+
-				 "<label for='gsconf_uColorLinkVisitedStandard_Rad' title='The new standard'><input type='radio' id='gsconf_uColorLinkVisitedStandard_Rad' name='gsconf_uColorLinkVisited'"+(uColorLinkVisited == "#6e37cc"?" checked='checked'":"")+">Standard&nbsp;</label>"+
-				 "<label for='gsconf_uColorLinkVisitedClassic_Rad' title='The oldschool'><input type='radio' id='gsconf_uColorLinkVisitedClassic_Rad' name='gsconf_uColorLinkVisited'"+(uColorLinkVisited == "#406b80"?" checked='checked'":"")+">classic&nbsp;</label>"+
-				 "<label for='gsconf_uColorLinkVisitedCustom_Rad' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)'><input type='radio' id='gsconf_uColorLinkVisitedCustom_Rad' name='gsconf_uColorLinkVisited'"+(uColorLinkVisited != "#6e37cc" && uColorLinkVisited != "#406b80"?" checked='checked'":"")+">custom&nbsp;</label>"+
+				 "<label for='gsconf_uColorLinkVisitedStandard_Rad' title='The new standard'><input type='radio' id='gsconf_uColorLinkVisitedStandard_Rad' name='gsconf_uColorLinkVisited'"+(uColorLinkVisited === "#6e37cc" ? " checked='checked'" : "")+">Standard&nbsp;</label>"+
+				 "<label for='gsconf_uColorLinkVisitedClassic_Rad' title='The oldschool'><input type='radio' id='gsconf_uColorLinkVisitedClassic_Rad' name='gsconf_uColorLinkVisited'"+(uColorLinkVisited === "#406b80" ? " checked='checked'" : "")+">classic&nbsp;</label>"+
+				 "<label for='gsconf_uColorLinkVisitedCustom_Rad' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)'><input type='radio' id='gsconf_uColorLinkVisitedCustom_Rad' name='gsconf_uColorLinkVisited'"+(uColorLinkVisited !== "#6e37cc" && uColorLinkVisited !== "#406b80" ? " checked='checked'" : "")+">custom&nbsp;</label>"+
 				 "<input type='text' id='gsconf_uColorLinkVisitedCustom' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)' style='background-color:"+uColorLinkVisited+" !important;' size='7' value='"+uColorLinkVisited+"'>"+
 				"<div class='cL'></div>"+
 				"<span class='l'>Input Field Color:</span>"+
-				 "<label for='gsconf_uColorInputTxtStandard_Rad'><input type='radio' id='gsconf_uColorInputTxtStandard_Rad' name='gsconf_uColorInputTxt'"+(uColorInputTxt == "#ff0"?" checked='checked'":"")+ ">Standard&nbsp;</label>"+
+				 "<label for='gsconf_uColorInputTxtStandard_Rad'><input type='radio' id='gsconf_uColorInputTxtStandard_Rad' name='gsconf_uColorInputTxt'"+(uColorInputTxt === "#ff0" ? " checked='checked'" : "")+ ">Standard&nbsp;</label>"+
 				 "<label class='sp'>classic&nbsp;</label>"+
-				 "<label for='gsconf_uColorInputTxtCustom_Rad' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)'><input type='radio' id='gsconf_uColorInputTxtCustom_Rad' name='gsconf_uColorInputTxt'"+(uColorInputTxt != "#ff0"?" checked='checked'":"")+">custom&nbsp;</label>"+
+				 "<label for='gsconf_uColorInputTxtCustom_Rad' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)'><input type='radio' id='gsconf_uColorInputTxtCustom_Rad' name='gsconf_uColorInputTxt'"+(uColorInputTxt !== "#ff0" ? " checked='checked'" : "")+">custom&nbsp;</label>"+
 				 "<input class='b' type='text' id='gsconf_uColorInputTxtCustom' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)' style='background-color:"+uColorInputTxt+" !important;' size='7' value='"+uColorInputTxt+"'>"+
 				"<div class='cL'></div>"+
 				"<span class='l'>Button Hover Color:</span>"+
-				 "<label for='gsconf_uColorButtonHoverStandard_Rad' title='The new standard'><input type='radio' id='gsconf_uColorButtonHoverStandard_Rad' name='gsconf_uColorButtonHover'"+(uColorButtonHover == "#36f"?" checked='checked'":"")+ ">Standard&nbsp;</label>"+
-				 "<label for='gsconf_uColorButtonHoverClassic_Rad' title='The oldschool'><input type='radio' id='gsconf_uColorButtonHoverClassic_Rad' name='gsconf_uColorButtonHover'"+(uColorButtonHover == "#6495ed"?" checked='checked'":"")+">classic&nbsp;</label>"+
-				 "<label for='gsconf_uColorButtonHoverCustom_Rad' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)'><input type='radio' id='gsconf_uColorButtonHoverCustom_Rad' name='gsconf_uColorButtonHover'"+(uColorButtonHover != "#36f" && uColorButtonHover != "#6495ed"?" checked='checked'":"")+">custom&nbsp;</label>"+
+				 "<label for='gsconf_uColorButtonHoverStandard_Rad' title='The new standard'><input type='radio' id='gsconf_uColorButtonHoverStandard_Rad' name='gsconf_uColorButtonHover'"+(uColorButtonHover === "#4D90FE" ? " checked='checked'" : "")+ ">Standard&nbsp;</label>"+
+				 "<label for='gsconf_uColorButtonHoverClassic_Rad' title='The oldschool'><input type='radio' id='gsconf_uColorButtonHoverClassic_Rad' name='gsconf_uColorButtonHover'"+(uColorButtonHover === "#36f" ? " checked='checked'" : "")+">classic&nbsp;</label>"+
+				 "<label for='gsconf_uColorButtonHoverCustom_Rad' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)'><input type='radio' id='gsconf_uColorButtonHoverCustom_Rad' name='gsconf_uColorButtonHover'"+(uColorButtonHover !== "#4D90FE" && uColorButtonHover !== "#36f" ? " checked='checked'" : "")+">custom&nbsp;</label>"+
 				 "<input type='text' id='gsconf_uColorButtonHoverCustom' title='Enter valid named-colors, HEX [#336699 / #369] or RGB(204,204,255)' style='background-color:"+uColorButtonHover+" !important;' size='7' value='"+uColorButtonHover+"'>"+
 				"</div>"+
 				"<br />"+
 				"<li > Logo Customizations:</li>"+
 				"<div class='aR'>"+
 				"<span class='l'>Large/Home logo:</span>"+
-				 "<label for='gsconf_uLogoLuriStandard_Rad'><input type='radio' id='gsconf_uLogoLuriStandard_Rad' name='gsconf_uLogoLuri'"+(uLogoLuri == ""?" checked='checked'":"")+ ">Standard&nbsp;</label>"+
-				 "<label for='gsconf_uLogoLuriClassic_Rad'><input type='radio' id='gsconf_uLogoLuriClassic_Rad' name='gsconf_uLogoLuri'"+(uLogoLuri == "none"?" checked='checked'":"")+">none&nbsp;</label>"+
-				 "<label for='gsconf_uLogoLuriCustom_Rad' title='Enter URI'><input type='radio' id='gsconf_uLogoLuriCustom_Rad' name='gsconf_uLogoLuri'"+(uLogoLuri != "" && uLogoLuri != "none"?" checked='checked'":"")+">custom&nbsp;</label>"+
+				 "<label for='gsconf_uLogoLuriStandard_Rad'><input type='radio' id='gsconf_uLogoLuriStandard_Rad' name='gsconf_uLogoLuri'"+(uLogoLuri === "" ? " checked='checked'" : "")+ ">Standard&nbsp;</label>"+
+				 "<label for='gsconf_uLogoLuriClassic_Rad'><input type='radio' id='gsconf_uLogoLuriClassic_Rad' name='gsconf_uLogoLuri'"+(uLogoLuri === "none" ? " checked='checked'" : "")+">none&nbsp;</label>"+
+				 "<label for='gsconf_uLogoLuriCustom_Rad' title='Enter URI'><input type='radio' id='gsconf_uLogoLuriCustom_Rad' name='gsconf_uLogoLuri'"+(uLogoLuri !== "" && uLogoLuri !== "none" ? " checked='checked'" : "")+">custom&nbsp;</label>"+
 				 "<input type='text' id='gsconf_uLogoLuriCustom' title='Enter URI' size='9' value='"+uLogoLuri+"'>"+
 				"<div class='cL'></div>"+
 				"<span class='l'>Small/Search logo:</span>"+
-				 "<label for='gsconf_uLogoSuriStandard_Rad'><input type='radio' id='gsconf_uLogoSuriStandard_Rad' name='gsconf_uLogoSuri'"+(uLogoSuri == ""?" checked='checked'":"")+ ">Standard&nbsp;</label>"+
-				 "<label for='gsconf_uLogoSuriClassic_Rad'><input type='radio' id='gsconf_uLogoSuriClassic_Rad' name='gsconf_uLogoSuri'"+(uLogoSuri == "none"?" checked='checked'":"")+">none&nbsp;</label>"+
-				 "<label for='gsconf_uLogoSuriCustom_Rad' title='Enter URI'><input type='radio' id='gsconf_uLogoSuriCustom_Rad' name='gsconf_uLogoSuri'"+(uLogoSuri != "" && uLogoSuri != "none"?" checked='checked'":"")+">custom&nbsp;</label>"+
+				 "<label for='gsconf_uLogoSuriStandard_Rad'><input type='radio' id='gsconf_uLogoSuriStandard_Rad' name='gsconf_uLogoSuri'"+(uLogoSuri === "" ? " checked='checked'" : "")+ ">Standard&nbsp;</label>"+
+				 "<label for='gsconf_uLogoSuriClassic_Rad'><input type='radio' id='gsconf_uLogoSuriClassic_Rad' name='gsconf_uLogoSuri'"+(uLogoSuri === "none" ? " checked='checked'" : "")+">none&nbsp;</label>"+
+				 "<label for='gsconf_uLogoSuriCustom_Rad' title='Enter URI'><input type='radio' id='gsconf_uLogoSuriCustom_Rad' name='gsconf_uLogoSuri'"+(uLogoSuri !== "" && uLogoSuri !== "none" ? " checked='checked'" : "")+">custom&nbsp;</label>"+
 				 "<input type='text' id='gsconf_uLogoSuriCustom' title='Enter URI' size='9' value='"+uLogoSuri+"'>"+
 				"</div>"+
 				"<br />"+
 				"<div class='l lb'>"+
 				"<li class='cL'>Features:</li>"+
-				"<label for='gsconf_uRemoveST' title='Restore search links to their less-creepy nature'><input type='checkbox' id='gsconf_uRemoveST'"+(uRemoveST?" checked='checked'":"")+"> Remove Search Tracking <sup class='rM' title='Tracking Removed'> &#9746;</sup></label><br />"+
-				"<label for='gsconf_uForceSSL' title='Make sure your data is safe when & where it counts'><input type='checkbox' id='gsconf_uForceSSL'"+(uForceSSL?" checked='checked'":"")+"> Force Secure Connection</label><br />"+
+				"<label for='gsconf_uRemoveST' title='Restore search links to their less-creepy nature'><input type='checkbox' id='gsconf_uRemoveST'"+(uRemoveST?" checked='checked'" : "")+"> Remove Search Tracking <sup class='rM' title='Tracking Removed'> &#9746;</sup></label><br />"+
+				"<label for='gsconf_uForceSSL' title='Make sure your data is safe when & where it counts'><input type='checkbox' id='gsconf_uForceSSL'"+(uForceSSL?" checked='checked'" : "")+"> Enforce Secure Connection</label><br />"+
 				"</div>"+
 				"<li > Hide Page Objects:</li>"+
-				"<label for='gsconf_uHideAds' title='Really clean-up & simplity the layout with wider results for more productivity'><input type='checkbox' id='gsconf_uHideAds'"+(uHideAds?" checked='checked'":"")+"> Advertisements</label><br />"+
-				"<label for='gsconf_uHideFooters' title='Extraneous data-ink removed'><input type='checkbox' id='gsconf_uHideFooters'"+(uHideFooters?" checked='checked'":"")+"> Most Footers</label>"+
+				"<label for='gsconf_uHideAds' title='Really clean-up & simplity the layout with wider results for more productivity'><input type='checkbox' id='gsconf_uHideAds'"+(uHideAds?" checked='checked'" : "")+"> Advertisements</label><br />"+
+				"<label for='gsconf_uHideFooters' title='Extraneous data-ink removed'><input type='checkbox' id='gsconf_uHideFooters'"+(uHideFooters?" checked='checked'" : "")+"> Most Footers</label>"+
 				"</ul>"+
 				"<div id='gsconfButDiv' class='cL'>"+
 				"<br />"+
@@ -3756,12 +3789,12 @@ var uCFG = function(e) {
 		maskLayer.addEventListener("click",hideLayers,false);
 
 		// Shortcuts
-		gcFF_S = $e("gsconf_uFontFamily_Sel"),
-		gcCLC = $e("gsconf_uColorLinkCustom"),
-		gcCLVC = $e("gsconf_uColorLinkVisitedCustom"),
-		gcCITC = $e("gsconf_uColorInputTxtCustom"),
-		gcCBHC = $e("gsconf_uColorButtonHoverCustom"),
-		gcLLuC = $e("gsconf_uLogoLuriCustom"),
+		gcFF_S = $e("gsconf_uFontFamily_Sel");
+		gcCLC = $e("gsconf_uColorLinkCustom");
+		gcCLVC = $e("gsconf_uColorLinkVisitedCustom");
+		gcCITC = $e("gsconf_uColorInputTxtCustom");
+		gcCBHC = $e("gsconf_uColorButtonHoverCustom");
+		gcLLuC = $e("gsconf_uLogoLuriCustom");
 		gcLSuC = $e("gsconf_uLogoSuriCustom");
 
 		gcFF_S.addEventListener("mouseup",cfgWinFont,false);
@@ -3806,8 +3839,6 @@ var uCFG = function(e) {
 		$e("gsconfCancelBut").addEventListener("click",hideLayers,false);
 
 		gcFF_S.focus();
-	
-		l0g("Config Pnl modaled");
 	};
 
 	// ConfigWin Font change title-preview
@@ -3816,16 +3847,16 @@ var uCFG = function(e) {
 	// ConfigWin Color radio/txtbox selection
 	_cfgC = function(w,s,c,b) {
 		if (typeof b === "boolean") {
-			if (b == true) {
+			if (b === true) {
 				//onBlur
-				if ($e("gsconf_"+w+"Custom").value == s) {
+				if ($e("gsconf_"+w+"Custom").value === s) {
 					$e("gsconf_"+w+"Standard_Rad").click();
-				} else if ($e("gsconf_"+w+"Custom").value == c) {
+				} else if ($e("gsconf_"+w+"Custom").value === c) {
 					$e("gsconf_"+w+"Classic_Rad").click();
 				} else {
 					$e("gsconf_"+w+"Custom").style.setProperty("background-color",$e("gsconf_"+w+"Custom").value,"important");
 				}
-			} else if (b == false) {
+			} else if (b === false) {
 				//onFocus
 				$e("gsconf_"+w+"Custom_Rad").checked = true;
 			}
@@ -3836,19 +3867,19 @@ var uCFG = function(e) {
 			$e("gsconf_"+w+"Custom").style.setProperty("background-color",c,"important");
 			$e("gsconf_"+w+"Custom").value = c;
 		} else if ($e("gsconf_"+w+"Custom_Rad").checked) {
-			if (gcLLuC.value == "none") {
+			if (gcLLuC.value === "none") {
 				gcLLuC.value = "";
-			} else if (gcLSuC.value == "none") {
+			} else if (gcLSuC.value === "none") {
 				gcLSuC.value = "";
 			}
 			$e("gsconf_"+w+"Custom").focus();
 			$e("gsconf_"+w+"Custom").select();
 		}
-		if (w == "uColorInputTxt") {
+		if (w === "uColorInputTxt") {
 			$e("gsconfTitle").style.color = $e("gsconf_"+w+"Custom").value;
 		}
 	};
-	cfgLc = function(b) {_cfgC("uColorLink","#36f","#6495ed",b);};
+	cfgLc = function(b) {_cfgC("uColorLink","#4D90FE","#36f",b);};
 		cfgLcF = function() {cfgLc(false);};
 		cfgLcB = function() {cfgLc(true);};
 	cfgLv = function(b) {_cfgC("uColorLinkVisited","#6e37cc","#406b80",b);};
@@ -3857,7 +3888,7 @@ var uCFG = function(e) {
 	cfgIt = function(b) {_cfgC("uColorInputTxt","#ff0","",b);};
 		cfgItF = function() {cfgIt(false);};
 		cfgItB = function() {cfgIt(true);};
-	cfgBh = function(b) {_cfgC("uColorButtonHover","#36f","#6495ed",b);};
+	cfgBh = function(b) {_cfgC("uColorButtonHover","#4D90FE","#36f",b);};
 		cfgBhF = function() {cfgBh(false);};
 		cfgBhB = function() {cfgBh(true);};
 	cfgLl = function(b) {_cfgC("uLogoLuri","","none",b);};
@@ -3867,27 +3898,11 @@ var uCFG = function(e) {
 		cfgLsF = function() {cfgLs(false);};
 		cfgLsB = function() {cfgLs(true);};
 
-	// Changes the enabled state of all input/select fields of the dialog layer. If newState is undefined or not boolean, it does nothing
-	setDialogInputState = function(newState) {
-		if (typeof(newState) !== "boolean") {
-			return;
-		}
-		var allInputs = $x(".//input|.//select",dialogLayer);
-		allInputs.forEach(function(i) {
-			i.disabled = !newState;
-		});
-	};
 
-	// Exits the configuration by hiding the layers
-	hideLayers = function(evt) {
-		dialogLayer.style.display = "none";
-		maskLayer.style.display = "none";
-	};
 
+	
 	// Checks and saves the configuration to the configuration variables
 	var saveConfiguration = function(evt) {
-		setDialogInputState(false); //Disables the input/select fields
-
 		GM_setValue("uConfigMk",currentMk); //scriptConfig SettingsRevision
 		GM_setValue("uFontFamily",gcFF_S.value);
 		GM_setValue("uColorLink",gcCLC.value);
@@ -3909,17 +3924,16 @@ var uCFG = function(e) {
 	// Go >>>
 
 	var BB = "\n\n",aT = BB+"\nTo edit these options again later, click the Greasemonkey icon and Select C0NF1G from User Script Commands",Cp = "\nThe Config panel will appear: ",CS = " and then Click SAVE";
-	if (e == "Maj0r") {
+	if (e === "Maj0r") {
 		alert("Thank you for installing this new version of google Enhanced BLACK :)"+BB+"This update includes New Options!"+Cp+"Personalize your settings"+CS+aT);
-	} else if (e == "m1n0r") {
+	} else if (e === "m1n0r") {
 		alert("Thank you for updating google Enhanced BLACK :)"+BB+"We need to optimize your settings:"+Cp+"Review your options"+CS+aT);
 	}
 
 	// Checks the layers state
 	// Creates the layers if they don't exist or displays them if they are hidden
 	if (maskLayer && dialogLayer) {
-		if ((maskLayer.style.display == "none") && (dialogLayer.style.display == "none")) {
-			setDialogInputState(true); //Makes sure the input/select fields are enabled
+		if ((maskLayer.style.display === "none") && (dialogLayer.style.display === "none")) {
 			maskLayer.style.display = "";
 			dialogLayer.style.display = "";
 		}
@@ -3929,75 +3943,137 @@ var uCFG = function(e) {
 	}
 
 	// Gets the layers
-	var maskLayer = $e("gsmaskLayer"),
-	    dialogLayer = $e("gsdialogLayer");
+	maskLayer = $e("gsmaskLayer");
+	dialogLayer = $e("gsdialogLayer");
+
+	l0g("Config Pnl modaled");
 
 	return;
-};
-// Registers the configuration menu command
-GM_registerMenuCommand("C0NF1G: google Enhanced BLACK",uCFG);
+	};
 
-// Check if first-run (settings insufficient/out-of-date)
-if (uConfigMk < currentMk) {
-	if (parseFloat(currentMk-uConfigMk) > 0 && parseFloat(currentMk-uConfigMk) < 1) {
-		uCFG("m1n0r");
-	} else {
-		uCFG("Maj0r");
+
+	// Registers the configuration menu command
+	GM_registerMenuCommand("C0NF1G: google Enhanced BLACK",uCFG);
+
+	// Check if first-run (settings insufficient/out-of-date)
+	if (uConfigMk < currentMk) {
+		if (parseFloat(currentMk-uConfigMk) > 0 && parseFloat(currentMk-uConfigMk) < 1) {
+			uCFG("m1n0r");
+		} else {
+			uCFG("Maj0r");
+		}
 	}
-}
 
 }
 /* /!CHECK */
 
 
-
 if (uRemoveST) {
-	setInterval(function() {
+	var RST = function() {
 		// "We think you're bugged....Try and relax..."
-		var lAs = document.getElementsByTagName("a"),lAsL = lAs.length,iC,Cn,mD,tR = 0,rM = "<sup class='rM' title='Tracking Removed'> &#9746;</sup>";
-		for (iC = 0; iC < lAsL; iC++) {
-			Cn = lAs[iC].className;
-			if (lAs[iC].hasAttribute("onmousedown")) {
-				mD = lAs[iC].getAttribute("onmousedown");
+		var lAs = $t("a"),lAsL = lAs.length,i7,i8,mD,tR = 0,rM = "<sup class='rM' title='Tracking Removed'> &#9746;</sup>";
+		for (i7 = 0; (i8 = lAs[i7]); i7++) {
+			if (i8.hasAttribute("onmousedown")) {
+				mD = i8.getAttribute("onmousedown");
 				if (mD.indexOf("rwt(") > -1) {
-					lAs[iC].removeAttribute("onmousedown"); /* "..that thing's real??!!" */
-					lAs[iC].innerHTML = lAs[iC].innerHTML+rM;
 					tR++;
+					// "..that thing's real??!!"
+					i8.removeAttribute("onmousedown");
+					i8.innerHTML += rM;
 				}
 			}
 		}
-		iC = null;
 		if (tR > 0) {
 			l0g(" "); l0g(tR+" Moles silenced!"); l0g(" ");
 		}
-	},750);
+		i7 = null; i8 = null; mD = null; tR = null; rM = null;
+	};
+	var iX = 0;
+	while (iX < 2) {
+		iX++;
+		setTimeout(RST,768);
+	}
+	// ^The Double Tap^
 }
 
 
-// RUN!!!
+// init
 enhanceGoogle();
 l0g("e"); //timerStop
 
 
-// GARBAGE COLLECTION (All memory objs except those needed for CONF1G)
+// GARBAGE COLLECTION (remaining memory objs, barring CONF1G req's)
+setTimeout(function() {
 l0g("s"); //GC-timerStart
 l0g("$ killall *");
-var gS = null,
-FSC = null,
-$L = null,
-Rw = null,
-ssW = null,
-lAs = null,
-lAsL = null,
-iC = null,
-Cn = null,
-mD = null,
-tR = null,
-rM = null;
-l0g("e"); //GC-timerStop
-setTimeout(function() {var l0g = null,$i = null;},50);
-/*
-	"I MUST NOT FEAR.
-		Fear is the mind-killer. 
-		Fear is the little-death"
+
+//global-objects in memory:
+/* uCFG:
+uCFG: $e = null;
+uCFG: $c = null;
+uCFG: $i = null;
 */
+unsafeWindow = null;
+/* uCFG:
+currentMk = null;
+uConfigMk = null;
+uFontFamily = null;
+uColorLink = null;
+uColorLinkVisited = null;
+uColorInputTxt = null;
+uColorButtonHover = null;
+uLogoLuri = null;
+uLogoSuri = null;
+uHideLogos = null;
+uHideAds = null;
+uHideFooters = null;
+uRemoveST = null;
+uForceSSL = null;
+*/
+lH = null;
+gS = null;
+Gtld = null;
+stYle = null;
+// uCFG: $S = null;
+FSC = null;
+// uCFG: $R = null;
+$L = null;
+/* uCFG:
+$n = null;
+$x = null;
+$x1 = null;
+*/
+Rw = null;
+enhanceGoogle = null;
+noSetVal = null;
+/* uCFG:
+gcFF_S = null;
+gcCLC = null;
+gcCLVC = null;
+gcCITC = null;
+gcCBHC = null;
+gcLLuC = null;
+gcLSuC = null;
+*/
+ssW = null;
+lAs = null;
+lAsL = null;
+/* uCFG:
+cfgWinFont = null;
+_cfgC = null;
+maskLayer = null;
+dialogLayer = null;
+hideLayers = null;
+uCFG = null;
+*/
+iX = null;
+RST = null;
+
+l0g("e"); //GC-timerStop
+},1024);
+
+
+({
+   "I MUST NOT FEAR.":
+	"Fear is the mind-killer. Fear is the little-death"
+});
